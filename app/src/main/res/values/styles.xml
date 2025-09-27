@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Appearance -->
+    <style name="TextBody">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/android:textColorPrimary</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="TextHeading">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?attr/android:textColorPrimary</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="TextLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/android:textColorSecondary</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="TextAppTitle">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <!-- Button Appearances -->
+    <style name="PrimaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/gradient_accent</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>
