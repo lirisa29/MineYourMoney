@@ -26,6 +26,28 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
 
+      - name: Set up Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: true
+          script: |
+            echo "Updating SDK manager..."
+            sdkmanager --update
+            sdkmanager "platform;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
+            
+            echo "Creating AVD..."
+            avdmanager create avd -n test-avd -k "system-images;android-34;google_apis;x86_64" --device "Pixel 8 Pro"
+            
+            echo "Starting the emulator..."
+            emulator --avd test-avd -no-window -no-audio -gpu off &
+            
+            echo "Waiting for emulator to boot..."
+            adb wait-for-device || { echo 'Emulator did not boot in time!' exit 1; }
+            echo "Emulator is ready."
+
       - name: Build and run unit tests
         run: ./gradlew clean testDebugUnitTest
 
