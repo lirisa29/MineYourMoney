@@ -27,7 +27,7 @@ jobs:
         with:
           api-level: 34 # Android 14
           target: google_apis
-          arch: x86_.64 # Emulates the x86 architecture (faster)
+          arch: x86_64 # Emulates the x86 architecture (faster)
           force-avd-creation: true
 
       - name: Cache Gradle dependencies
