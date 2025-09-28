@@ -33,16 +33,31 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
-
+    // App dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
+    // Unit test dependencies
+    testImplementation(libs.junit) // Basic unit testing
+    testImplementation(libs.mockito) // Mocking data/repositories
+    testImplementation(libs.androidxTestRules) // LiveData testing
+
+    // Android instrumented test dependencies
+    androidTestImplementation(libs.androidx.junit) // JUnit for instrumentation
+    androidTestImplementation(libs.androidx.espresso.core) // UI testing with Espresso
+    androidTestImplementation(libs.androidxTestRules) // For handling activity rules
+    androidTestImplementation(libs.androidxTestRunner) // Running tests on the emulator/device
+
+    // RoomDB testing
+    testImplementation(libs.roomTesting)
 }
