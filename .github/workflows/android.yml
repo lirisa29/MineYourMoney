@@ -29,6 +29,13 @@ jobs:
           target: google_apis
           arch: x86_64 # Emulates the x86 architecture (faster)
           force-avd-creation: true
+          script: |
+            echo "y" | sdkmanager --update
+            sdkmanager "platforms;android-34"
+            sdkmanager "build-tools;34.0.0"
+            sdkmanager "system-images;android-34;google_apis;x86_64"
+            avdmanager create avd -n test-avd -k "system-images;android-34;google_apis;x86_64" --device "Nexus 5X"
+            emulator -avd test-avd -no-window -no-audio -gpu off &
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
