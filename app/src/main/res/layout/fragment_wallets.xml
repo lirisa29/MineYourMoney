@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/walletsFragmentRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/TopAppBarStyle"
+        app:titleCentered="false"
+        app:title="Wallets" />
+
+    <!-- Content Area -->
+    <LinearLayout
+        android:id="@+id/walletsContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <!-- Spending Overview Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSpendingOverview"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Spending Overview"
+            android:textAppearance="@style/TextLabel"
+            android:drawableStart="@drawable/ic_arrow_right"
+            android:drawablePadding="8dp" />
+
+        <!-- Create New Wallet Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCreateWallet"
+            style="@style/PrimaryButton"
+            android:text="Create New Wallet"
+            android:layout_marginTop="12dp" />
+
+        <!-- Wallet List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/walletsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp" />
+    </LinearLayout>
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Add Expense"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

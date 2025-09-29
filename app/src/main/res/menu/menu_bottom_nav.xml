@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/dashboard_title" />
+
+    <item android:id="@+id/nav_wallets"
+        android:icon="@drawable/ic_wallets"
+        android:title="@string/wallets_title" />
+
+    <item android:id="@+id/nav_budgets"
+        android:icon="@drawable/ic_budgets"
+        android:title="@string/budgets_title" />
+
+    <item android:id="@+id/nav_crystals"
+        android:icon="@drawable/ic_crystals"
+        android:title="@string/crystals_title" />
+
+    <item android:id="@+id/nav_more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more_title" />
+</menu>

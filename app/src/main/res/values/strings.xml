@@ -3,6 +3,7 @@
     <string name="app_name">Mine Your Money</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+    <string name="bottom_navigation">Bottom Navigation</string>
 
     <!-- Startup Screen -->
     <string name="create_account">Create Account</string>
@@ -25,8 +26,22 @@
     <string name="login_title">Login</string>
     <string name="login_successful">Login successful</string>
     <string name="login_failed">Login failed. Please check your username and password.</string>
-    <string name="invalid_credentials">Invalid credentials</string>
     <string name="user_not_found">User not found</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Dashboard</string>
+
+    <!-- Wallets Screen -->
+    <string name="wallets_title">Wallets</string>
+
+    <!-- Budgets Screen -->
+    <string name="budgets_title">Budgets</string>
+
+    <!-- Crystals Screen -->
+    <string name="crystals_title">Crystals</string>
+
+    <!-- More Screen -->
+    <string name="more_title">More</string>
 
     <!-- Validation & Errors -->
     <string name="field_required">This field is required</string>
