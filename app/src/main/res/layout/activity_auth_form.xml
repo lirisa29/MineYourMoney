@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground">
+
+    <!-- Top App Bar using style -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar"
+        style="@style/TopAppBarStyle"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/android:textColorSecondary"
+        android:contentDescription="@string/back" />
+
+    <!-- Main Form Content -->
+    <LinearLayout
+        android:id="@+id/form_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <!-- Username Label -->
+        <TextView
+            android:id="@+id/tv_username_label"
+            style="@style/TextBody"
+            android:text="@string/enter_username"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Username Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_input_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username_hint_example"
+                android:drawableStart="@drawable/ic_person"
+                android:drawableTint="?attr/android:textColorSecondary"
+                android:drawablePadding="8dp"
+                android:inputType="textPersonName"
+                android:importantForAccessibility="yes"
+                style="@style/TextLabel" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Label -->
+        <TextView
+            android:id="@+id/tv_password_label"
+            style="@style/TextBody"
+            android:text="@string/enter_password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Password Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="?attr/android:textColorSecondary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password_hint_example"
+                android:inputType="textPassword"
+                android:importantForAccessibility="yes"
+                style="@style/TextLabel" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Confirm Password Label -->
+        <TextView
+            android:id="@+id/tv_confirm_password_label"
+            style="@style/TextBody"
+            android:text="@string/confirm_password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:visibility="visible" />
+
+        <!-- Confirm Password (Only for Sign Up) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirm_password_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="?attr/android:textColorSecondary"
+            android:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_input_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password_hint_example"
+                android:inputType="textPassword"
+                android:importantForAccessibility="yes"
+                style="@style/TextLabel" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Next Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            style="@style/PrimaryButton"
+            android:text="@string/next"
+            android:contentDescription="@string/next"
+            android:layout_marginTop="10dp"
+            android:minHeight="48dp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

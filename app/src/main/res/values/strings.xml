@@ -1,3 +1,33 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Mine Your Money</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+
+    <!-- Startup Screen -->
+    <string name="create_account">Create Account</string>
+    <string name="login">Already have an account? Login</string>
+
+    <!-- Sign Up Screen -->
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="username_hint_example">e.g. johndoe123</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="password_hint_example">e.g. ********</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="confirm_password_hint_example">Re-enter your password</string>
+    <string name="signup_successful">Account created successfully</string>
+    <string name="signup_failed">Sign up failed. Please try again.</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="username_taken">This username is already taken</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Login</string>
+    <string name="login_successful">Login successful</string>
+    <string name="login_failed">Login failed. Please check your username and password.</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="user_not_found">User not found</string>
+
+    <!-- Validation & Errors -->
+    <string name="field_required">This field is required</string>
 </resources>
