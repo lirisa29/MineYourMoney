@@ -25,8 +25,8 @@ private val currentSort: SortType
         val view = inflater.inflate(R.layout.bottom_sheet_sort_options, container, false)
 
         val defaultBtn = view.findViewById<RadioButton>(R.id.btn_sort_default)
-        val latestBtn = view.findViewById<RadioButton>(R.id.btn_sort_latest)
-        val earliestBtn = view.findViewById<RadioButton>(R.id.btn_sort_earliest)
+        val highBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_high)
+        val lowBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_low)
 
         return view
     }
