@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/createWalletRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/TopAppBarStyle"
+        app:title="@string/create_new_wallet"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationContentDescription="@string/back"
+        app:navigationIconTint="?attr/android:textColorSecondary"/>
+
+    <!-- Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Money Left Text -->
+            <TextView
+                android:id="@+id/tv_money_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money_left"
+                android:textAppearance="@style/TextLabel"
+                android:importantForAccessibility="yes" />
+
+            <!-- Select Icon Section -->
+            <LinearLayout
+                android:id="@+id/btn_select_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
+
+                <!-- Icon Button -->
+                <ImageButton
+                    android:id="@+id/img_icon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/bg_icon_button"
+                    android:scaleType="centerInside"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/select_icon"
+                    app:tint="?attr/android:textColorSecondary" />
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/tv_select_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/select_icon"
+                    android:textAppearance="@style/TextLabel"
+                    android:importantForAccessibility="no" />
+            </LinearLayout>
+
+            <!-- Wallet Name Label -->
+            <TextView
+                android:id="@+id/tv_wallet_name_label"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_wallet_name"
+                android:textAppearance="@style/TextLabel"
+                android:layout_marginTop="24dp" />
+
+            <!-- Wallet Name Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/wallet_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_wallet_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. Groceries, Savings"
+                    android:drawableStart="@drawable/ic_wallets"
+                    android:drawableTint="?attr/android:textColorSecondary"
+                    android:drawablePadding="8dp"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Wallet Balance Label -->
+            <TextView
+                android:id="@+id/tv_wallet_balance_label"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_wallet_amount"
+                android:textAppearance="@style/TextLabel"
+                android:layout_marginTop="24dp" />
+
+            <!-- Initial Balance Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/wallet_balance_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_initial_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. R1,250.00"
+                    android:drawableStart="@drawable/ic_wallets"
+                    android:drawableTint="?attr/android:textColorSecondary"
+                    android:drawablePadding="8dp"
+                    android:inputType="numberDecimal"
+                    android:importantForAccessibility="yes" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Confirm Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_confirm"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="32dp"
+                android:text="@string/confirm"
+                android:importantForAccessibility="yes" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

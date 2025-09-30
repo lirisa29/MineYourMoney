@@ -4,6 +4,7 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="bottom_navigation">Bottom Navigation</string>
+    <string name="confirm">Confirm</string>
 
     <!-- Startup Screen -->
     <string name="create_account">Create Account</string>
@@ -33,6 +34,19 @@
 
     <!-- Wallets Screen -->
     <string name="wallets_title">Wallets</string>
+    <string name="spending_overview">Spending Overview</string>
+    <string name="create_new_wallet">Create New Wallet</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="sort_wallets">Sort Wallets By</string>
+    <string name="sort_default">Default</string>
+    <string name="sort_latest">Balance: High-Low</string>
+    <string name="sort_earliest">Balance: Low-High</string>
+    <string name="wallet_icon">Wallet Icon</string>
+    <string name="enter_wallet_name">Enter Wallet Name</string>
+    <string name="enter_wallet_amount">Enter Initial Balance</string>
+
+    <string name="money_left">You have R1000 unallocated funds</string>
+    <string name="select_icon">Select Icon</string>
 
     <!-- Budgets Screen -->
     <string name="budgets_title">Budgets</string>

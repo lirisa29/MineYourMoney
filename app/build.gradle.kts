@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.gridlayout)
 
     // Unit test dependencies
     testImplementation(libs.junit) // Basic unit testing
