@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="?attr/android:colorForeground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,28 +17,43 @@
 
         <!-- Wallet Icon -->
         <ImageView
-            android:id="@+id/imageWalletIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/img_wallet_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_wallets"
-            android:contentDescription="Wallet Icon" />
+            android:contentDescription="@string/wallet_icon" />
 
-        <!-- Wallet Name -->
-        <TextView
-            android:id="@+id/textWalletName"
+        <!-- Wallet Name + Amount -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:text="Wallet Name"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_wallet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_name"
+                style="@style/TextLabel" />
+
+            <TextView
+                android:id="@+id/tv_wallet_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_amount"
+                style="@style/TextBody"
+                android:textColor="?attr/android:textColorSecondary" />
+        </LinearLayout>
 
         <!-- Clickable Indicator (Arrow) -->
         <ImageView
-            android:id="@+id/imageArrow"
+            android:id="@+id/img_arrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_right"
+            app:tint="?attr/android:textColorSecondary"
             android:contentDescription="Go to Wallet" />
     </LinearLayout>
 

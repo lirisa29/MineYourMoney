@@ -33,6 +33,16 @@
 
     <!-- Wallets Screen -->
     <string name="wallets_title">Wallets</string>
+    <string name="spending_overview">Spending Overview</string>
+    <string name="create_new_wallet">Create New Wallet</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="sort_wallets">Sort Wallets By</string>
+    <string name="sort_default">Default</string>
+    <string name="sort_latest">Date Added: Latest</string>
+    <string name="sort_earliest">Date Added: Earliest</string>
+    <string name="wallet_icon">Wallet Icon</string>
+    <string name="wallet_name">Wallet Name</string>
+    <string name="wallet_amount">R1,250.00</string>
 
     <!-- Budgets Screen -->
     <string name="budgets_title">Budgets</string>
