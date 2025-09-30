@@ -24,10 +24,35 @@ private val currentSort: SortType
     ): View {
         val view = inflater.inflate(R.layout.bottom_sheet_sort_options, container, false)
 
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val defaultBtn = view.findViewById<RadioButton>(R.id.btn_sort_default)
         val highBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_high)
         val lowBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_low)
 
-        return view
+        when (currentSort) {
+            SortType.DEFAULT -> defaultBtn.isChecked = true
+            SortType.BALANCE_HIGH -> highBalanceBtn.isChecked = true
+            SortType.BALANCE_LOW -> lowBalanceBtn.isChecked = true
+        }
+
+        defaultBtn.setOnClickListener {
+            onSortSelected(SortType.DEFAULT)
+            dismiss()
+        }
+
+        highBalanceBtn.setOnClickListener {
+            onSortSelected(SortType.BALANCE_HIGH)
+            dismiss()
+        }
+
+        lowBalanceBtn.setOnClickListener {
+            onSortSelected(SortType.BALANCE_LOW)
+            dismiss()
+        }
     }
 }
