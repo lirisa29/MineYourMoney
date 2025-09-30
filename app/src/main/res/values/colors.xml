@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Light Mode -->
-    <color name="background_light">#FFFFF0</color>
+    <color name="background_light">#F2F3F4</color>
     <color name="foreground_light">#FFFFFF</color>
     <color name="text_primary_light">#111827</color>
     <color name="text_secondary_light">#6B7280</color>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="?attr/android:colorBackground">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_sheet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_icon"
+        android:textAppearance="@style/TextHeading"
+        android:importantForAccessibility="yes" />
+
+    <!-- Icon Grid -->
+    <GridLayout
+        android:id="@+id/icon_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:columnCount="4"
+        android:rowCount="3"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="true">
+
+        <!-- Icon 1 -->
+        <ImageButton
+            android:id="@+id/img_icon1"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_icon_button"
+            android:contentDescription="Wallet"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_wallets"
+            android:tag="@drawable/ic_wallets"/>
+
+    </GridLayout>
+</LinearLayout>
