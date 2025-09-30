@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainCoordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground">
 
     <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
@@ -11,6 +12,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 

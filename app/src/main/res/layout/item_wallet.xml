@@ -35,14 +35,14 @@
                 android:id="@+id/tv_wallet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/wallet_name"
+                android:text="@string/enter_wallet_name"
                 style="@style/TextLabel" />
 
             <TextView
                 android:id="@+id/tv_wallet_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/wallet_amount"
+                android:text="@string/enter_wallet_amount"
                 style="@style/TextBody"
                 android:textColor="?attr/android:textColorSecondary" />
         </LinearLayout>

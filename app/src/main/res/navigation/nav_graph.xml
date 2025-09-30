@@ -5,10 +5,24 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/walletsFragment">
 
+    <!-- Main Screen: Wallets -->
     <fragment
         android:id="@+id/walletsFragment"
         android:name="com.iie.thethreeburnouts.mineyourmoney.WalletsFragment"
         android:label="Wallets"
-        tools:layout="@layout/fragment_wallets" />
+        tools:layout="@layout/fragment_wallets">
+
+        <!-- Navigation to Create Wallet Screen -->
+        <action
+            android:id="@+id/action_walletsFragment_to_createWalletFragment"
+            app:destination="@id/createWalletFragment" />
+    </fragment>
+
+    <!-- Create Wallet Fragment -->
+    <fragment
+        android:id="@+id/createWalletFragment"
+        android:name="com.iie.thethreeburnouts.mineyourmoney.CreateWalletFragment"
+        android:label="Create Wallet"
+        tools:layout="@layout/fragment_create_wallet" />
 
 </navigation>
