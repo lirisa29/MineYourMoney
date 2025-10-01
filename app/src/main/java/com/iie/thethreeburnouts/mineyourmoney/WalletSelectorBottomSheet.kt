@@ -4,11 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetWalletSelectorBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class WalletSelectorBottomSheet (private val onWalletSelected: (Wallet) -> Unit
+class WalletSelectorBottomSheet(
+    private val onWalletSelected: (Wallet) -> Unit
 ) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetWalletSelectorBinding? = null
@@ -21,14 +27,23 @@ class WalletSelectorBottomSheet (private val onWalletSelected: (Wallet) -> Unit
     ): View {
         _binding = BottomSheetWalletSelectorBinding.inflate(inflater, container, false)
 
-        val walletAdapter = WalletSelectorAdapter(WalletRepository.getWallets()) { selectedWallet ->
-            onWalletSelected(selectedWallet)
-            dismiss()
-        }
+        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
 
-        binding.walletRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = walletAdapter
+        // Fetch wallets in a coroutine
+        lifecycleScope.launch {
+            val wallets = withContext(Dispatchers.IO) {
+                walletDao.getAllWallets() // suspend function
+            }
+
+            val walletAdapter = WalletSelectorAdapter(wallets) { selectedWallet ->
+                onWalletSelected(selectedWallet)
+                dismiss()
+            }
+
+            binding.walletRecyclerView.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = walletAdapter
+            }
         }
 
         return binding.root
