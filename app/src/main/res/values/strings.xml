@@ -48,6 +48,16 @@
     <string name="money_left">You have R1000 unallocated funds</string>
     <string name="select_icon">Select Icon</string>
 
+    <string name="enter_amount">Enter Amount</string>
+    <string name="select_wallet">Select Wallet</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="select_date">Select Transaction Date</string>
+    <string name="repeat_icon">Repeat Icon</string>
+    <string name="select_recurrence">Select Recurrence</string>
+    <string name="photo_icon">Photo Icon</string>
+    <string name="upload_photo">Upload Photo (optional)</string>
+    <string name="add_note_optional">Add Note (optional)</string>
+
     <!-- Budgets Screen -->
     <string name="budgets_title">Budgets</string>
 
@@ -59,4 +69,5 @@
 
     <!-- Validation & Errors -->
     <string name="field_required">This field is required</string>
+    <string name="drag_handle">Drag Handle</string>
 </resources>
