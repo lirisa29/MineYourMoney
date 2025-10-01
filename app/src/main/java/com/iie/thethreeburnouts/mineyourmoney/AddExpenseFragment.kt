@@ -1,9 +1,14 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
 import java.util.Calendar
@@ -15,6 +20,8 @@ class AddExpenseFragment : Fragment() {
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
     private var selectedDate: Calendar = Calendar.getInstance()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +35,15 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.topAppBar.setOnClickListener {
-
+        val cameraProviderResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
+                var bitmap = it.data!!.extras?.get("data") as Bitmap
+                //binding.img.setImageBitmap(bitmap)
+            }
+        }
+        // ref the module manual for this
+        binding.topAppBar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
         }
 
         binding.btnWalletDropdown.setOnClickListener {
@@ -63,8 +77,10 @@ class AddExpenseFragment : Fragment() {
         }
 
         binding.btnUploadPhoto.setOnClickListener {
-            // To be implemented
+            var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraProviderResult.launch(intent)
         }
+        // ref the module manual for this
 
         binding.btnConfirm.setOnClickListener {
             // Handle saving the expense
