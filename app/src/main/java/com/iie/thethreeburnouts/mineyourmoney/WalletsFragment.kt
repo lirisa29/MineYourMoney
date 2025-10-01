@@ -107,7 +107,7 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
                 }
             }
 
-            if (filtered.isEmpty()) {
+            if (query.isNotBlank() && filtered.isEmpty()) {
                 Toast.makeText(context, "No wallets found", Toast.LENGTH_SHORT).show()
             }
             updateWallets(filtered)
