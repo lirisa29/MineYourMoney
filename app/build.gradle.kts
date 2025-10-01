@@ -55,8 +55,12 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.gridlayout)
 
-    implementation(libs.androidx.camera.view)
+    // added for camera functionality
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
     // Unit test dependencies
     testImplementation(libs.junit) // Basic unit testing
     testImplementation(libs.mockito) // Mocking data/repositories
