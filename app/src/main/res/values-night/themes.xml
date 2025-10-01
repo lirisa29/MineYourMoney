@@ -4,6 +4,7 @@
         <!-- Backgrounds -->
         <item name="android:colorBackground">@color/background_dark</item>
         <item name="android:colorForeground">@color/foreground_dark</item>
+        <item name="background">@color/background_dark</item>
 
         <!-- Text Colours -->
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
