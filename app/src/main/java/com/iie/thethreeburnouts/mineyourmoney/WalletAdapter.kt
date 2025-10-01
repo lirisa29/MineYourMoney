@@ -1,7 +1,5 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class WalletAdapter(private var wallets: List<Wallet>) :
+class WalletAdapter(private var wallets: List<Wallet>) : //change for error message
     RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
 
     // Keep a copy of the full list for filtering
@@ -43,13 +41,15 @@ class WalletAdapter(private var wallets: List<Wallet>) :
     }
 
     // Filter wallets by name and sort alphabetically
-    fun filter(query: String) {
-        val filteredList = if (query.isEmpty()) {
-            fullList.sortedBy { it.name.lowercase() } // Sort alphabetically
+    fun filter(query: String): List<Wallet>? {
+        return if (query.isEmpty()) {
+            // Query empty → restore current sort in fragment
+            null
         } else {
-            fullList.filter { it.name.contains(query, ignoreCase = true) }
-                .sortedBy { it.name.lowercase() } // Sort filtered results alphabetically
+            val filteredList = fullList.filter { it.name.contains(query, ignoreCase = true) }
+                .sortedBy { it.name.lowercase() }
+            filteredList
         }
-        updateList(filteredList)
     }
 }
+

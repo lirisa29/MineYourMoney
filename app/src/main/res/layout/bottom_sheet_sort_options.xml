@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="50dp"
-    android:background="?attr/android:colorBackground">
+    android:padding="50dp">
 
     <TextView
         android:id="@+id/tv_sort_heading"

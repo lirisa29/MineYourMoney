@@ -65,5 +65,14 @@
         <item name="android:contentDescription">@string/bottom_navigation</item>
         <item name="android:layout_gravity">bottom</item>
     </style>
+    <!-- Transparent Bottom Sheet Dialog -->
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!-- Replace with your desired color -->
+        <item name="android:background">@color/black</item>
+    </style>
 
 </resources>
