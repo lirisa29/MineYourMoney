@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="?attr/android:colorBackground">
+
+    <ImageView
+        android:id="@+id/img_drag_handle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_drag_handle"
+        android:contentDescription="@string/drag_handle"
+        app:tint="?attr/android:textColorSecondary"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_date_picker_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_date"
+        style="@style/TextHeading"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- DatePicker -->
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
+
+</LinearLayout>
