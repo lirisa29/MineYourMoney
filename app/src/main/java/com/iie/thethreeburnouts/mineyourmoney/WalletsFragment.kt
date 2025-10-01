@@ -5,9 +5,13 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WalletsFragment : Fragment(R.layout.fragment_wallets) {
 
@@ -19,22 +23,21 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize views
         recyclerView = view.findViewById(R.id.walletsRecyclerView)
         searchView = view.findViewById(R.id.search_view)
         val btnCreateWallet = view.findViewById<View>(R.id.btn_create_wallet)
         val btnSort = view.findViewById<View>(R.id.btn_sort)
         val btnAddExpense = view.findViewById<View>(R.id.fab_add_expense)
 
+        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
+
         btnAddExpense.setOnClickListener {
             findNavController().navigate(R.id.action_walletsFragment_to_addExpenseFragment)
         }
 
-        // Initialize adapter with full wallet list
-        walletAdapter = WalletAdapter(WalletRepository.getWallets()).also {
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = it
-        }
+        walletAdapter = WalletAdapter(emptyList())
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = walletAdapter
 
         // Navigate to create wallet fragment
         btnCreateWallet.setOnClickListener {
@@ -46,7 +49,7 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
             SortOptionsBottomSheet(
                 onSortSelected = { sortType ->
                     currentSort = sortType
-                    updateWallets(WalletRepository.getSortedWallets(sortType))
+                    loadWallets(walletDao) // reload wallets with new sort
                 },
                 currentSort = currentSort
             ).show(parentFragmentManager, "SortOptionsBottomSheet")
@@ -54,7 +57,7 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
 
         // Setup search view listener
         searchView.apply {
-            setIconified(true) // collapse on start
+            setIconified(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     handleSearch(query.orEmpty())
@@ -68,7 +71,6 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
             })
         }
 
-        // Clear focus when tapping outside
         view.setOnClickListener { searchView.clearFocus() }
 
         @Suppress("ClickableViewAccessibility")
@@ -81,18 +83,34 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
 
     override fun onResume() {
         super.onResume()
-        updateWallets(WalletRepository.getSortedWallets(currentSort))
+        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
+        loadWallets(walletDao)
+    }
+
+    private fun loadWallets(walletDao: WalletRepository) {
+        lifecycleScope.launch {
+            val wallets = withContext(Dispatchers.IO) {
+                walletDao.getSortedWallets(currentSort)
+            }
+            updateWallets(wallets)
+        }
     }
 
     private fun handleSearch(query: String) {
-        walletAdapter.filter(query)?.let { filtered ->
+        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
+        lifecycleScope.launch {
+            val filtered = withContext(Dispatchers.IO) {
+                if (query.isBlank()) {
+                    walletDao.getSortedWallets(currentSort)
+                } else {
+                    walletDao.getAllWallets().filter { it.name.contains(query, ignoreCase = true) }
+                }
+            }
+
             if (filtered.isEmpty()) {
                 Toast.makeText(context, "No wallets found", Toast.LENGTH_SHORT).show()
             }
             updateWallets(filtered)
-        } ?: run {
-            // Query empty → restore current sort
-            updateWallets(WalletRepository.getSortedWallets(currentSort))
         }
     }
 
