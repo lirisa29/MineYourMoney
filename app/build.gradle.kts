@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -60,6 +61,11 @@ dependencies {
     testImplementation(libs.junit) // Basic unit testing
     testImplementation(libs.mockito) // Mocking data/repositories
     testImplementation(libs.androidxTestRules) // LiveData testing
+
+    //Room Dependencies
+    implementation("androidx.room:room-runtime:2.8.1")   // Room runtime
+    implementation("androidx.room:room-ktx:2.8.1")       // Kotlin extensions
+    kapt("androidx.room:room-compiler:2.8.1")            // Annotation processor
 
     // Android instrumented test dependencies
     androidTestImplementation(libs.androidx.junit) // JUnit for instrumentation
