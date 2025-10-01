@@ -24,6 +24,11 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
         searchView = view.findViewById(R.id.search_view)
         val btnCreateWallet = view.findViewById<View>(R.id.btn_create_wallet)
         val btnSort = view.findViewById<View>(R.id.btn_sort)
+        val btnAddExpense = view.findViewById<View>(R.id.fab_add_expense)
+
+        btnAddExpense.setOnClickListener {
+            findNavController().navigate(R.id.action_walletsFragment_to_addExpenseFragment)
+        }
 
         // Initialize adapter with full wallet list
         walletAdapter = WalletAdapter(WalletRepository.getWallets()).also {
