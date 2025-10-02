@@ -15,6 +15,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.addTextChangedListener
 
 class AddExpenseFragment : Fragment() {
     private var _binding: FragmentAddExpenseBinding? = null
@@ -22,9 +23,9 @@ class AddExpenseFragment : Fragment() {
 
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
-    private var selectedDate: Calendar = Calendar.getInstance()
+    private var selectedDate: Calendar? = null
+    //private var selectedDatePicker = Calendar.getInstance()
     private val picId = 123
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +39,6 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ref the module manual for this
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -50,6 +50,7 @@ class AddExpenseFragment : Fragment() {
                     text = wallet.name
                     visibility = View.VISIBLE
                 }
+                binding.tvWallet.error = null
             }.show(childFragmentManager, "WalletSelector")
         }
 
@@ -60,16 +61,20 @@ class AddExpenseFragment : Fragment() {
                     text = recurrence
                     visibility = View.VISIBLE
                 }
+                binding.tvSelectRecurrence.error = null  // clear error once picked
             }.show(childFragmentManager, "RecurrenceSelector")
         }
 
         binding.btnDateDropdown.setOnClickListener {
-            DatePickerBottomSheet(selectedDate) { year, month, day ->
-                selectedDate.set(year, month, day)
+            DatePickerBottomSheet(Calendar.getInstance()) { year, month, day -> //issue is here
+                selectedDate = Calendar.getInstance().apply {
+                    set(year, month, day)
+                }
                 binding.tvSelectedDate.apply {
                     text = "$day/${month + 1}/$year"
                     visibility = View.VISIBLE
                 }
+                binding.tvSelectDate.error = null // clear error once picked
             }.show(childFragmentManager, "DatePicker")
         }
 
@@ -85,14 +90,37 @@ class AddExpenseFragment : Fragment() {
             }
         }
 
-        // ref the module manual for this
-
-        binding.btnConfirm.setOnClickListener {
-            // Handle saving the expense
-            val amount = binding.etExpenseAmount.text.toString()
-            val note = binding.etInputNote.text.toString()
+        // clears error once user types amount
+        binding.etExpenseAmount.addTextChangedListener { editable ->
+            if (!editable.isNullOrBlank()) {
+                binding.expenseAmountLayout.error = null
+                binding.expenseAmountLayout.isErrorEnabled = false
+            }
         }
 
+        binding.btnConfirm.setOnClickListener {
+            val amount = binding.etExpenseAmount.text.toString()
+            val note = binding.etInputNote.text.toString()
+
+            if (amount.isBlank()) {
+                binding.expenseAmountLayout.error = "Please enter an amount"
+                return@setOnClickListener
+            }
+            if (selectedWallet == null) {
+                binding.tvWallet.error = "Please select a wallet"
+                return@setOnClickListener
+            }
+            if (selectedDate == null) {
+            binding.tvSelectDate.error = "Please select a date"
+            return@setOnClickListener
+            }
+            if (selectedRecurrence == null) {
+                binding.tvSelectRecurrence.error = "Please select recurrence"
+                return@setOnClickListener
+            }
+            // Save expense (not implemented yet)
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onDestroyView() {
@@ -100,12 +128,11 @@ class AddExpenseFragment : Fragment() {
         _binding = null
     }
 
-    private fun openCamera(){
+    private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, picId)
     }
 
-    // Request CAMERA permission
     private fun requestCameraPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
@@ -114,7 +141,6 @@ class AddExpenseFragment : Fragment() {
         )
     }
 
-    // Handle the permission request result
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -123,13 +149,9 @@ class AddExpenseFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == picId && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             openCamera()
-        } else {
-            // Permission denied - Inform the user
-            //binding.imgSavedPhoto.setImageResource(R.drawable.ic_launcher_foreground)
         }
     }
 
-    // Handle the captured image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == picId && resultCode == Activity.RESULT_OK) {
