@@ -1,17 +1,20 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
 import java.util.Calendar
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.provider.MediaStore
+import androidx.core.app.ActivityCompat
 
 class AddExpenseFragment : Fragment() {
     private var _binding: FragmentAddExpenseBinding? = null
@@ -20,7 +23,7 @@ class AddExpenseFragment : Fragment() {
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
     private var selectedDate: Calendar = Calendar.getInstance()
-
+    private val picId = 123
 
 
     override fun onCreateView(
@@ -35,12 +38,6 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cameraProviderResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
-                var bitmap = it.data!!.extras?.get("data") as Bitmap
-                //binding.img.setImageBitmap(bitmap)
-            }
-        }
         // ref the module manual for this
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
@@ -77,9 +74,17 @@ class AddExpenseFragment : Fragment() {
         }
 
         binding.btnUploadPhoto.setOnClickListener {
-            var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            cameraProviderResult.launch(intent)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openCamera()
+            } else {
+                requestCameraPermission()
+            }
         }
+
         // ref the module manual for this
 
         binding.btnConfirm.setOnClickListener {
@@ -87,10 +92,51 @@ class AddExpenseFragment : Fragment() {
             val amount = binding.etExpenseAmount.text.toString()
             val note = binding.etInputNote.text.toString()
         }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun openCamera(){
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, picId)
+    }
+
+    // Request CAMERA permission
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.CAMERA),
+            picId
+        )
+    }
+
+    // Handle the permission request result
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == picId && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openCamera()
+        } else {
+            // Permission denied - Inform the user
+            //binding.imgSavedPhoto.setImageResource(R.drawable.ic_launcher_foreground)
+        }
+    }
+
+    // Handle the captured image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == picId && resultCode == Activity.RESULT_OK) {
+            val photo = data?.extras?.get("data") as Bitmap?
+            photo?.let {
+                //binding.imgSavedPhoto.setImageBitmap(it)
+            }
+        }
     }
 }

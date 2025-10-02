@@ -1,19 +1,25 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-object WalletRepository {
-    private val wallets = mutableListOf<Wallet>()
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-    fun addWallet(wallet: Wallet) {
-        wallets.add(wallet)
-    }
+@Dao
+interface WalletRepository {
 
-    fun getWallets(): List<Wallet> = wallets
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addWallet(wallet: Wallet)
 
-    fun walletExists(name: String): Boolean {
-        return wallets.any { it.name.equals(name, ignoreCase = true) }
-    }
+    @Query("SELECT * FROM wallets")
+    suspend fun getAllWallets(): List<Wallet>
 
-    fun getSortedWallets(sortType: SortType): List<Wallet> {
+    @Query("SELECT EXISTS(SELECT 1 FROM wallets WHERE LOWER(name) = LOWER(:name))")
+    suspend fun walletExists(name: String): Boolean
+
+    // This will fetch all wallets, then sort in Kotlin
+    suspend fun getSortedWallets(sortType: SortType): List<Wallet> {
+        val wallets = getAllWallets()
         return when (sortType) {
             SortType.DEFAULT -> wallets.sortedBy { it.name.lowercase() }
             SortType.BALANCE_HIGH -> wallets.sortedByDescending { it.balance }
