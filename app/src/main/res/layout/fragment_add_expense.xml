@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground">
 
     <!-- Top App Bar -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -37,8 +38,8 @@
 
                 <ImageView
                     android:id="@+id/img_wallet_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginStart="25dp"
                     android:contentDescription="@string/wallet_icon"
                     android:background="@drawable/bg_icon_button" />
@@ -53,7 +54,8 @@
                         android:id="@+id/tv_expense_amount_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="180dp"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginBottom="10dp"
                         android:text="@string/enter_amount"
                         style="@style/TextBody" />
 
@@ -62,7 +64,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="180dp">
+                        android:layout_marginStart="150dp"
+                        app:boxBackgroundColor="?attr/android:colorForeground">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_expense_amount"
@@ -294,7 +297,7 @@
                 android:id="@+id/tv_add_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/add_note_optional"
                 style="@style/TextBody" />
 
@@ -303,7 +306,8 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="24dp"
+                app:boxBackgroundColor="?attr/android:colorForeground">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_input_note"

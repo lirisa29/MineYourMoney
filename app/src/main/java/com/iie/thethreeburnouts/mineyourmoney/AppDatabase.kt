@@ -3,12 +3,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.iie.thethreeburnouts.mineyourmoney.Wallet
-import com.iie.thethreeburnouts.mineyourmoney.WalletRepository
+import com.iie.thethreeburnouts.mineyourmoney.WalletDao
 
 @Database(entities = [User::class, Wallet::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
-    abstract fun walletRepository(): WalletRepository
+    abstract fun walletDao(): WalletDao
 
     companion object {
         @Volatile

@@ -7,10 +7,9 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetSortOptionsBinding
 
 enum class SortType {
     DEFAULT,       // A-Z
@@ -22,40 +21,39 @@ class SortOptionsBottomSheet (private val onSortSelected: (SortType) -> Unit,
 private val currentSort: SortType
 ) : BottomSheetDialogFragment() {
 
+    private var _binding: BottomSheetSortOptionsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.bottom_sheet_sort_options, container, false)
-
-        return view
+        _binding = BottomSheetSortOptionsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val defaultBtn = view.findViewById<RadioButton>(R.id.btn_sort_default)
-        val highBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_high)
-        val lowBalanceBtn = view.findViewById<RadioButton>(R.id.btn_sort_balance_low)
-
+        // Set the correct radio button based on currentSort
         when (currentSort) {
-            SortType.DEFAULT -> defaultBtn.isChecked = true
-            SortType.BALANCE_HIGH -> highBalanceBtn.isChecked = true
-            SortType.BALANCE_LOW -> lowBalanceBtn.isChecked = true
+            SortType.DEFAULT -> binding.btnSortDefault.isChecked = true
+            SortType.BALANCE_HIGH -> binding.btnSortBalanceHigh.isChecked = true
+            SortType.BALANCE_LOW -> binding.btnSortBalanceLow.isChecked = true
         }
 
-        defaultBtn.setOnClickListener {
+        // Set click listeners for each radio button
+        binding.btnSortDefault.setOnClickListener {
             onSortSelected(SortType.DEFAULT)
             dismiss()
         }
 
-        highBalanceBtn.setOnClickListener {
+        binding.btnSortBalanceHigh.setOnClickListener {
             onSortSelected(SortType.BALANCE_HIGH)
             dismiss()
         }
 
-        lowBalanceBtn.setOnClickListener {
+        binding.btnSortBalanceLow.setOnClickListener {
             onSortSelected(SortType.BALANCE_LOW)
             dismiss()
         }
@@ -63,6 +61,7 @@ private val currentSort: SortType
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
+
         dialog.setOnShowListener {
             val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             val typedValue = TypedValue()
@@ -72,6 +71,15 @@ private val currentSort: SortType
             bottomSheet?.setBackgroundColor(backgroundColor)
             dialog.window?.navigationBarColor = backgroundColor
         }
+
+        // Add slide up/down animations
+        dialog.window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
+
         return dialog
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

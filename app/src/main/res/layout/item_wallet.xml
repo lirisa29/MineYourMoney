@@ -54,7 +54,7 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_right"
             app:tint="?attr/android:textColorSecondary"
-            android:contentDescription="Go to Wallet" />
+            android:contentDescription="@string/go_to_wallet" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

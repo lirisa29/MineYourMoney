@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/createWalletRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground">
 
     <!-- Top App Bar -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -34,24 +35,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_left"
-                android:textAppearance="@style/TextLabel"
+                android:textAppearance="@style/TextBody"
                 android:importantForAccessibility="yes" />
 
             <!-- Select Icon Section -->
             <LinearLayout
-                android:id="@+id/btn_select_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless">
+                android:gravity="center_horizontal">
 
                 <!-- Icon Button -->
                 <ImageButton
-                    android:id="@+id/img_icon"
+                    android:id="@+id/btn_select_icon"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:background="@drawable/bg_icon_button"
@@ -68,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/select_icon"
-                    android:textAppearance="@style/TextLabel"
+                    android:textAppearance="@style/TextBody"
                     android:importantForAccessibility="no" />
             </LinearLayout>
 
@@ -78,25 +75,28 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/enter_wallet_name"
-                android:textAppearance="@style/TextLabel"
-                android:layout_marginTop="24dp" />
+                android:textAppearance="@style/TextBody"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"/>
 
             <!-- Wallet Name Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wallet_name_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/android:colorForeground" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_wallet_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="e.g. Groceries, Savings"
+                    android:hint="@string/wallet_name_hint"
                     android:drawableStart="@drawable/ic_wallets"
                     android:drawableTint="?attr/android:textColorSecondary"
                     android:drawablePadding="8dp"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"
+                    android:textAppearance="@style/TextBody"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Wallet Balance Label -->
@@ -105,26 +105,29 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/enter_wallet_amount"
-                android:textAppearance="@style/TextLabel"
-                android:layout_marginTop="24dp" />
+                android:textAppearance="@style/TextBody"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"/>
 
             <!-- Initial Balance Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wallet_balance_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="?attr/android:colorForeground">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_initial_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="e.g. R1,250.00"
+                    android:hint="@string/initial_balance_hint"
                     android:drawableStart="@drawable/ic_wallets"
                     android:drawableTint="?attr/android:textColorSecondary"
                     android:drawablePadding="8dp"
                     android:inputType="numberDecimal"
-                    android:importantForAccessibility="yes" />
+                    android:importantForAccessibility="yes"
+                    android:textAppearance="@style/TextBody"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Confirm Button -->
