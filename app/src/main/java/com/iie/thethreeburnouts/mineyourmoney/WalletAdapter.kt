@@ -1,35 +1,30 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.iie.thethreeburnouts.mineyourmoney.databinding.ItemWalletBinding
 
-class WalletAdapter(private var wallets: List<Wallet>) : //change for error message
+class WalletAdapter(private var wallets: List<Wallet>) :
     RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
 
-    // Keep a copy of the full list for filtering
-    private val fullList: List<Wallet> = ArrayList(wallets)
-
-    inner class WalletViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon: ImageView = itemView.findViewById(R.id.img_wallet_icon)
-        val name: TextView = itemView.findViewById(R.id.tv_wallet_name)
-        val amount: TextView = itemView.findViewById(R.id.tv_wallet_amount)
+    inner class WalletViewHolder(private val binding: ItemWalletBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(wallet: Wallet) {
+            binding.imgWalletIcon.setImageResource(wallet.iconResId)
+            binding.tvWalletName.text = wallet.name
+            binding.tvWalletAmount.text = "R${String.format("%,.2f", wallet.balance)}"
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_wallet, parent, false)
-        return WalletViewHolder(view)
+        // Inflate the view using View Binding
+        val binding = ItemWalletBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return WalletViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
         val wallet = wallets[position]
-        holder.icon.setImageResource(wallet.iconResId)
-        holder.name.text = wallet.name
-        holder.amount.text = "R${String.format("%,.2f", wallet.balance)}"
+        holder.bind(wallet)
     }
 
     override fun getItemCount(): Int = wallets.size
@@ -38,18 +33,6 @@ class WalletAdapter(private var wallets: List<Wallet>) : //change for error mess
     fun updateList(newWallets: List<Wallet>) {
         wallets = newWallets
         notifyDataSetChanged()
-    }
-
-    // Filter wallets by name and sort alphabetically
-    fun filter(query: String): List<Wallet>? {
-        return if (query.isEmpty()) {
-            // Query empty → restore current sort in fragment
-            null
-        } else {
-            val filteredList = fullList.filter { it.name.contains(query, ignoreCase = true) }
-                .sortedBy { it.name.lowercase() }
-            filteredList
-        }
     }
 }
 

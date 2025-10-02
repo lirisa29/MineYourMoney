@@ -1,64 +1,98 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.SearchView
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentWalletsBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class WalletsFragment : Fragment(R.layout.fragment_wallets) {
+class WalletsFragment : Fragment() {
 
-    private var currentSort: SortType = SortType.DEFAULT
+    private var _binding: FragmentWalletsBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var walletAdapter: WalletAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: SearchView
+    private val walletsViewModel: WalletsViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWalletsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.walletsRecyclerView)
-        searchView = view.findViewById(R.id.search_view)
-        val btnCreateWallet = view.findViewById<View>(R.id.btn_create_wallet)
-        val btnSort = view.findViewById<View>(R.id.btn_sort)
-        val btnAddExpense = view.findViewById<View>(R.id.fab_add_expense)
-
-        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
-
-        btnAddExpense.setOnClickListener {
-            findNavController().navigate(R.id.action_walletsFragment_to_addExpenseFragment)
-        }
-
+        // Setup RecyclerView
         walletAdapter = WalletAdapter(emptyList())
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = walletAdapter
-
-        // Navigate to create wallet fragment
-        btnCreateWallet.setOnClickListener {
-            findNavController().navigate(R.id.action_walletsFragment_to_createWalletFragment)
+        binding.walletsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = walletAdapter
         }
 
-        // Show sort options bottom sheet
-        btnSort.setOnClickListener {
+        // Observe wallet list from ViewModel (already sorted)
+        walletsViewModel.wallets.observe(viewLifecycleOwner) { wallets ->
+            walletAdapter.updateList(wallets)
+        }
+
+        // Navigate to add expense screen
+        binding.fabAddExpense.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right
+                )
+                .add(android.R.id.content, AddExpenseFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // Navigate to create wallet screen
+        binding.btnCreateWallet.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right
+                )
+                .add(android.R.id.content, CreateWalletFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // Show sort options
+        binding.btnSort.setOnClickListener {
             SortOptionsBottomSheet(
                 onSortSelected = { sortType ->
-                    currentSort = sortType
-                    loadWallets(walletDao) // reload wallets with new sort
+                    walletsViewModel.setSort(sortType) // Update ViewModel
                 },
-                currentSort = currentSort
+                currentSort = walletsViewModel.getCurrentSort() // expose getter in VM
             ).show(parentFragmentManager, "SortOptionsBottomSheet")
         }
 
-        // Setup search view listener
-        searchView.apply {
-            setIconified(true)
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        // Search logic
+        binding.searchView.apply {
+            setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     handleSearch(query.orEmpty())
                     return true
@@ -71,50 +105,35 @@ class WalletsFragment : Fragment(R.layout.fragment_wallets) {
             })
         }
 
-        view.setOnClickListener { searchView.clearFocus() }
+        // Clear focus on background tap
+        binding.root.setOnClickListener {
+            binding.searchView.clearFocus()
+        }
 
         @Suppress("ClickableViewAccessibility")
-        recyclerView.setOnTouchListener { v, _ ->
-            searchView.clearFocus()
+        binding.walletsRecyclerView.setOnTouchListener { v, _ ->
+            binding.searchView.clearFocus()
             v.performClick()
             false
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
-        loadWallets(walletDao)
-    }
-
-    private fun loadWallets(walletDao: WalletRepository) {
-        lifecycleScope.launch {
-            val wallets = withContext(Dispatchers.IO) {
-                walletDao.getSortedWallets(currentSort)
-            }
-            updateWallets(wallets)
-        }
-    }
-
     private fun handleSearch(query: String) {
-        val walletDao = AppDatabase.getInstance(requireContext()).walletRepository()
-        lifecycleScope.launch {
-            val filtered = withContext(Dispatchers.IO) {
-                if (query.isBlank()) {
-                    walletDao.getSortedWallets(currentSort)
-                } else {
-                    walletDao.getAllWallets().filter { it.name.contains(query, ignoreCase = true) }
-                }
-            }
-
-            if (query.isNotBlank() && filtered.isEmpty()) {
-                Toast.makeText(context, "No wallets found", Toast.LENGTH_SHORT).show()
-            }
-            updateWallets(filtered)
+        val allWallets = walletsViewModel.wallets.value.orEmpty()
+        val filtered = if (query.isBlank()) {
+            allWallets
+        } else {
+            allWallets.filter { it.name.contains(query, ignoreCase = true) }
         }
+
+        if (query.isNotBlank() && filtered.isEmpty()) {
+            Toast.makeText(context, "No wallets found", Toast.LENGTH_SHORT).show()
+        }
+        walletAdapter.updateList(filtered)
     }
 
-    private fun updateWallets(list: List<Wallet>) {
-        walletAdapter.updateList(list)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

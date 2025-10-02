@@ -1,127 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/authFormRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:colorBackground"
-    android:id="@+id/authFormRoot">
+    android:fitsSystemWindows="true">
 
     <!-- Top App Bar using style -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/top_app_bar"
         style="@style/TopAppBarStyle"
+        android:contentDescription="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="?attr/android:textColorSecondary"
-        android:contentDescription="@string/back" />
+        app:navigationIconTint="?attr/android:textColorSecondary" />
 
     <!-- Main Form Content -->
-    <LinearLayout
-        android:id="@+id/form_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center"
-        android:layout_marginTop="?attr/actionBarSize">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/form_scroll_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
-        <!-- Username Label -->
-        <TextView
-            android:id="@+id/tv_username_label"
-            style="@style/TextBody"
-            android:text="@string/enter_username"
-            android:layout_width="300dp"
+        <LinearLayout
+            android:id="@+id/form_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <!-- Username Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/username_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_input_username"
-                android:layout_width="match_parent"
+            <!-- Username Label -->
+            <TextView
+                android:id="@+id/tv_username_label"
+                style="@style/TextBody"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/username_hint_example"
-                android:drawableStart="@drawable/ic_person"
-                android:drawableTint="?attr/android:textColorSecondary"
-                android:drawablePadding="8dp"
-                android:inputType="textPersonName"
-                android:importantForAccessibility="yes"
-                style="@style/TextLabel" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="10dp"
+                android:text="@string/enter_username" />
 
-        <!-- Password Label -->
-        <TextView
-            android:id="@+id/tv_password_label"
-            style="@style/TextBody"
-            android:text="@string/enter_password"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp" />
-
-        <!-- Password Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="?attr/android:textColorSecondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_input_password"
-                android:layout_width="match_parent"
+            <!-- Username Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/username_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/password_hint_example"
-                android:inputType="textPassword"
-                android:importantForAccessibility="yes"
-                style="@style/TextLabel" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="16dp"
+                app:hintTextAppearance="@style/TextLabel"
+                app:helperTextTextAppearance="@style/TextLabel"
+                app:errorTextAppearance="@style/TextLabel"
+                app:boxBackgroundColor="?attr/android:colorForeground">
 
-        <!-- Confirm Password Label -->
-        <TextView
-            android:id="@+id/tv_confirm_password_label"
-            style="@style/TextBody"
-            android:text="@string/confirm_password"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:visibility="visible" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_input_username"
+                    android:textAppearance="@style/TextBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="?attr/android:textColorSecondary"
+                    android:hint="@string/username_hint_example"
+                    android:importantForAccessibility="yes"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirm Password (Only for Sign Up) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirm_password_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="?attr/android:textColorSecondary"
-            android:visibility="visible">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_input_confirm_password"
-                android:layout_width="match_parent"
+            <!-- Password Label -->
+            <TextView
+                android:id="@+id/tv_password_label"
+                style="@style/TextBody"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/confirm_password_hint_example"
-                android:inputType="textPassword"
-                android:importantForAccessibility="yes"
-                style="@style/TextLabel" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="10dp"
+                android:text="@string/enter_password" />
 
-        <!-- Next Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_next"
-            style="@style/PrimaryButton"
-            android:text="@string/next"
-            android:contentDescription="@string/next"
-            android:layout_marginTop="10dp"
-            android:minHeight="48dp" />
-    </LinearLayout>
+            <!-- Password Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/android:textColorSecondary"
+                app:boxBackgroundColor="?attr/android:colorForeground">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_input_password"
+                    android:textAppearance="@style/TextBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_hint_example"
+                    android:importantForAccessibility="yes"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="20dp"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Confirm Password Label -->
+            <TextView
+                android:id="@+id/tv_confirm_password_label"
+                style="@style/TextBody"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/confirm_password"
+                android:visibility="visible" />
+
+            <!-- Confirm Password (Only for Sign Up) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/confirm_password_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/android:textColorSecondary"
+                app:boxBackgroundColor="?attr/android:colorForeground"
+                android:visibility="visible">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_input_confirm_password"
+                    android:textAppearance="@style/TextBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/confirm_password_hint_example"
+                    android:importantForAccessibility="yes"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="20dp"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Next Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_next"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/next"
+                android:minHeight="48dp"
+                android:text="@string/next" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

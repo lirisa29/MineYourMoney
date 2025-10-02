@@ -11,28 +11,6 @@
         android:name="com.iie.thethreeburnouts.mineyourmoney.WalletsFragment"
         android:label="Wallets"
         tools:layout="@layout/fragment_wallets">
-
-        <!-- Navigation to Create Wallet Screen -->
-        <action
-            android:id="@+id/action_walletsFragment_to_createWalletFragment"
-            app:destination="@id/createWalletFragment" />
-        <!-- Navigation to Create Wallet Screen -->
-        <action
-            android:id="@+id/action_walletsFragment_to_addExpenseFragment"
-            app:destination="@id/addExpenseFragment" />
     </fragment>
-
-    <!-- Create Wallet Fragment -->
-    <fragment
-        android:id="@+id/createWalletFragment"
-        android:name="com.iie.thethreeburnouts.mineyourmoney.CreateWalletFragment"
-        android:label="Create Wallet"
-        tools:layout="@layout/fragment_create_wallet" />
-    <!-- Add Expense Fragment -->
-    <fragment
-        android:id="@+id/addExpenseFragment"
-        android:name="com.iie.thethreeburnouts.mineyourmoney.AddExpenseFragment"
-        android:label="Add Expense"
-        tools:layout="@layout/fragment_add_expense" />
 
 </navigation>

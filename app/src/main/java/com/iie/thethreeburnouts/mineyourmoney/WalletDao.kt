@@ -1,15 +1,19 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface WalletRepository {
+interface WalletDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWallet(wallet: Wallet)
+
+    @Query("SELECT * FROM wallets ORDER BY id ASC")
+    fun getAllWalletsLive(): LiveData<List<Wallet>>
 
     @Query("SELECT * FROM wallets")
     suspend fun getAllWallets(): List<Wallet>
@@ -26,4 +30,7 @@ interface WalletRepository {
             SortType.BALANCE_LOW -> wallets.sortedBy { it.balance }
         }
     }
+
+    @Query("DELETE FROM wallets")
+    suspend fun clearAll()
 }
