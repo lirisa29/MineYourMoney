@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.8.1")   // Room runtime
     implementation("androidx.room:room-ktx:2.8.1")       // Kotlin extensions
     kapt("androidx.room:room-compiler:2.8.1")            // Annotation processor
+    implementation("at.favre.lib:bcrypt:0.9.0")
 
     // Android instrumented test dependencies
     androidTestImplementation(libs.androidx.junit) // JUnit for instrumentation
