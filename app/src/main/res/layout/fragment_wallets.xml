@@ -60,8 +60,6 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <!-- Content Area -->
-
-    <!-- Floating Action Button -->
     <LinearLayout
         android:id="@+id/walletsContent"
         android:layout_width="match_parent"
