@@ -1,30 +1,31 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
-import java.util.Calendar
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
+import java.util.Calendar
 
 class AddExpenseFragment : Fragment() {
+
     private var _binding: FragmentAddExpenseBinding? = null
     private val binding get() = _binding!!
 
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
     private var selectedDate: Calendar? = null
-    //private var selectedDatePicker = Calendar.getInstance()
+    private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
 
     override fun onCreateView(
@@ -43,6 +44,7 @@ class AddExpenseFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        // Wallet selection
         binding.btnWalletDropdown.setOnClickListener {
             WalletSelectorBottomSheet { wallet ->
                 selectedWallet = wallet
@@ -54,6 +56,7 @@ class AddExpenseFragment : Fragment() {
             }.show(childFragmentManager, "WalletSelector")
         }
 
+        // Recurrence selection
         binding.btnRecurrenceDropdown.setOnClickListener {
             RecurrenceSelectorBottomSheet { recurrence ->
                 selectedRecurrence = recurrence
@@ -61,23 +64,16 @@ class AddExpenseFragment : Fragment() {
                     text = recurrence
                     visibility = View.VISIBLE
                 }
-                binding.tvSelectRecurrence.error = null  // clear error once picked
+                binding.tvSelectRecurrence.error = null
             }.show(childFragmentManager, "RecurrenceSelector")
         }
 
+        // Date selection
         binding.btnDateDropdown.setOnClickListener {
-            DatePickerBottomSheet(Calendar.getInstance()) { year, month, day -> //issue is here
-                selectedDate = Calendar.getInstance().apply {
-                    set(year, month, day)
-                }
-                binding.tvSelectedDate.apply {
-                    text = "$day/${month + 1}/$year"
-                    visibility = View.VISIBLE
-                }
-                binding.tvSelectDate.error = null // clear error once picked
-            }.show(childFragmentManager, "DatePicker")
+            openDatePicker()
         }
 
+        // Camera photo upload
         binding.btnUploadPhoto.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
@@ -90,7 +86,7 @@ class AddExpenseFragment : Fragment() {
             }
         }
 
-        // clears error once user types amount
+        // Clear error when typing amount
         binding.etExpenseAmount.addTextChangedListener { editable ->
             if (!editable.isNullOrBlank()) {
                 binding.expenseAmountLayout.error = null
@@ -98,6 +94,7 @@ class AddExpenseFragment : Fragment() {
             }
         }
 
+        // Confirm button
         binding.btnConfirm.setOnClickListener {
             val amount = binding.etExpenseAmount.text.toString()
             val note = binding.etInputNote.text.toString()
@@ -111,8 +108,8 @@ class AddExpenseFragment : Fragment() {
                 return@setOnClickListener
             }
             if (selectedDate == null) {
-            binding.tvSelectDate.error = "Please select a date"
-            return@setOnClickListener
+                binding.tvSelectDate.error = "Please select a date"
+                return@setOnClickListener
             }
             if (selectedRecurrence == null) {
                 binding.tvSelectRecurrence.error = "Please select recurrence"
@@ -123,11 +120,20 @@ class AddExpenseFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    // Open DatePickerBottomSheet and store last selected date
+    private fun openDatePicker() {
+        DatePickerBottomSheet(initialDate = selectedDatePicker) { year, month, day ->
+            selectedDatePicker.set(year, month, day)
+            binding.tvSelectedDate.apply {
+                text = "$day/${month + 1}/$year"
+                visibility = View.VISIBLE
+            }
+            selectedDate = selectedDatePicker
+            binding.tvSelectDate.error = null
+        }.show(parentFragmentManager, "datePicker")
     }
 
+    // Camera helper functions
     private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, picId)
@@ -157,8 +163,13 @@ class AddExpenseFragment : Fragment() {
         if (requestCode == picId && resultCode == Activity.RESULT_OK) {
             val photo = data?.extras?.get("data") as Bitmap?
             photo?.let {
-                //binding.imgSavedPhoto.setImageBitmap(it)
+                // binding.imgSavedPhoto.setImageBitmap(it)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
