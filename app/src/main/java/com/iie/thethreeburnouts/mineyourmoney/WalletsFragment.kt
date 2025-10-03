@@ -42,6 +42,22 @@ class WalletsFragment : Fragment() {
             walletAdapter.updateList(wallets)
         }
 
+        // Navigate to spending overview screen
+        binding.btnSpendingOverview.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_right
+                )
+                .add(android.R.id.content, SpendingOverviewFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Navigate to add expense screen
         binding.fabAddExpense.setOnClickListener {
             requireActivity()
