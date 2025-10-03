@@ -5,6 +5,7 @@
     <string name="next">Next</string>
     <string name="bottom_navigation">Bottom Navigation</string>
     <string name="confirm">Confirm</string>
+    <string name="drag_handle">Drag Handle</string>
 
     <!-- Startup Screen -->
     <string name="create_account">Create Account</string>
@@ -18,16 +19,9 @@
     <string name="password_hint_example">e.g. ********</string>
     <string name="confirm_password">Confirm password</string>
     <string name="confirm_password_hint_example">Re-enter your password</string>
-    <string name="signup_successful">Account created successfully</string>
-    <string name="signup_failed">Sign up failed. Please try again.</string>
-    <string name="passwords_do_not_match">Passwords do not match</string>
-    <string name="username_taken">This username is already taken</string>
 
     <!-- Login Screen -->
     <string name="login_title">Login</string>
-    <string name="login_successful">Login successful</string>
-    <string name="login_failed">Login failed. Please check your username and password.</string>
-    <string name="user_not_found">User not found</string>
 
     <!-- Dashboard Screen -->
     <string name="dashboard_title">Dashboard</string>
@@ -66,8 +60,14 @@
 
     <!-- More Screen -->
     <string name="more_title">More</string>
+    <string name="wallet_name_hint">e.g. Groceries, Savings</string>
+    <string name="initial_balance_hint">e.g. R1,250.00</string>
+    <string name="go_to_wallet">Go to Wallet</string>
+    <string name="filter_expense_history">Filter expense history</string>
+    <string name="total_spending">Total Spending</string>
+    <string name="total_spending_per_wallet">Total Spending per Wallet</string>
+    <string name="filter_wallets">Filter Wallets</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="view_expense_details">View Expense Details</string>
 
-    <!-- Validation & Errors -->
-    <string name="field_required">This field is required</string>
-    <string name="drag_handle">Drag Handle</string>
 </resources>

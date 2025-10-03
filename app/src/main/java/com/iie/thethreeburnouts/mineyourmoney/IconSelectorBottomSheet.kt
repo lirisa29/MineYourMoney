@@ -7,26 +7,30 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.ImageButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding
 
 
 class IconSelectorBottomSheet(
     private val onIconSelected: (iconResId: Int) -> Unit
 ) : BottomSheetDialogFragment() {
 
+    private var _binding: BottomSheetIconSelectorBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.bottom_sheet_icon_selector, container, false)
-        val iconGrid = view.findViewById<GridLayout>(R.id.icon_grid)
+        _binding = BottomSheetIconSelectorBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Map each button ID to its drawable resource
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val icons = listOf(
             R.id.img_icon1 to R.drawable.ic_wallets
             // Add more icons here like:
@@ -35,7 +39,7 @@ class IconSelectorBottomSheet(
         )
 
         for ((btnId, drawableRes) in icons) {
-            val btn = view.findViewById<ImageButton>(btnId)
+            val btn = binding.root.findViewById<ImageButton>(btnId)
             btn.tag = drawableRes
             btn.setOnClickListener {
                 val iconResId = it.tag as Int
@@ -43,11 +47,11 @@ class IconSelectorBottomSheet(
                 dismiss()
             }
         }
-
-        return view
     }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
+
         dialog.setOnShowListener {
             val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             val typedValue = TypedValue()
@@ -57,6 +61,15 @@ class IconSelectorBottomSheet(
             bottomSheet?.setBackgroundColor(backgroundColor)
             dialog.window?.navigationBarColor = backgroundColor
         }
+
+        // Apply slide-up and slide-down animations
+        dialog.window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
+
         return dialog
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

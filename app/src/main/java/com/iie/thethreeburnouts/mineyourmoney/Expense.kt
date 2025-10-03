@@ -1,14 +1,15 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-import android.net.Uri
-import java.util.Calendar
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
+@Entity(tableName = "expenses")
 data class Expense(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val amount: Double,
     val note: String?,
-    val wallet: Wallet,
+    val walletId: Int,
     val recurrence: String?,
-    val date: Calendar,
-    val photoUri: Uri? = null
+    val date: Long,
+    val photoPath: String? = null
 )
