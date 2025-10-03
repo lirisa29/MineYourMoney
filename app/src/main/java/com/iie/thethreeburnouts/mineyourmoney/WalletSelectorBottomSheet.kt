@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetWalletSelectorBinding
@@ -17,11 +18,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WalletSelectorBottomSheet(
-    private val onWalletSelected: (Wallet) -> Unit
+    private val onWalletSelected: (Wallet) -> Unit,
+    private val preselectedWalletId: Int? = null
 ) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetWalletSelectorBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,8 +40,13 @@ class WalletSelectorBottomSheet(
             val wallets = withContext(Dispatchers.IO) {
                 walletDao.getAllWallets() // suspend function
             }
+            val preselectedPosition = preselectedWalletId?.let { id ->
+                wallets.indexOfFirst { it.id == id }
+            } ?: -1
 
-            val walletAdapter = WalletSelectorAdapter(wallets) { selectedWallet ->
+            val walletAdapter = WalletSelectorAdapter(wallets,
+                selectedPosition = if (preselectedPosition >= 0) preselectedPosition else RecyclerView.NO_POSITION)
+            { selectedWallet ->
                 onWalletSelected(selectedWallet)
                 dismiss()
             }
