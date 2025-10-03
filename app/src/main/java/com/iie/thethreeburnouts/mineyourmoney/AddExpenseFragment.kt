@@ -4,18 +4,26 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
+import java.io.File
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import kotlin.getValue
 
 class AddExpenseFragment : Fragment() {
 
@@ -27,6 +35,8 @@ class AddExpenseFragment : Fragment() {
     private var selectedDate: Calendar? = null
     private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
+    private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
+    private val expensesViewModel: ExpensesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +62,7 @@ class AddExpenseFragment : Fragment() {
                     text = wallet.name
                     visibility = View.VISIBLE
                 }
+                binding.imgWalletIcon.setImageResource(wallet.iconResId)
                 binding.tvWallet.error = null
             }.show(childFragmentManager, "WalletSelector")
         }
@@ -115,6 +126,19 @@ class AddExpenseFragment : Fragment() {
                 binding.tvSelectRecurrence.error = "Please select recurrence"
                 return@setOnClickListener
             }
+
+            val expense = Expense(
+                amount = amount.toDouble(),
+                note = note,
+                walletId = selectedWallet!!.id,          // only save ID
+                recurrence = selectedRecurrence,
+                date = selectedDate!!.timeInMillis,      // store millis
+                photoPath = currentPhotoPath             // store path as String
+            )
+
+            // Save to Dao
+            expensesViewModel.addExpense(expense)
+
             // Save expense (not implemented yet)
             requireActivity().onBackPressed()
         }
@@ -135,8 +159,29 @@ class AddExpenseFragment : Fragment() {
 
     // Camera helper functions
     private fun openCamera() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val photoFile = createImageFile()
+        val photoURI: Uri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            photoFile
+        )
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        }
         startActivityForResult(cameraIntent, picId)
+    }
+
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath // save path for DB
+        }
     }
 
     private fun requestCameraPermission() {
@@ -161,10 +206,8 @@ class AddExpenseFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == picId && resultCode == Activity.RESULT_OK) {
-            val photo = data?.extras?.get("data") as Bitmap?
-            photo?.let {
-                // binding.imgSavedPhoto.setImageBitmap(it)
-            }
+            // Mark that a photo exists
+            binding.btnUploadPhoto.setImageResource(R.drawable.ic_photo_attached)
         }
     }
 

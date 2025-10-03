@@ -63,5 +63,11 @@
     <string name="wallet_name_hint">e.g. Groceries, Savings</string>
     <string name="initial_balance_hint">e.g. R1,250.00</string>
     <string name="go_to_wallet">Go to Wallet</string>
+    <string name="filter_expense_history">Filter expense history</string>
+    <string name="total_spending">Total Spending</string>
+    <string name="total_spending_per_wallet">Total Spending per Wallet</string>
+    <string name="filter_wallets">Filter Wallets</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="view_expense_details">View Expense Details</string>
 
 </resources>
