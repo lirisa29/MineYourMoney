@@ -33,6 +33,7 @@ class AddExpenseFragment : Fragment() {
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
     private var selectedDate: Calendar? = null
+    private var selectedWalletId: Int? = null
     private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
     private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
@@ -56,27 +57,32 @@ class AddExpenseFragment : Fragment() {
 
         // Wallet selection
         binding.btnWalletDropdown.setOnClickListener {
-            WalletSelectorBottomSheet { wallet ->
-                selectedWallet = wallet
-                binding.tvSelectedWallet.apply {
-                    text = wallet.name
-                    visibility = View.VISIBLE
-                }
-                binding.imgWalletIcon.setImageResource(wallet.iconResId)
-                binding.tvWallet.error = null
-            }.show(childFragmentManager, "WalletSelector")
+            WalletSelectorBottomSheet(
+                onWalletSelected = { wallet ->
+                    selectedWallet = wallet
+                    selectedWalletId = wallet.id
+                    binding.tvSelectedWallet.apply {
+                        text = wallet.name
+                        visibility = View.VISIBLE
+                    }
+                    binding.imgWalletIcon.setImageResource(wallet.iconResId)
+                    binding.tvWallet.error = null
+                },
+                preselectedWalletId = selectedWalletId
+            ).show(childFragmentManager, "WalletSelector")
         }
 
         // Recurrence selection
         binding.btnRecurrenceDropdown.setOnClickListener {
-            RecurrenceSelectorBottomSheet { recurrence ->
+            RecurrenceSelectorBottomSheet(currentRecurrence = selectedRecurrence, onRecurrenceSelected ={ recurrence ->
                 selectedRecurrence = recurrence
                 binding.tvSelectedRecurrence.apply {
                     text = recurrence
                     visibility = View.VISIBLE
                 }
                 binding.tvSelectRecurrence.error = null
-            }.show(childFragmentManager, "RecurrenceSelector")
+            }).show(childFragmentManager, "RecurrenceSelector")
+
         }
 
         // Date selection
