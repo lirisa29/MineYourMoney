@@ -34,13 +34,4 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = backgroundColor.data
         window.navigationBarColor = backgroundColor.data
     }
-
-    override fun onBackPressed() {
-        // Handle back press for fragments in back stack
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
-        }
-    }
 }
