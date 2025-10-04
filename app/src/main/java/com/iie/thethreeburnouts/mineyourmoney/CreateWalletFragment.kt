@@ -18,7 +18,11 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
     private var _binding: FragmentCreateWalletBinding? = null
     private val binding get() = _binding!!
 
-    private val walletsViewModel: WalletsViewModel by activityViewModels()
+    private val walletsViewModel: WalletsViewModel by activityViewModels {
+        // Pass the currentUserId from MainActivity to the ViewModelFactory
+        WalletsViewModelFactory(requireActivity().application,
+            (requireActivity() as MainActivityProvider).getCurrentUserId())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,10 +32,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         binding.etInitialBalance.setText("R0.00")
         binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length)
 
-
         var current = "R0,00"
-
-        val walletDao = AppDatabase.getInstance(requireContext()).walletDao()
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
@@ -113,7 +114,9 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
             lifecycleScope.launch {
                 val exists = withContext(Dispatchers.IO) {
-                    AppDatabase.getInstance(requireContext()).walletDao().walletExists(name)
+                    AppDatabase.getInstance(requireContext()).walletDao().walletExists(
+                        (requireActivity() as MainActivityProvider).getCurrentUserId(), name
+                    )
                 }
 
                 if (exists) {
@@ -121,7 +124,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                     return@launch
                 }
 
-                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId)
+                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, userId = 0)
                 walletsViewModel.addWallet(newWallet)
                 requireActivity().onBackPressed()
             }

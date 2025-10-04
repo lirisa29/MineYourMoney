@@ -19,7 +19,10 @@ class SpendingOverviewFragment : Fragment(){
     private var _binding: FragmentSpendingOverviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var expenseAdapter: ExpenseAdapter
-    private val expensesViewModel: ExpensesViewModel by activityViewModels()
+    private val expensesViewModel: ExpensesViewModel by activityViewModels(){
+        ExpensesViewModelFactory(requireActivity().application,
+            (requireActivity() as MainActivityProvider).getCurrentUserId())
+    }
     // Store the last selected range
     private var lastSelectedRange: Pair<Long, Long>? = null
 

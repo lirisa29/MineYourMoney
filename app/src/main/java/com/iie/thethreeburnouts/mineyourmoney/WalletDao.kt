@@ -12,25 +12,15 @@ interface WalletDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addWallet(wallet: Wallet)
 
-    @Query("SELECT * FROM wallets ORDER BY id ASC")
-    fun getAllWalletsLive(): LiveData<List<Wallet>>
+    @Query("SELECT * FROM wallets WHERE userId = :userId ORDER BY id ASC")
+    fun getAllWalletsLive(userId: Int): LiveData<List<Wallet>>
 
-    @Query("SELECT * FROM wallets")
-    suspend fun getAllWallets(): List<Wallet>
+    @Query("SELECT * FROM wallets WHERE userId = :userId")
+    suspend fun getAllWallets(userId: Int): List<Wallet>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM wallets WHERE LOWER(name) = LOWER(:name))")
-    suspend fun walletExists(name: String): Boolean
+    @Query("SELECT EXISTS(SELECT 1 FROM wallets WHERE userId = :userId AND LOWER(name) = LOWER(:name))")
+    suspend fun walletExists(userId: Int, name: String): Boolean
 
-    // This will fetch all wallets, then sort in Kotlin
-    suspend fun getSortedWallets(sortType: SortType): List<Wallet> {
-        val wallets = getAllWallets()
-        return when (sortType) {
-            SortType.DEFAULT -> wallets.sortedBy { it.name.lowercase() }
-            SortType.BALANCE_HIGH -> wallets.sortedByDescending { it.balance }
-            SortType.BALANCE_LOW -> wallets.sortedBy { it.balance }
-        }
-    }
-
-    @Query("DELETE FROM wallets")
-    suspend fun clearAll()
+    @Query("DELETE FROM wallets WHERE userId = :userId")
+    suspend fun clearAll(userId: Int)
 }

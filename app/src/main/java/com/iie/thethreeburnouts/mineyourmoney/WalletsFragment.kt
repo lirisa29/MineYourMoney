@@ -16,7 +16,11 @@ class WalletsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var walletAdapter: WalletAdapter
-    private val walletsViewModel: WalletsViewModel by activityViewModels()
+    private val walletsViewModel: WalletsViewModel by activityViewModels {
+        // Pass the currentUserId from MainActivity to the ViewModelFactory
+        WalletsViewModelFactory(requireActivity().application,
+            (requireActivity() as MainActivityProvider).getCurrentUserId())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

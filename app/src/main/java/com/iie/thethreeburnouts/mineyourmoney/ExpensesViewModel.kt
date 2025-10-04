@@ -9,11 +9,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.collections.orEmpty
 
-class ExpensesViewModel (application: Application) : AndroidViewModel(application) {
+class ExpensesViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) {
 
     private val expensesDao = AppDatabase.getInstance(application).expensesDao()
 
-    private val allExpenses: LiveData<List<ExpenseWithWallet>> = expensesDao.getAllExpensesLive()
+    private val allExpenses: LiveData<List<ExpenseWithWallet>> = expensesDao.getAllExpensesLive(userId)
 
     val expense: LiveData<List<ExpenseWithWallet>> = MediatorLiveData<List<ExpenseWithWallet>>().apply {
         addSource(allExpenses) { updateExpenses(this) }
@@ -25,11 +25,11 @@ class ExpensesViewModel (application: Application) : AndroidViewModel(applicatio
 
     fun addExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
-            expensesDao.addExpense(expense)
+            expensesDao.addExpense(expense.copy(userId = userId))
         }
     }
 
     fun getExpensesInRange(startDate: Long, endDate: Long): LiveData<List<ExpenseWithWallet>> {
-        return expensesDao.getExpensesInRange(startDate, endDate)
+        return expensesDao.getExpensesInRange(userId, startDate, endDate)
     }
 }
