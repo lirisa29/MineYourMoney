@@ -80,4 +80,31 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+    <!-- Custom Date Range Picker Theme -->
+    <style name="CustomDateRangePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <!-- Header background + title -->
+        <item name="materialCalendarHeaderTitle">@style/CustomCalendarTitle</item>
+        <item name="materialCalendarHeaderSelection">@style/CustomCalendarSelection</item>
+        <item name="materialCalendarHeaderLayout">@style/CustomCalendarHeader</item>
+    </style>
+
+    <!-- Header background style -->
+    <style name="CustomCalendarHeader" parent="@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="CustomCalendarTitle">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?attr/android:calendarTextColor</item>
+    </style>
+
+    <style name="CustomCalendarSelection" parent="@style/TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/android:calendarTextColor</item>
+    </style>
+
 </resources>
