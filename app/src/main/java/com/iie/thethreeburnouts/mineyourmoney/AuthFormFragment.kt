@@ -4,6 +4,7 @@ import User
 import UserDao
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,10 +87,11 @@ class AuthFormFragment : Fragment() {
         }
     }
 
-    private fun clearErrors() {
+    private fun clearErrors() { //Clears the errors
         binding.usernameInputLayout.error = null
         binding.passwordInputLayout.error = null
         binding.confirmPasswordInputLayout.error = null
+        Log.e("AuthFormFragment", "Errors Cleared")
     }
 
     private fun validateInputs(username: String, password: String, confirmPassword: String): Boolean {
@@ -129,6 +131,7 @@ class AuthFormFragment : Fragment() {
         if (existingUser != null) {
             withContext(Dispatchers.Main) {
                 binding.usernameInputLayout.error = "Username already exists"
+                Log.e("AuthFormFragment", "Username exists")
             }
             return
         }
@@ -154,6 +157,7 @@ class AuthFormFragment : Fragment() {
         if (user == null) {
             withContext(Dispatchers.Main) {
                 binding.usernameInputLayout.error = "User not found"
+                Log.e("AuthFormFragment", "User not found")
             }
             return
         }
@@ -162,6 +166,7 @@ class AuthFormFragment : Fragment() {
         if (!verified) {
             withContext(Dispatchers.Main) {
                 binding.etInputPassword.error = "Incorrect password"
+                Log.e("AuthFormFragment", "Password Incorrect")
             }
             return
         }
@@ -214,6 +219,7 @@ class AuthFormFragment : Fragment() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+        Log.e("AuthFormFragment","Keyboard Hidden")
     }
 
     override fun onDestroyView() {
