@@ -98,7 +98,7 @@ class AuthFormFragment : Fragment() {
             return false
         }
         if (password.isEmpty()) {
-            binding.passwordInputLayout.error = "Enter password"
+            binding.etInputPassword.error = "Enter password"
             return false
         }
         if (!isLogin) {
@@ -107,15 +107,15 @@ class AuthFormFragment : Fragment() {
                 return false
             }
             if (!isValidPassword(password)) {
-                binding.passwordInputLayout.error = "Password must be at least 8 characters and include uppercase, lowercase, and a digit"
+                binding.etInputPassword.error = "Password must be at least 8 characters and include uppercase, lowercase, and a digit"
                 return false
             }
             if (confirmPassword.isEmpty()) {
-                binding.confirmPasswordInputLayout.error = "Confirm your password"
+                binding.etInputConfirmPassword.error = "Confirm your password"
                 return false
             }
             if (password != confirmPassword) {
-                binding.confirmPasswordInputLayout.error = "Passwords do not match"
+                binding.etInputConfirmPassword.error = "Passwords do not match"
                 return false
             }
         }
@@ -161,7 +161,7 @@ class AuthFormFragment : Fragment() {
         val verified = verifyPassword(password, user.password)
         if (!verified) {
             withContext(Dispatchers.Main) {
-                binding.passwordInputLayout.error = "Incorrect password"
+                binding.etInputPassword.error = "Incorrect password"
             }
             return
         }

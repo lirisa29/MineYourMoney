@@ -1,5 +1,6 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class WalletSelectorAdapter(
         val wallet = wallets[position]
 
         holder.icon.setImageResource(wallet.iconResId)
+        holder.icon.imageTintList = ColorStateList.valueOf(wallet.color)
         holder.name.text = wallet.name
         holder.amount.text = "R${String.format("%,.2f", wallet.balance)}"
         holder.radioButton.isChecked = (position == selectedPosition)

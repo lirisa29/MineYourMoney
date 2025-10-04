@@ -1,6 +1,7 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +18,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
     private var _binding: FragmentCreateWalletBinding? = null
     private val binding get() = _binding!!
+    private var selectedColor: Int? = null
 
     private val walletsViewModel: WalletsViewModel by activityViewModels {
         // Pass the currentUserId from MainActivity to the ViewModelFactory
@@ -39,9 +41,12 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         }
 
         binding.btnSelectIcon.setOnClickListener {
-            val iconSheet = IconSelectorBottomSheet { selectedIconResId ->
+            val iconSheet = IconSelectorBottomSheet { selectedIconResId, selectedColour ->
                 binding.btnSelectIcon.setImageResource(selectedIconResId)
                 binding.btnSelectIcon.tag = selectedIconResId
+                binding.btnSelectIcon.imageTintList = ColorStateList.valueOf(selectedColour)
+
+                selectedColor = selectedColour
             }
             iconSheet.show(parentFragmentManager, "IconSelectorBottomSheet")
         }
@@ -86,6 +91,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             val name = binding.etWalletName.text.toString()
             val balanceText = binding.etInitialBalance.text.toString()
             val iconResId = binding.btnSelectIcon.tag as? Int ?
+            val colour = selectedColor ?: android.R.attr.textColorSecondary
 
             // Clear previous errors
             if (name.isBlank()) {
@@ -135,7 +141,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                     return@launch
                 }
 
-                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, userId = 0)
+                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, color = colour, userId = 0)
                 walletsViewModel.addWallet(newWallet)
                 requireActivity().onBackPressed()
             }

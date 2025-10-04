@@ -10,5 +10,6 @@ data class Wallet(
     val userId: Int,
     val name: String,
     val balance: Double,
-    val iconResId: Int
+    val iconResId: Int,
+    val color: Int
 )
