@@ -1,0 +1,411 @@
+kotlin version: 2.0.21
+error message: org.jetbrains.kotlin.backend.common.BackendException: Backend Internal error: Exception during IR lowering
+File being compiled: C:/Users/liris/Desktop/TheThreeBurnouts_OPSC7311_POE/app/src/main/java/com/iie/thethreeburnouts/mineyourmoney/IconSelectorBottomSheet.kt
+The root cause java.lang.RuntimeException was thrown at: org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:47)
+	at org.jetbrains.kotlin.backend.common.CodegenUtil.reportBackendException(CodegenUtil.kt:253)
+	at org.jetbrains.kotlin.backend.common.CodegenUtil.reportBackendException$default(CodegenUtil.kt:236)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invokeSequential(performByIrFile.kt:65)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invoke(performByIrFile.kt:52)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invoke(performByIrFile.kt:38)
+	at org.jetbrains.kotlin.backend.common.phaser.NamedCompilerPhase.phaseBody(CompilerPhase.kt:166)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.CompositePhase.invoke(PhaseBuilders.kt:27)
+	at org.jetbrains.kotlin.backend.common.phaser.CompositePhase.invoke(PhaseBuilders.kt:14)
+	at org.jetbrains.kotlin.backend.common.phaser.NamedCompilerPhase.phaseBody(CompilerPhase.kt:166)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.CompilerPhaseKt.invokeToplevel(CompilerPhase.kt:62)
+	at org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory.invokeCodegen(JvmIrCodegenFactory.kt:371)
+	at org.jetbrains.kotlin.codegen.CodegenFactory.generateModule(CodegenFactory.kt:47)
+	at org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory.generateModuleInFrontendIRMode(JvmIrCodegenFactory.kt:433)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.generateCodeFromIr(jvmCompilerPipeline.kt:246)
+	at org.jetbrains.kotlin.cli.jvm.compiler.pipeline.JvmCompilerPipelineKt.compileModulesUsingFrontendIrAndLightTree(jvmCompilerPipeline.kt:142)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:148)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:43)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:103)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:49)
+	at org.jetbrains.kotlin.cli.common.CLITool.exec(CLITool.kt:101)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:464)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:73)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.doCompile(IncrementalCompilerRunner.kt:506)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileImpl(IncrementalCompilerRunner.kt:423)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.tryCompileIncrementally$lambda$9$compile(IncrementalCompilerRunner.kt:249)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.tryCompileIncrementally(IncrementalCompilerRunner.kt:267)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compile(IncrementalCompilerRunner.kt:120)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.execIncrementalCompiler(CompileServiceImpl.kt:675)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.access$execIncrementalCompiler(CompileServiceImpl.kt:92)
+	at org.jetbrains.kotlin.daemon.CompileServiceImpl.compile(CompileServiceImpl.kt:1660)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(Unknown Source)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Unknown Source)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(Unknown Source)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(Unknown Source)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN name:onViewCreated visibility:public modality:OPEN <> ($this:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet, view:android.view.View, savedInstanceState:android.os.Bundle?) returnType:kotlin.Unit
+  overridden:
+    public open fun onViewCreated (p0: @[EnhancedNullability] android.view.View, p1: @[EnhancedNullability] android.os.Bundle?): kotlin.Unit [fake_override] declared in com.google.android.material.bottomsheet.BottomSheetDialogFragment
+  $this: VALUE_PARAMETER name:<this> type:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet
+  VALUE_PARAMETER name:view index:0 type:android.view.View
+  VALUE_PARAMETER name:savedInstanceState index:1 type:android.os.Bundle?
+  BLOCK_BODY
+    CALL 'public open fun onViewCreated (p0: @[EnhancedNullability] android.view.View, p1: @[EnhancedNullability] android.os.Bundle?): kotlin.Unit [fake_override] declared in com.google.android.material.bottomsheet.BottomSheetDialogFragment' superQualifier='CLASS IR_EXTERNAL_JAVA_DECLARATION_STUB CLASS name:BottomSheetDialogFragment modality:OPEN visibility:public superTypes:[androidx.appcompat.app.AppCompatDialogFragment]' type=kotlin.Unit origin=null
+      $this: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+      p0: GET_VAR 'view: android.view.View declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.view.View origin=null
+      p1: GET_VAR 'savedInstanceState: android.os.Bundle? declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.os.Bundle? origin=null
+    VAR name:icons type:kotlin.collections.List<kotlin.Int> [val]
+      CALL 'public final fun listOf <T> (vararg elements: T of kotlin.collections.CollectionsKt.listOf): kotlin.collections.List<T of kotlin.collections.CollectionsKt.listOf> declared in kotlin.collections.CollectionsKt' type=kotlin.collections.List<kotlin.Int> origin=null
+        <T>: kotlin.Int
+        elements: BLOCK type=kotlin.Array<out kotlin.Int> origin=null
+          VAR IR_TEMPORARY_VARIABLE name:tmp0 type:kotlin.Array<out kotlin.Int> [val]
+            CALL 'public final fun arrayOfNulls <T> (size: kotlin.Int): kotlin.Array<T of kotlin.arrayOfNulls?> declared in kotlin' type=kotlin.Array<out kotlin.Int> origin=null
+              <T>: kotlin.Int
+              size: CONST Int type=kotlin.Int value=12
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=0
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:ic_wallets type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=1
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:car type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=2
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:cook type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=3
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:electricity type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=4
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:fitness type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=5
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:fuel type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=6
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:home type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=7
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:medical type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=8
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:person__2_ type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=9
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:pet type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=10
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:plane type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          CALL 'public final fun set (index: kotlin.Int, value: T of kotlin.Array): kotlin.Unit [operator] declared in kotlin.Array' type=kotlin.Unit origin=null
+            $this: GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+            index: CONST Int type=kotlin.Int value=11
+            value: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:shopping type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+          GET_VAR 'val tmp0: kotlin.Array<out kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Array<out kotlin.Int> origin=null
+    VAR name:iconGrid type:android.widget.GridLayout [val]
+      BLOCK type=android.widget.GridLayout origin=null
+        VAR IR_TEMPORARY_VARIABLE name:tmp0 type:kotlin.Any? [val]
+          GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:iconGrid type:@[EnhancedNullability] android.widget.GridLayout visibility:public [final] declared in com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding' type=@[EnhancedNullability] android.widget.GridLayout superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding origin=null
+            receiver: CALL 'private final fun <get-binding> (): com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding origin=GET_PROPERTY
+              $this: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+        CALL 'public final fun checkNotNullExpressionValue (value: kotlin.Any?, expression: kotlin.String): kotlin.Unit declared in kotlin.jvm.internal.Intrinsics' type=kotlin.Unit origin=null
+          value: GET_VAR 'val tmp0: kotlin.Any? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Any? origin=null
+          expression: CONST String type=kotlin.String value="iconGrid"
+        GET_VAR 'val tmp0: kotlin.Any? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Any? origin=null
+    BLOCK type=kotlin.Unit origin=FOR_LOOP
+      VAR FOR_LOOP_ITERATOR name:<iterator> type:kotlin.collections.Iterator<kotlin.Int> [val]
+        CALL 'public abstract fun iterator (): kotlin.collections.Iterator<E of kotlin.collections.List> [operator] declared in kotlin.collections.List' type=kotlin.collections.Iterator<kotlin.Int> origin=FOR_LOOP_ITERATOR
+          $this: GET_VAR 'val icons: kotlin.collections.List<kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.collections.List<kotlin.Int> origin=null
+      WHILE label=IconSelectorBottomSheet$onViewCreated1 origin=FOR_LOOP_INNER_WHILE
+        condition: CALL 'public abstract fun hasNext (): kotlin.Boolean [operator] declared in kotlin.collections.Iterator' type=kotlin.Boolean origin=FOR_LOOP_HAS_NEXT
+          $this: GET_VAR 'val <iterator>: kotlin.collections.Iterator<kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.collections.Iterator<kotlin.Int> origin=null
+        body: BLOCK type=kotlin.Unit origin=FOR_LOOP_INNER_WHILE
+          VAR FOR_LOOP_VARIABLE name:iconRes type:kotlin.Int [val]
+            CALL 'public abstract fun next (): T of kotlin.collections.Iterator [operator] declared in kotlin.collections.Iterator' type=kotlin.Int origin=FOR_LOOP_NEXT
+              $this: GET_VAR 'val <iterator>: kotlin.collections.Iterator<kotlin.Int> [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.collections.Iterator<kotlin.Int> origin=null
+          COMPOSITE type=kotlin.Unit origin=null
+            BLOCK type=kotlin.Boolean origin=null
+              VAR name:btn type:android.widget.ImageButton [val]
+                CALL 'public final fun apply <T> (block: @[ExtensionFunctionType] kotlin.Function1<T of kotlin.StandardKt.apply, kotlin.Unit>): T of kotlin.StandardKt.apply [inline] declared in kotlin.StandardKt' type=android.widget.ImageButton origin=null
+                  <T>: android.widget.ImageButton
+                  $receiver: CONSTRUCTOR_CALL 'public constructor <init> (p0: @[FlexibleNullability] android.content.Context?) declared in android.widget.ImageButton' type=android.widget.ImageButton origin=null
+                    p0: CALL 'public final fun requireContext (): @[EnhancedNullability] android.content.Context [fake_override] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=@[EnhancedNullability] android.content.Context origin=null
+                      $this: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+                  block: BLOCK type=@[ExtensionFunctionType] kotlin.Function1<android.widget.ImageButton, kotlin.Unit> origin=LAMBDA
+                    COMPOSITE type=kotlin.Unit origin=null
+                    FUNCTION_REFERENCE 'private final fun onViewCreated$lambda$1 ($iconRes: kotlin.Int, this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet): kotlin.Unit declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=@[ExtensionFunctionType] kotlin.Function1<android.widget.ImageButton, kotlin.Unit> origin=INLINE_LAMBDA reflectionTarget=null
+                      $iconRes: GET_VAR 'val iconRes: kotlin.Int [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+                      this$0: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+              CALL 'public open fun setOnClickListener (p0: @[EnhancedNullability] android.view.View.OnClickListener?): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=null
+                $this: GET_VAR 'val btn: android.widget.ImageButton [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.widget.ImageButton origin=null
+                p0: BLOCK type=android.view.View.OnClickListener origin=LAMBDA
+                  COMPOSITE type=kotlin.Unit origin=null
+                  CALL 'public final fun <jvm-indy> <T> (dynamicCall: T of kotlin.jvm.internal.<jvm-indy>, bootstrapMethodHandle: kotlin.Any, vararg bootstrapMethodArguments: kotlin.Any): T of kotlin.jvm.internal.<jvm-indy> declared in kotlin.jvm.internal' type=android.view.View.OnClickListener origin=null
+                    <T>: android.view.View.OnClickListener
+                    dynamicCall: CALL 'public final fun onClick (p0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet, p1: kotlin.Int): android.view.View.OnClickListener declared in kotlin.jvm.internal.invokeDynamic' type=android.view.View.OnClickListener origin=null
+                      p0: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+                      p1: GET_VAR 'val iconRes: kotlin.Int [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+                    bootstrapMethodHandle: CALL 'public final fun <jvm-method-handle> (tag: kotlin.Int, owner: kotlin.String, name: kotlin.String, descriptor: kotlin.String, isInterface: kotlin.Boolean): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                      tag: CONST Int type=kotlin.Int value=6
+                      owner: CONST String type=kotlin.String value="java/lang/invoke/LambdaMetafactory"
+                      name: CONST String type=kotlin.String value="metafactory"
+                      descriptor: CONST String type=kotlin.String value="(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;"
+                      isInterface: CONST Boolean type=kotlin.Boolean value=false
+                    bootstrapMethodArguments: VARARG type=kotlin.Array<kotlin.Any> varargElementType=kotlin.Any
+                      CALL 'public final fun <jvm-original-method-type> (method: kotlin.Any): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                        method: RAW_FUNCTION_REFERENCE 'public abstract fun onClick (p0: @[FlexibleNullability] android.view.View?): kotlin.Unit declared in android.view.View.OnClickListener' type=kotlin.Any
+                      RAW_FUNCTION_REFERENCE 'private final fun onViewCreated$lambda$2 (this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet, $iconRes: kotlin.Int, it: @[FlexibleNullability] android.view.View?): kotlin.Unit declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=kotlin.Any
+                      CALL 'public final fun <jvm-original-method-type> (method: kotlin.Any): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                        method: RAW_FUNCTION_REFERENCE 'public abstract fun onClick (p0: @[FlexibleNullability] android.view.View?): kotlin.Unit [fake_override] declared in kotlin.jvm.internal.invokeDynamic.<fake>' type=kotlin.Any
+              CALL 'public open fun addView (p0: @[FlexibleNullability] android.view.View?): kotlin.Unit [fake_override] declared in android.widget.GridLayout' type=kotlin.Unit origin=null
+                $this: GET_VAR 'val iconGrid: android.widget.GridLayout [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.widget.GridLayout origin=null
+                p0: GET_VAR 'val btn: android.widget.ImageButton [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.widget.ImageButton origin=null
+              CALL 'public abstract fun add (element: E of kotlin.collections.MutableList): kotlin.Boolean declared in kotlin.collections.MutableList' type=kotlin.Boolean origin=null
+                $this: GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:iconButtons type:kotlin.collections.MutableList<android.widget.ImageButton> visibility:private [final]' type=kotlin.collections.MutableList<android.widget.ImageButton> origin=null
+                  receiver: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+                element: GET_VAR 'val btn: android.widget.ImageButton [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=android.widget.ImageButton origin=null
+            COMPOSITE type=kotlin.Unit origin=null
+    VAR name:colourContainer type:@[FlexibleNullability] android.view.ViewGroup? [val]
+      CALL 'public final fun findViewById <T> (p0: kotlin.Int): @[FlexibleNullability] T of android.widget.LinearLayout.findViewById? [fake_override] declared in android.widget.LinearLayout' type=@[FlexibleNullability] android.view.ViewGroup? origin=null
+        <T>: @[FlexibleNullability] android.view.ViewGroup?
+        $this: CALL 'public open fun getRoot (): @[EnhancedNullability] android.widget.LinearLayout declared in com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding' type=@[EnhancedNullability] android.widget.LinearLayout origin=GET_PROPERTY
+          $this: CALL 'private final fun <get-binding> (): com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding origin=GET_PROPERTY
+            $this: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+        p0: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:colour_list type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.id' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.id origin=null
+    BLOCK type=kotlin.Unit origin=FOR_LOOP
+      COMPOSITE type=kotlin.Unit origin=null
+        VAR FOR_LOOP_VARIABLE name:i type:kotlin.Int [var]
+          CONST Int type=kotlin.Int value=0
+        VAR IR_TEMPORARY_VARIABLE name:last type:kotlin.Int [val]
+          CALL 'public open fun getChildCount (): kotlin.Int declared in android.view.ViewGroup' type=kotlin.Int origin=GET_PROPERTY
+            $this: GET_VAR 'val colourContainer: @[FlexibleNullability] android.view.ViewGroup? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=@[FlexibleNullability] android.view.ViewGroup? origin=null
+      DO_WHILE label=IconSelectorBottomSheet$onViewCreated2 origin=DO_WHILE_COUNTER_LOOP
+        body: COMPOSITE type=kotlin.Unit origin=FOR_LOOP_INNER_WHILE
+          COMPOSITE type=kotlin.Unit origin=FOR_LOOP_NEXT
+            WHEN type=kotlin.Unit origin=null
+              BRANCH
+                if: CALL 'public final fun not (): kotlin.Boolean [operator] declared in kotlin.Boolean' type=kotlin.Boolean origin=null
+                  $this: CALL 'public final fun less (arg0: kotlin.Int, arg1: kotlin.Int): kotlin.Boolean declared in kotlin.internal.ir' type=kotlin.Boolean origin=null
+                    arg0: GET_VAR 'var i: kotlin.Int [var] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+                    arg1: GET_VAR 'val last: kotlin.Int [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+                then: BREAK label=null loop.label=IconSelectorBottomSheet$onViewCreated2
+          BLOCK type=kotlin.Unit origin=null
+            VAR name:colorView type:@[FlexibleNullability] android.view.View? [val]
+              CALL 'public open fun getChildAt (p0: kotlin.Int): @[FlexibleNullability] android.view.View? declared in android.view.ViewGroup' type=@[FlexibleNullability] android.view.View? origin=null
+                $this: GET_VAR 'val colourContainer: @[FlexibleNullability] android.view.ViewGroup? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=@[FlexibleNullability] android.view.ViewGroup? origin=null
+                p0: GET_VAR 'var i: kotlin.Int [var] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+            CALL 'public open fun setOnClickListener (p0: @[EnhancedNullability] android.view.View.OnClickListener?): kotlin.Unit declared in android.view.View' type=kotlin.Unit origin=null
+              $this: GET_VAR 'val colorView: @[FlexibleNullability] android.view.View? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=@[FlexibleNullability] android.view.View? origin=null
+              p0: BLOCK type=android.view.View.OnClickListener origin=LAMBDA
+                COMPOSITE type=kotlin.Unit origin=null
+                CALL 'public final fun <jvm-indy> <T> (dynamicCall: T of kotlin.jvm.internal.<jvm-indy>, bootstrapMethodHandle: kotlin.Any, vararg bootstrapMethodArguments: kotlin.Any): T of kotlin.jvm.internal.<jvm-indy> declared in kotlin.jvm.internal' type=android.view.View.OnClickListener origin=null
+                  <T>: android.view.View.OnClickListener
+                  dynamicCall: CALL 'public final fun onClick (p0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet, p1: @[FlexibleNullability] android.view.View?): android.view.View.OnClickListener declared in kotlin.jvm.internal.invokeDynamic' type=android.view.View.OnClickListener origin=null
+                    p0: GET_VAR '<this>: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+                    p1: GET_VAR 'val colorView: @[FlexibleNullability] android.view.View? [val] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=@[FlexibleNullability] android.view.View? origin=null
+                  bootstrapMethodHandle: CALL 'public final fun <jvm-method-handle> (tag: kotlin.Int, owner: kotlin.String, name: kotlin.String, descriptor: kotlin.String, isInterface: kotlin.Boolean): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                    tag: CONST Int type=kotlin.Int value=6
+                    owner: CONST String type=kotlin.String value="java/lang/invoke/LambdaMetafactory"
+                    name: CONST String type=kotlin.String value="metafactory"
+                    descriptor: CONST String type=kotlin.String value="(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;"
+                    isInterface: CONST Boolean type=kotlin.Boolean value=false
+                  bootstrapMethodArguments: VARARG type=kotlin.Array<kotlin.Any> varargElementType=kotlin.Any
+                    CALL 'public final fun <jvm-original-method-type> (method: kotlin.Any): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                      method: RAW_FUNCTION_REFERENCE 'public abstract fun onClick (p0: @[FlexibleNullability] android.view.View?): kotlin.Unit declared in android.view.View.OnClickListener' type=kotlin.Any
+                    RAW_FUNCTION_REFERENCE 'private final fun onViewCreated$lambda$4 (this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet, $colorView: @[FlexibleNullability] android.view.View?, it: @[FlexibleNullability] android.view.View?): kotlin.Unit declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=kotlin.Any
+                    CALL 'public final fun <jvm-original-method-type> (method: kotlin.Any): kotlin.Any declared in kotlin.jvm.internal' type=kotlin.Any origin=null
+                      method: RAW_FUNCTION_REFERENCE 'public abstract fun onClick (p0: @[FlexibleNullability] android.view.View?): kotlin.Unit [fake_override] declared in kotlin.jvm.internal.invokeDynamic.<fake>' type=kotlin.Any
+        condition: COMPOSITE type=kotlin.Boolean origin=null
+          CALL 'public final fun <int-prefix-incr-decr> (value: kotlin.Int, delta: kotlin.Int): kotlin.Int declared in kotlin.jvm.internal' type=kotlin.Int origin=null
+            value: GET_VAR 'var i: kotlin.Int [var] declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated' type=kotlin.Int origin=null
+            delta: CONST Int type=kotlin.Int value=1
+          CONST Boolean type=kotlin.Boolean value=true
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:47)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate$default(FunctionCodegen.kt:40)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethodNode(ClassCodegen.kt:406)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generateMethod(ClassCodegen.kt:423)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen.generate(ClassCodegen.kt:168)
+	at org.jetbrains.kotlin.backend.jvm.FileCodegen.lower(JvmPhases.kt:39)
+	at org.jetbrains.kotlin.backend.common.phaser.PhaseFactoriesKt.createFilePhase$lambda$4(PhaseFactories.kt:71)
+	at org.jetbrains.kotlin.backend.common.phaser.PhaseBuildersKt$createSimpleNamedCompilerPhase$1.phaseBody(PhaseBuilders.kt:69)
+	at org.jetbrains.kotlin.backend.common.phaser.SimpleNamedCompilerPhase.phaseBody(CompilerPhase.kt:226)
+	at org.jetbrains.kotlin.backend.common.phaser.AbstractNamedCompilerPhase.invoke(CompilerPhase.kt:113)
+	at org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase.invokeSequential(performByIrFile.kt:62)
+	... 44 more
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN INLINE_LAMBDA name:onViewCreated$lambda$1 visibility:private modality:FINAL <> ($receiver:android.widget.ImageButton, $iconRes:kotlin.Int, this$0:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet) returnType:kotlin.Unit
+  $receiver: VALUE_PARAMETER name:$this$apply type:android.widget.ImageButton
+  VALUE_PARAMETER BOUND_VALUE_PARAMETER name:$iconRes index:0 type:kotlin.Int
+  VALUE_PARAMETER BOUND_VALUE_PARAMETER name:this$0 index:1 type:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet
+  BLOCK_BODY
+    VAR name:$i$a$-apply-IconSelectorBottomSheet$onViewCreated$btn$1 type:kotlin.Int [val]
+      CONST Int type=kotlin.Int value=0
+    CALL 'public open fun setLayoutParams (p0: @[FlexibleNullability] android.view.ViewGroup.LayoutParams?): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=EQ
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: CALL 'public final fun apply <T> (block: @[ExtensionFunctionType] kotlin.Function1<T of kotlin.StandardKt.apply, kotlin.Unit>): T of kotlin.StandardKt.apply [inline] declared in kotlin.StandardKt' type=android.widget.GridLayout.LayoutParams origin=null
+        <T>: android.widget.GridLayout.LayoutParams
+        $receiver: CONSTRUCTOR_CALL 'public constructor <init> () declared in android.widget.GridLayout.LayoutParams' type=android.widget.GridLayout.LayoutParams origin=null
+        block: BLOCK type=@[ExtensionFunctionType] kotlin.Function1<android.widget.GridLayout.LayoutParams, kotlin.Unit> origin=LAMBDA
+          COMPOSITE type=kotlin.Unit origin=null
+          FUNCTION_REFERENCE 'private final fun onViewCreated$lambda$1$lambda$0 (this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet): kotlin.Unit declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=@[ExtensionFunctionType] kotlin.Function1<android.widget.GridLayout.LayoutParams, kotlin.Unit> origin=INLINE_LAMBDA reflectionTarget=null
+            this$0: GET_VAR 'this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+    CALL 'public open fun setBackgroundResource (p0: kotlin.Int): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=null
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: GET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:bg_icon_button type:kotlin.Int visibility:public [static] declared in com.iie.thethreeburnouts.mineyourmoney.R.drawable' type=kotlin.Int superQualifierSymbol=com.iie.thethreeburnouts.mineyourmoney.R.drawable origin=null
+    CALL 'public open fun setImageResource (p0: kotlin.Int): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=null
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: GET_VAR '$iconRes: kotlin.Int declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=kotlin.Int origin=null
+    CALL 'public open fun setScaleType (p0: @[FlexibleNullability] android.widget.ImageView.ScaleType?): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=EQ
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: GET_FIELD 'FIELD FIELD_FOR_ENUM_ENTRY name:CENTER_INSIDE type:android.widget.ImageView.ScaleType visibility:public [final,static] declared in android.widget.ImageView.ScaleType' type=android.widget.ImageView.ScaleType origin=null
+    CALL 'public open fun setPadding (p0: kotlin.Int, p1: kotlin.Int, p2: kotlin.Int, p3: kotlin.Int): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=null
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: CONST Int type=kotlin.Int value=12
+      p1: CONST Int type=kotlin.Int value=12
+      p2: CONST Int type=kotlin.Int value=12
+      p3: CONST Int type=kotlin.Int value=12
+    CALL 'public open fun setTag (p0: @[FlexibleNullability] kotlin.Any?): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=EQ
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: GET_VAR '$iconRes: kotlin.Int declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=kotlin.Int origin=null
+    CALL 'public final fun setColorFilter (p0: kotlin.Int): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=null
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:defaultColour type:kotlin.Int visibility:private' type=kotlin.Int origin=null
+        receiver: GET_VAR 'this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+    CALL 'public open fun setContentDescription (p0: @[FlexibleNullability] kotlin.CharSequence?): kotlin.Unit [fake_override] declared in android.widget.ImageButton' type=kotlin.Unit origin=EQ
+      $this: GET_VAR '$this$apply: android.widget.ImageButton declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1' type=android.widget.ImageButton origin=null
+      p0: CONST String type=kotlin.String value="Wallet Icon"
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:47)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrSourceCompilerForInline.generateLambdaBody(IrSourceCompilerForInline.kt:67)
+	at org.jetbrains.kotlin.codegen.inline.ExpressionLambda.generateLambdaBody(LambdaInfo.kt:72)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrInlineCodegen.genValueAndPut(IrInlineCodegen.kt:100)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall$handleParameter(ExpressionCodegen.kt:616)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:644)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrCall.accept(IrCall.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitVariable(ExpressionCodegen.kt:790)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitVariable(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.declarations.IrVariable.accept(IrVariable.kt:36)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:593)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:413)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:593)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitComposite(IrElementVisitor.kt:125)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitComposite(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitComposite(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrComposite.accept(IrComposite.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:593)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:413)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitWhileLoop(ExpressionCodegen.kt:1182)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitWhileLoop(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrWhileLoop.accept(IrWhileLoop.kt:19)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:593)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitContainerExpression(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitBlock(IrElementVisitor.kt:122)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:413)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlock(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlock.accept(IrBlock.kt:18)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:584)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:240)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:123)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:44)
+	... 54 more
+Caused by: java.lang.RuntimeException: Exception while generating code for:
+FUN INLINE_LAMBDA name:onViewCreated$lambda$1$lambda$0 visibility:private modality:FINAL <> ($receiver:android.widget.GridLayout.LayoutParams, this$0:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet) returnType:kotlin.Unit
+  $receiver: VALUE_PARAMETER name:$this$apply type:android.widget.GridLayout.LayoutParams
+  VALUE_PARAMETER BOUND_VALUE_PARAMETER name:this$0 index:0 type:com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet
+  BLOCK_BODY
+    VAR name:$i$a$-apply-IconSelectorBottomSheet$onViewCreated$btn$1$1 type:kotlin.Int [val]
+      CONST Int type=kotlin.Int value=0
+    SET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:width type:kotlin.Int visibility:public declared in android.view.ViewGroup.LayoutParams' type=kotlin.Unit superQualifierSymbol=android.widget.GridLayout.LayoutParams origin=EQ
+      receiver: GET_VAR '$this$apply: android.widget.GridLayout.LayoutParams declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1$lambda$0' type=android.widget.GridLayout.LayoutParams origin=null
+      value: CALL 'public final fun <get-dp> (): kotlin.Int declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=kotlin.Int origin=GET_PROPERTY
+        $this: GET_VAR 'this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1$lambda$0' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+        $receiver: CONST Int type=kotlin.Int value=64
+    SET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:height type:kotlin.Int visibility:public declared in android.view.ViewGroup.LayoutParams' type=kotlin.Unit superQualifierSymbol=android.widget.GridLayout.LayoutParams origin=EQ
+      receiver: GET_VAR '$this$apply: android.widget.GridLayout.LayoutParams declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1$lambda$0' type=android.widget.GridLayout.LayoutParams origin=null
+      value: CALL 'public final fun <get-dp> (): kotlin.Int declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet' type=kotlin.Int origin=GET_PROPERTY
+        $this: GET_VAR 'this$0: com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1$lambda$0' type=com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet origin=null
+        $receiver: CONST Int type=kotlin.Int value=64
+    CALL 'public open fun setMargins (p0: kotlin.Int, p1: kotlin.Int, p2: kotlin.Int, p3: kotlin.Int): kotlin.Unit [fake_override] declared in android.widget.GridLayout.LayoutParams' type=kotlin.Unit origin=null
+      $this: GET_VAR '$this$apply: android.widget.GridLayout.LayoutParams declared in com.iie.thethreeburnouts.mineyourmoney.IconSelectorBottomSheet.onViewCreated$lambda$1$lambda$0' type=android.widget.GridLayout.LayoutParams origin=null
+      p0: CONST Int type=kotlin.Int value=12
+      p1: CONST Int type=kotlin.Int value=12
+      p2: CONST Int type=kotlin.Int value=12
+      p3: CONST Int type=kotlin.Int value=12
+    SET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:gravity type:kotlin.Int visibility:public [final,static] declared in android.R.attr' type=kotlin.Unit superQualifierSymbol=android.R.attr origin=EQ
+      value: CONST Int type=kotlin.Int value=17
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:47)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrSourceCompilerForInline.generateLambdaBody(IrSourceCompilerForInline.kt:67)
+	at org.jetbrains.kotlin.codegen.inline.ExpressionLambda.generateLambdaBody(LambdaInfo.kt:72)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrInlineCodegen.genValueAndPut(IrInlineCodegen.kt:100)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall$handleParameter(ExpressionCodegen.kt:616)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:644)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrCall.accept(IrCall.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.gen(ExpressionCodegen.kt:217)
+	at org.jetbrains.kotlin.backend.jvm.codegen.IrCallGenerator.genValueAndPut(IrCallGenerator.kt:48)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall$handleParameter(ExpressionCodegen.kt:616)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:644)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitCall(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrCall.accept(IrCall.kt:24)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:584)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:240)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:123)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:44)
+	... 102 more
+Caused by: java.lang.AssertionError: access of const val: SET_FIELD 'FIELD IR_EXTERNAL_JAVA_DECLARATION_STUB name:gravity type:kotlin.Int visibility:public [final,static] declared in android.R.attr' type=kotlin.Unit superQualifierSymbol=android.R.attr origin=EQ
+  value: CONST Int type=kotlin.Int value=17
+
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitFieldAccess(ExpressionCodegen.kt:861)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitFieldAccess(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.visitors.IrElementVisitor$DefaultImpls.visitSetField(IrElementVisitor.kt:206)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitSetField(ExpressionCodegen.kt:908)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitSetField(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrSetField.accept(IrSetField.kt:21)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitStatementContainer(ExpressionCodegen.kt:579)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:584)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.visitBlockBody(ExpressionCodegen.kt:138)
+	at org.jetbrains.kotlin.ir.expressions.IrBlockBody.accept(IrBlockBody.kt:20)
+	at org.jetbrains.kotlin.backend.jvm.codegen.ExpressionCodegen.generate(ExpressionCodegen.kt:240)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.doGenerate(FunctionCodegen.kt:123)
+	at org.jetbrains.kotlin.backend.jvm.codegen.FunctionCodegen.generate(FunctionCodegen.kt:44)
+	... 122 more
+
+
