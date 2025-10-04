@@ -2,6 +2,7 @@ package com.iie.thethreeburnouts.mineyourmoney
 
 import User
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
         window.statusBarColor = backgroundColor.data
         window.navigationBarColor = backgroundColor.data
+        Log.e("MainActivity", "Created")
     }
 
     override fun getCurrentUserId(): Int = loggedInUser.id

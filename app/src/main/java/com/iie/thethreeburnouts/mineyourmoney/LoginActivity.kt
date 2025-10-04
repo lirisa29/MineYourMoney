@@ -3,6 +3,7 @@ package com.iie.thethreeburnouts.mineyourmoney
 import User
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -57,5 +58,6 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
             putExtra("USER", user)
         }
         startActivity(intent)
+        Log.e("LoginActivity","Authentication succeeded")
     }
 }
