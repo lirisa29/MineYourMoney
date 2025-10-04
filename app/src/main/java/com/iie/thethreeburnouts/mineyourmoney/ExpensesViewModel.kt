@@ -28,4 +28,8 @@ class ExpensesViewModel (application: Application) : AndroidViewModel(applicatio
             expensesDao.addExpense(expense)
         }
     }
+
+    fun getExpensesInRange(startDate: Long, endDate: Long): LiveData<List<ExpenseWithWallet>> {
+        return expensesDao.getExpensesInRange(startDate, endDate)
+    }
 }
