@@ -1,6 +1,5 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-import android.R.attr.gravity
 import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -17,7 +16,6 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelectorBinding
-
 
 class IconSelectorBottomSheet(
     private val onIconSelected: (iconResId: Int, color: Int) -> Unit
@@ -66,7 +64,9 @@ class IconSelectorBottomSheet(
                     width = 64.dp
                     height = 64.dp
                     setMargins(12, 12, 12, 12)
-                    gravity = Gravity.CENTER
+                    rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+                    columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+                    setGravity(Gravity.CENTER)
                 }
                 setBackgroundResource(R.drawable.bg_icon_button)
                 setImageResource(iconRes)
@@ -117,6 +117,11 @@ class IconSelectorBottomSheet(
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE // fallback
             bottomSheet?.setBackgroundColor(backgroundColor)
             dialog.window?.navigationBarColor = backgroundColor
+
+            // Allow scrollable BottomSheet
+            val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheet!!)
+            behavior.peekHeight = com.google.android.material.bottomsheet.BottomSheetBehavior.PEEK_HEIGHT_AUTO
+            behavior.isFitToContents = true
         }
 
         // Apply slide-up and slide-down animations
