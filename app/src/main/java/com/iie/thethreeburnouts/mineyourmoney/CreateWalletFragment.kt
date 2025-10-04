@@ -85,33 +85,44 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         binding.btnConfirm.setOnClickListener {
             val name = binding.etWalletName.text.toString()
             val balanceText = binding.etInitialBalance.text.toString()
-            val iconResId = binding.btnSelectIcon.tag as? Int ?: R.drawable.ic_wallets
+            val iconResId = binding.btnSelectIcon.tag as? Int ?
 
+            // Clear previous errors
             if (name.isBlank()) {
                 binding.walletNameLayout.error = "Please enter a wallet name."
                 return@setOnClickListener
             }
-
+            // Validate wallet name format
             val validNameRegex = "^[a-zA-Z ]{3,20}+$".toRegex()
             if (!validNameRegex.matches(name)) {
                 binding.walletNameLayout.error = "Wallet name must be 3-20 characters and only contain letters."
                 return@setOnClickListener
             }
 
+            // Check if balance is empty
             if (balanceText.isBlank()) {
                 binding.walletBalanceLayout.error = "Please enter an initial balance."
                 return@setOnClickListener
+            }
+            // Check if an icon has been selected
+            if(iconResId == null){
+                binding.tvSelectIcon.error = "Please select an icon."
+                return@setOnClickListener
+            } else {
+                binding.tvSelectIcon.error = null
             }
 
             // Clean the formatted currency string
             val cleanedBalance = balanceText.replace("[^\\d.]".toRegex(), "")
             val balance = cleanedBalance.toDouble()
 
+            // Ensure balance is greater than zero
             if (balance <= 0) {
                 binding.walletBalanceLayout.error = "Please enter an initial balance."
                 return@setOnClickListener
             }
 
+            // Check for duplicate wallet names
             lifecycleScope.launch {
                 val exists = withContext(Dispatchers.IO) {
                     AppDatabase.getInstance(requireContext()).walletDao().walletExists(
