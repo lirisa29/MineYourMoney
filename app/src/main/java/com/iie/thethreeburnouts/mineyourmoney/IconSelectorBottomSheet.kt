@@ -1,10 +1,12 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.R.attr.gravity
 import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,8 +62,11 @@ class IconSelectorBottomSheet(
         // Dynamically add icons
         for (iconRes in icons) {
             val btn = ImageButton(requireContext()).apply {
-                layoutParams = ViewGroup.MarginLayoutParams(64.dp, 64.dp).apply {
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = 64.dp
+                    height = 64.dp
                     setMargins(12, 12, 12, 12)
+                    gravity = Gravity.CENTER
                 }
                 setBackgroundResource(R.drawable.bg_icon_button)
                 setImageResource(iconRes)

@@ -156,7 +156,9 @@
             android:alignmentMode="alignMargins"
             android:columnCount="4"
             android:rowCount="3"
-            android:useDefaultMargins="true">
+            android:useDefaultMargins="true"
+            android:gravity="center"
+            android:layout_gravity="center">
 
         </GridLayout>
     </ScrollView>
