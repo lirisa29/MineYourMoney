@@ -30,7 +30,6 @@ class AddExpenseFragment : Fragment() {
 
     private var _binding: FragmentAddExpenseBinding? = null
     private val binding get() = _binding!!
-
     private var selectedWallet: Wallet? = null
     private var selectedRecurrence: String? = null
     private var selectedDate: Calendar? = null
@@ -38,7 +37,10 @@ class AddExpenseFragment : Fragment() {
     private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
     private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
-    private val expensesViewModel: ExpensesViewModel by activityViewModels()
+    private val expensesViewModel: ExpensesViewModel by activityViewModels {
+        ExpensesViewModelFactory(requireActivity().application,
+            (requireActivity() as MainActivityProvider).getCurrentUserId())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -169,7 +171,8 @@ class AddExpenseFragment : Fragment() {
                 walletId = selectedWallet!!.id,          // only save ID
                 recurrence = selectedRecurrence,
                 date = selectedDate!!.timeInMillis,      // store millis
-                photoPath = currentPhotoPath             // store path as String
+                photoPath = currentPhotoPath,
+                userId = 0// store path as String
             )
 
             // Save to Dao

@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 class AuthFormFragment : Fragment() {
 
     interface AuthListener {
-        fun onAuthSuccess()
+        fun onAuthSuccess(user: User)
     }
 
     private var listener: AuthListener? = null
@@ -138,12 +138,12 @@ class AuthFormFragment : Fragment() {
 
         val newUser = User(username = username, password = hashedPassword)
 
-        withContext(Dispatchers.IO) {
-            userDao.insertUser(newUser)
-        }
+        val insertedId = withContext(Dispatchers.IO) { userDao.insertUser(newUser) }
+
+        val user = withContext(Dispatchers.IO) { userDao.findById(insertedId.toInt()) }
 
         withContext(Dispatchers.Main) {
-            listener?.onAuthSuccess()
+            user?.let { listener?.onAuthSuccess(it) }
         }
     }
 
@@ -167,7 +167,7 @@ class AuthFormFragment : Fragment() {
         }
 
         withContext(Dispatchers.Main) {
-            listener?.onAuthSuccess()
+            listener?.onAuthSuccess(user)
         }
     }
 
