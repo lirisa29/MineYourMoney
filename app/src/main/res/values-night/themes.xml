@@ -9,5 +9,7 @@
         <!-- Text Colours -->
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+
+        <item name="android:calendarTextColor">@color/text_primary_light</item>
     </style>
 </resources>

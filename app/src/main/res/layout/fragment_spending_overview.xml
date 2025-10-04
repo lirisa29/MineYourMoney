@@ -18,32 +18,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp">
+            android:orientation="horizontal">
 
             <!-- Title Text -->
             <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="25dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/spending_overview"
                 android:textAppearance="@style/TextHeading" />
 
             <!-- Filter Button -->
+            <!-- Clickable Row to pick date range -->
+            <TextView
+                android:id="@+id/tv_selected_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextLabel" />
+
             <ImageButton
-                android:id="@+id/btn_filter"
+                android:id="@+id/btn_select_range"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/filter_expense_history"
-                android:src="@drawable/ic_filter"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                android:contentDescription="@string/open_calendar"
+                android:src="@drawable/ic_date_filter"
                 app:tint="?attr/android:textColorSecondary" />
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
@@ -63,12 +70,12 @@
 
             <!-- Total Spending Card -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="90dp"
                 android:layout_marginBottom="16dp"
-                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="?attr/android:colorForeground">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,7 +87,9 @@
                         android:id="@+id/tv_total_spending_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginEnd="16dp"
                         android:text="@string/total_spending"
                         android:textAppearance="@style/TextBody" />
 
@@ -88,9 +97,11 @@
                         android:id="@+id/tv_total_spending_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:paddingTop="8dp"
                         android:text=""
-                        android:textAppearance="@style/TextHeading"/>
+                        android:textAppearance="@style/TextHeading" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -99,9 +110,9 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="?attr/android:colorForeground">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -131,7 +142,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="@string/filter_wallets"
                             android:src="@drawable/ic_filter"
-                            app:tint="?attr/android:textColorSecondary"/>
+                            app:tint="?attr/android:textColorSecondary" />
                     </LinearLayout>
 
                     <!-- Pie Chart View (MPAndroidChart) -->
@@ -145,11 +156,11 @@
             <!-- Transaction History Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="350dp"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:layout_marginBottom="16dp"
-                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="?attr/android:colorForeground">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -169,9 +180,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/transactionRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:nestedScrollingEnabled="false" />
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
