@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -50,6 +51,11 @@ class AddExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.etExpenseAmount.setText("R0.00")
+        binding.etExpenseAmount.setSelection(binding.etExpenseAmount.text!!.length)
+
+        var current = "R0,00"
 
         binding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
@@ -104,19 +110,43 @@ class AddExpenseFragment : Fragment() {
         }
 
         // Clear error when typing amount
-        binding.etExpenseAmount.addTextChangedListener { editable ->
-            if (!editable.isNullOrBlank()) {
-                binding.expenseAmountLayout.error = null
-                binding.expenseAmountLayout.isErrorEnabled = false
+        binding.etExpenseAmount.addTextChangedListener(object : android.text.TextWatcher {
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrBlank()) {
+                    binding.etExpenseAmount.error = null
+                    binding.expenseAmountLayout.isErrorEnabled = false
+                }
             }
-        }
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (s.toString() != current) {
+                    binding.etExpenseAmount.removeTextChangedListener(this)
+
+                    // Remove all non-digit characters
+                    val cleanString = s.toString().replace("[R,.\\s]".toRegex(), "")
+                    val parsed = cleanString.toDoubleOrNull() ?: 0.0
+                    val formatted = "R${String.format("%,.2f", parsed / 100)}"
+
+                    current = formatted
+                    binding.etExpenseAmount.setText(formatted)
+                    binding.etExpenseAmount.setSelection(formatted.length)
+
+                    binding.etExpenseAmount.addTextChangedListener(this)
+                }
+            }
+        })
 
         // Confirm button
         binding.btnConfirm.setOnClickListener {
             val amount = binding.etExpenseAmount.text.toString()
             val note = binding.etInputNote.text.toString()
+            val cleanedBalance = amount.replace("[^\\d.]".toRegex(), "")
+            val balance = cleanedBalance.toDouble()
 
-            if (amount.isBlank()) {
+            if (balance <= 0.0) {
                 binding.expenseAmountLayout.error = "Please enter an amount"
                 return@setOnClickListener
             }
@@ -134,7 +164,7 @@ class AddExpenseFragment : Fragment() {
             }
 
             val expense = Expense(
-                amount = amount.toDouble(),
+                amount = balance,
                 note = note,
                 walletId = selectedWallet!!.id,          // only save ID
                 recurrence = selectedRecurrence,
@@ -147,6 +177,22 @@ class AddExpenseFragment : Fragment() {
 
             // Save expense (not implemented yet)
             requireActivity().onBackPressed()
+        }
+        // Clear focus when clicking outside the EditText
+        binding.rootLayout.setOnClickListener {
+            binding.etExpenseAmount.clearFocus()
+            binding.etInputNote.clearFocus()
+        }
+        @Suppress("ClickableViewAccessibility")
+        binding.scrollView.setOnTouchListener { v, _ ->
+            binding.etExpenseAmount.clearFocus()
+            binding.etInputNote.clearFocus()
+            v.performClick()
+
+            val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+            // clear keyboard focus
+            false
         }
     }
 
