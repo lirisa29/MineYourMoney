@@ -1,5 +1,6 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import User
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -50,9 +51,11 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
             .commit()
     }
 
-    override fun onAuthSuccess() {
-        val intent = Intent(this, MainActivity::class.java)
+    override fun onAuthSuccess(user: User) {
+        val intent = Intent(this, MainActivity::class.java).apply {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("USER", user)
+        }
         startActivity(intent)
     }
 }
