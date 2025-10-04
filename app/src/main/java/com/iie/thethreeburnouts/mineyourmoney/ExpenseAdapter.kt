@@ -1,5 +1,6 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
             val formattedDate = dateFormat.format(Date(expense.date))
 
             binding.imgWalletIcon.setImageResource(wallet.iconResId)
+            binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
             binding.tvWalletName.text = wallet.name
             binding.tvTransactionDate.text = formattedDate
             binding.tvTransactionAmount.text = "R${String.format("%,.2f", expense.amount)}"

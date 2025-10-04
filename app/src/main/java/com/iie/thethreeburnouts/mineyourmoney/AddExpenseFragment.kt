@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -74,6 +75,7 @@ class AddExpenseFragment : Fragment() {
                         visibility = View.VISIBLE
                     }
                     binding.imgWalletIcon.setImageResource(wallet.iconResId)
+                    binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
                     binding.tvWallet.error = null
                 },
                 preselectedWalletId = selectedWalletId

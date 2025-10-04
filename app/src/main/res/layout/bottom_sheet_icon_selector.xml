@@ -22,8 +22,123 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="yes"
-        android:text="@string/select_icon"
+        android:text="Wallet Icon"
         android:textAppearance="@style/TextHeading" />
+
+    <!-- Select Colour Section -->
+    <TextView
+        android:id="@+id/tv_select_colour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Select Colour"
+        android:textAppearance="@style/TextBody" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="14dp"
+        android:overScrollMode="never"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:id="@+id/colour_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Colour options -->
+            <View
+                android:id="@+id/btn_red"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#D32F2F" />
+
+            <View
+                android:id="@+id/btn_orange"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#F57C00" />
+
+            <View
+                android:id="@+id/btn_amber"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#FFA000" />
+
+            <View
+                android:id="@+id/btn_yellow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#FFEB3B" />
+
+            <View
+                android:id="@+id/btn_green"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#4CAF50" />
+
+            <View
+                android:id="@+id/btn_dark_green"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#388E3C" />
+
+            <View
+                android:id="@+id/btn_light_blue"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#03A9F4" />
+
+            <View
+                android:id="@+id/btn_blue"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#1976D2" />
+
+            <View
+                android:id="@+id/btn_purple"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#9C27B0" />
+
+            <View
+                android:id="@+id/btn_light_purple"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_colour_picker"
+                android:backgroundTint="#AB47BC" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/tv_sheet_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_icon"
+        android:textAppearance="@style/TextBody" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,18 +157,6 @@
             android:columnCount="4"
             android:rowCount="3"
             android:useDefaultMargins="true">
-
-            <!-- Icon 1 -->
-            <ImageButton
-                android:id="@+id/img_icon1"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:background="@drawable/bg_icon_button"
-                android:contentDescription="@string/wallet_icon"
-                android:padding="12dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_wallets"
-                android:tag="@drawable/ic_wallets" />
 
         </GridLayout>
     </ScrollView>
