@@ -34,11 +34,12 @@ class WalletSelectorBottomSheet(
         _binding = BottomSheetWalletSelectorBinding.inflate(inflater, container, false)
 
         val walletDao = AppDatabase.getInstance(requireContext()).walletDao()
+        val userId = (requireActivity() as MainActivityProvider).getCurrentUserId()
 
         // Fetch wallets in a coroutine
         lifecycleScope.launch {
             val wallets = withContext(Dispatchers.IO) {
-                walletDao.getAllWallets() // suspend function
+                walletDao.getAllWallets(userId) // suspend function
             }
             val preselectedPosition = preselectedWalletId?.let { id ->
                 wallets.indexOfFirst { it.id == id }

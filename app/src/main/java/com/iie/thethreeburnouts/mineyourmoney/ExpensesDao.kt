@@ -13,6 +13,9 @@ interface ExpensesDao {
     suspend fun addExpense(expense: Expense)
 
     @Transaction
-    @Query("SELECT * FROM expenses ORDER BY date DESC")
-    fun getAllExpensesLive(): LiveData<List<ExpenseWithWallet>>
+    @Query("SELECT * FROM expenses WHERE userId = :userId ORDER BY date DESC")
+    fun getAllExpensesLive(userId: Int): LiveData<List<ExpenseWithWallet>>
+
+    @Query("SELECT * FROM expenses WHERE userId = :userId AND date BETWEEN :start AND :end ORDER BY date DESC")
+    fun getExpensesInRange(userId: Int, start: Long, end: Long): LiveData<List<ExpenseWithWallet>>
 }

@@ -9,12 +9,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WalletsViewModel (application: Application) : AndroidViewModel(application) {
+class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) {
     private val walletDao = AppDatabase.getInstance(application).walletDao()
 
     private val _currentSort = MutableLiveData<SortType>(SortType.DEFAULT)
 
-    private val allWallets: LiveData<List<Wallet>> = walletDao.getAllWalletsLive()
+    private val allWallets: LiveData<List<Wallet>> = walletDao.getAllWalletsLive(userId)
 
     val wallets: LiveData<List<Wallet>> = MediatorLiveData<List<Wallet>>().apply {
         addSource(allWallets) { updateWallets(this) }
@@ -37,7 +37,7 @@ class WalletsViewModel (application: Application) : AndroidViewModel(application
 
     fun addWallet(wallet: Wallet) {
         viewModelScope.launch(Dispatchers.IO) {
-            walletDao.addWallet(wallet)
+            walletDao.addWallet(wallet.copy(userId = userId))
         }
     }
 

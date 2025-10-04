@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.gridlayout)
     implementation(libs.mpandroidchart)
+    implementation("com.google.android.material:material:1.12.0")
 
     // added for camera functionality
     implementation(libs.androidx.camera.core)

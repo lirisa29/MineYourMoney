@@ -1,48 +1,92 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ItemExpenseBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.exp
 
-class ExpenseAdapter (private var expenses: List<ExpenseWithWallet>):
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter (private var expenses: List<TransactionItem>):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class ExpenseViewHolder(private val binding: ItemExpenseBinding) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        private const val TYPE_HEADER = 0
+        private const val TYPE_EXPENSE = 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (expenses[position]) {
+            is TransactionItem.Header -> TYPE_HEADER
+            is TransactionItem.Expense -> TYPE_EXPENSE
+        }
+    }
+
+    class ExpenseViewHolder(private val binding: ItemExpenseBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(expenseWithWallet: ExpenseWithWallet) {
             val expense = expenseWithWallet.expense
             val wallet = expenseWithWallet.wallet
 
-            // Format date (Long -> String)
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             val formattedDate = dateFormat.format(Date(expense.date))
 
             binding.imgWalletIcon.setImageResource(wallet.iconResId)
+            binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
             binding.tvWalletName.text = wallet.name
             binding.tvTransactionDate.text = formattedDate
             binding.tvTransactionAmount.text = "R${String.format("%,.2f", expense.amount)}"
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // Inflate the view using View Binding
-        val binding = ItemExpenseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ExpenseViewHolder(binding)
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TYPE_HEADER -> {
+                val view = inflater.inflate(R.layout.item_header, parent, false)
+                HeaderViewHolder(view)
+            }
+            else -> {
+                val binding = ItemExpenseBinding.inflate(inflater, parent, false)
+                ExpenseViewHolder(binding)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        val expense = expenses[position]
-        holder.bind(expense)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is HeaderViewHolder -> holder.bind(expenses[position] as TransactionItem.Header)
+            is ExpenseViewHolder -> holder.bind((expenses[position] as TransactionItem.Expense).expense)
+        }
+    }
+
+    // ViewHolders
+    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(header: TransactionItem.Header) {
+            itemView.findViewById<TextView>(R.id.tvMonthHeader).text = header.monthYear
+        }
     }
 
     override fun getItemCount(): Int = expenses.size
 
     // Updates the adapter list
     fun updateList(newExpense: List<ExpenseWithWallet>) {
-        expenses = newExpense
+        val groupedList = mutableListOf<TransactionItem>()
+        val formatter = java.text.SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+
+        // Group by month/year
+        newExpense.groupBy { formatter.format(it.expense.date) }
+            .forEach { (monthYear, list) ->
+                groupedList.add(TransactionItem.Header(monthYear))
+                list.forEach { groupedList.add(TransactionItem.Expense(it)) }
+            }
+
+        expenses = groupedList
         notifyDataSetChanged()
     }
 }
