@@ -37,7 +37,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         var current = "R0,00"
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
         }
 
         binding.btnSelectIcon.setOnClickListener {
@@ -143,7 +143,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
                 val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, color = colour, userId = 0)
                 walletsViewModel.addWallet(newWallet)
-                requireActivity().onBackPressed()
+                (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
             }
         }
         // clears focus when clicking outside EditTexts

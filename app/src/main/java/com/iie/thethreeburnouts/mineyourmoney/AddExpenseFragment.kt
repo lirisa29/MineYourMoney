@@ -9,14 +9,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import androidx.core.widget.addTextChangedListener
+import androidx.work.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
@@ -39,8 +41,10 @@ class AddExpenseFragment : Fragment() {
     private val picId = 123
     private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
     private val expensesViewModel: ExpensesViewModel by activityViewModels {
-        ExpensesViewModelFactory(requireActivity().application,
-            (requireActivity() as MainActivityProvider).getCurrentUserId())
+        ExpensesViewModelFactory(
+            requireActivity().application,
+            (requireActivity() as MainActivityProvider).getCurrentUserId()
+        )
     }
 
     override fun onCreateView(
@@ -61,7 +65,7 @@ class AddExpenseFragment : Fragment() {
         var current = "R0,00"
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
         }
 
         // Wallet selection
@@ -84,14 +88,16 @@ class AddExpenseFragment : Fragment() {
 
         // Recurrence selection
         binding.btnRecurrenceDropdown.setOnClickListener {
-            RecurrenceSelectorBottomSheet(currentRecurrence = selectedRecurrence, onRecurrenceSelected ={ recurrence ->
-                selectedRecurrence = recurrence
-                binding.tvSelectedRecurrence.apply {
-                    text = recurrence
-                    visibility = View.VISIBLE
-                }
-                binding.tvSelectRecurrence.error = null
-            }).show(childFragmentManager, "RecurrenceSelector")
+            RecurrenceSelectorBottomSheet(
+                currentRecurrence = selectedRecurrence,
+                onRecurrenceSelected = { recurrence ->
+                    selectedRecurrence = recurrence
+                    binding.tvSelectedRecurrence.apply {
+                        text = recurrence
+                        visibility = View.VISIBLE
+                    }
+                    binding.tvSelectRecurrence.error = null
+                }).show(childFragmentManager, "RecurrenceSelector")
 
         }
 
@@ -177,24 +183,40 @@ class AddExpenseFragment : Fragment() {
                 userId = 0// store path as String
             )
 
-            // Save to Dao
-            expensesViewModel.addExpense(expense)
-
-            // Save expense (not implemented yet)
-            requireActivity().onBackPressed()
+            expensesViewModel.addExpense(expense) { success, newId ->
+                if (success) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Expense added successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    scheduleRecurringExpense(expense)
+                    (requireActivity() as MainActivity).replaceFragment(ExpenseDetailsFragment(newId.toInt(), source = "AddExpense"), addToBackStack = false)
+                } else {
+                    binding.tvWallet.error = "Insufficient funds in selected wallet"
+                    Toast.makeText(
+                        requireContext(),
+                        "Insufficient funds in selected wallet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
+
         // Clear focus when clicking outside the EditText
         binding.rootLayout.setOnClickListener {
             binding.etExpenseAmount.clearFocus()
             binding.etInputNote.clearFocus()
         }
+
         @Suppress("ClickableViewAccessibility")
         binding.scrollView.setOnTouchListener { v, _ ->
             binding.etExpenseAmount.clearFocus()
             binding.etInputNote.clearFocus()
             v.performClick()
 
-            val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(v.windowToken, 0)
             // clear keyboard focus
             false
@@ -230,7 +252,8 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
@@ -266,6 +289,47 @@ class AddExpenseFragment : Fragment() {
             // Mark that a photo exists
             binding.btnUploadPhoto.setImageResource(R.drawable.ic_photo_attached)
         }
+    }
+
+    private fun scheduleRecurringExpense(expense: Expense) {
+        val TAG = "AddExpenseFragment"
+        Log.d(
+            TAG,
+            "Scheduling recurring expense for: ${expense.walletId} | recurrence=${expense.recurrence}"
+        )
+
+        val interval = when (expense.recurrence) {
+            "Daily" -> 1L
+            "Weekly" -> 7L
+            "Monthly" -> 30L
+            "Yearly" -> 365L
+            else -> {
+                Log.d(TAG, "No recurrence selected. Skipping scheduling") // Never
+                return
+            }
+        }
+
+        val data = workDataOf(
+            "amount" to expense.amount,
+            "note" to expense.note,
+            "walletId" to expense.walletId,
+            "recurrence" to expense.recurrence,
+            "userId" to expense.userId
+        )
+
+        val workRequest = PeriodicWorkRequestBuilder<RecurringExpenseWorker>(
+            interval, java.util.concurrent.TimeUnit.DAYS
+        )
+            .setInputData(data)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+            "recurring_expense_${expense.id}_${expense.recurrence}",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+
+        Log.d(TAG, "WorkManager job scheduled successfully with interval=$interval days")
     }
 
     override fun onDestroyView() {

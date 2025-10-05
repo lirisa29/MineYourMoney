@@ -1,14 +1,18 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.data.PieDataSet
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -39,7 +43,16 @@ class SpendingOverviewFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         // Setup RecyclerView
-        expenseAdapter = ExpenseAdapter(emptyList())
+        expenseAdapter = ExpenseAdapter(emptyList()) { expenseId ->
+            // Open ExpenseDetailsFragment
+            (requireActivity() as MainActivity).replaceFragment(
+                ExpenseDetailsFragment(expenseId, source = "SpendingOverview"),
+                addToBackStack = false
+            )
+        }
+
+        setupPieChart()
+
         binding.transactionRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = expenseAdapter
@@ -54,10 +67,12 @@ class SpendingOverviewFragment : Fragment(){
 
             val total = expenses.sumOf { it.expense.amount }
             binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
+
+            updatePieChart(expenses)
         }
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
         }
 
         binding.btnSelectRange.setOnClickListener {
@@ -96,6 +111,8 @@ class SpendingOverviewFragment : Fragment(){
                         expenseAdapter.updateList(filteredExpenses)
                         val total = filteredExpenses.sumOf { it.expense.amount }
                         binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
+
+                        updatePieChart(filteredExpenses)
                     }
             }
 
@@ -114,5 +131,74 @@ class SpendingOverviewFragment : Fragment(){
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupPieChart() {
+        binding.spendingPieChart.apply {
+            description.isEnabled = false
+            isRotationEnabled = true
+            setUsePercentValues(false)
+            setDrawEntryLabels(false)
+            legend.isEnabled = false
+            setDrawHoleEnabled(false)
+        }
+
+        // Handle clicks on segments
+        binding.spendingPieChart.setOnChartValueSelectedListener(object :
+            com.github.mikephil.charting.listener.OnChartValueSelectedListener {
+            override fun onValueSelected(e: com.github.mikephil.charting.data.Entry?, h: com.github.mikephil.charting.highlight.Highlight?) {
+                if (e is com.github.mikephil.charting.data.PieEntry) {
+                    val walletName = e.label
+                    val amount = e.value
+                    Toast.makeText(requireContext(), "$walletName: R${String.format("%,.2f", amount)}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onNothingSelected() {}
+        })
+    }
+
+    private fun updatePieChart(expenses: List<ExpenseWithWallet>) {
+        // Aggregate total per wallet
+        val totalsPerWallet = expenses.groupBy { it.wallet.name }
+            .mapValues { entry -> entry.value.sumOf { it.expense.amount } }
+
+        val entries = totalsPerWallet.map { (walletName, total) ->
+            // Store a reference to the color in PieEntry using 'data'
+            val walletColor = expenses.find { it.wallet.name == walletName }?.wallet?.color ?: Color.GRAY
+            com.github.mikephil.charting.data.PieEntry(total.toFloat(), walletName, walletColor)
+        }
+
+        val dataSet = PieDataSet(entries, "")
+        // Assign colors based on the wallet color stored in PieEntry.data
+        val colors = entries.map { it.data as? Int ?: Color.GRAY }
+        dataSet.colors = colors
+
+        dataSet.valueFormatter = WalletValueFormatter() // <-- custom formatter
+
+        dataSet.valueTextSize = 14f
+        dataSet.valueTextColor = Color.WHITE
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
+        // **Center values inside the slice**
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE)
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE)
+
+        dataSet.colors = colors
+        dataSet.sliceSpace = 2f
+
+        val data = com.github.mikephil.charting.data.PieData(dataSet)
+        data.setDrawValues(true)
+
+        binding.spendingPieChart.data = data
+        binding.spendingPieChart.invalidate()
+    }
+
+    class WalletValueFormatter : com.github.mikephil.charting.formatter.ValueFormatter() {
+        override fun getPieLabel(value: Float, pieEntry: com.github.mikephil.charting.data.PieEntry?): String {
+            pieEntry ?: return ""
+            val walletName = pieEntry.label
+            val amount = value
+            return "$walletName: R${String.format("%,.2f", amount)}"
+        }
     }
 }

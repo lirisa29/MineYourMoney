@@ -4,8 +4,6 @@ import User
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -43,9 +41,9 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right,   // enter
-                R.anim.slide_out_right,   // exit (if navigating to another fragment)
+                R.anim.slide_out_left,   // exit (if navigating to another fragment)
                 R.anim.slide_in_right,    // popEnter (when returning to this fragment)
-                R.anim.slide_out_right   // popExit (when popping this fragment)
+                R.anim.slide_out_left   // popExit (when popping this fragment)
             )
             .replace(binding.fragmentContainer.id, fragment)
             .addToBackStack(null)

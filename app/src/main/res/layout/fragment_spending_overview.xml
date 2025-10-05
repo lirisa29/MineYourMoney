@@ -55,32 +55,28 @@
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:padding="16dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
             android:spacing="16dp">
 
             <!-- Total Spending Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="90dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="?attr/android:colorForeground"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -128,28 +124,19 @@
 
                         <TextView
                             android:id="@+id/tv_total_per_wallet_label"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:textAlignment="center"
                             android:layout_marginTop="15dp"
                             android:text="@string/total_spending_per_wallet"
                             android:textAppearance="@style/TextBody" />
-
-                        <ImageButton
-                            android:id="@+id/btn_filter_wallet"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/filter_wallets"
-                            android:src="@drawable/ic_filter"
-                            app:tint="?attr/android:textColorSecondary" />
-                    </LinearLayout>
 
                     <!-- Pie Chart View (MPAndroidChart) -->
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/spendingPieChart"
                         android:layout_width="match_parent"
                         android:layout_height="250dp" />
+                </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -187,6 +174,5 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
