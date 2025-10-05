@@ -191,7 +191,7 @@ class AddExpenseFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     scheduleRecurringExpense(expense)
-                    (requireActivity() as MainActivity).replaceFragment(ExpenseDetailsFragment(newId.toInt()), addToBackStack = false)
+                    (requireActivity() as MainActivity).replaceFragment(ExpenseDetailsFragment(newId.toInt(), source = "AddExpense"), addToBackStack = false)
                 } else {
                     binding.tvWallet.error = "Insufficient funds in selected wallet"
                     Toast.makeText(

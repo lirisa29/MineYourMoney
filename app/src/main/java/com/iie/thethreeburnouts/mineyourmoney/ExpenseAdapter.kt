@@ -12,7 +12,8 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.exp
 
-class ExpenseAdapter (private var expenses: List<TransactionItem>):
+class ExpenseAdapter (private var expenses: List<TransactionItem>,
+                      private val onExpenseClick: (Int) -> Unit):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -27,7 +28,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
         }
     }
 
-    class ExpenseViewHolder(private val binding: ItemExpenseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ExpenseViewHolder(private val binding: ItemExpenseBinding, private val onExpenseClick: (Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
         fun bind(expenseWithWallet: ExpenseWithWallet) {
             val expense = expenseWithWallet.expense
             val wallet = expenseWithWallet.wallet
@@ -40,6 +41,11 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
             binding.tvWalletName.text = wallet.name
             binding.tvTransactionDate.text = formattedDate
             binding.tvTransactionAmount.text = "-R${String.format("%,.2f", expense.amount)}"
+
+            // Handle item click
+            binding.root.setOnClickListener {
+                onExpenseClick(expense.id) // pass expense ID
+            }
         }
     }
 
@@ -53,7 +59,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
             }
             else -> {
                 val binding = ItemExpenseBinding.inflate(inflater, parent, false)
-                ExpenseViewHolder(binding)
+                ExpenseViewHolder(binding, onExpenseClick)
             }
         }
     }

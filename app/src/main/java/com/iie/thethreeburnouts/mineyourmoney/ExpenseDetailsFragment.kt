@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentExpenseDetailsBinding
 
-class ExpenseDetailsFragment(private val expenseId: Int) : Fragment() {
+class ExpenseDetailsFragment(private val expenseId: Int, private val source: String) : Fragment() {
 
     private var _binding: FragmentExpenseDetailsBinding? = null
     private val binding get() = _binding!!
@@ -41,7 +41,12 @@ class ExpenseDetailsFragment(private val expenseId: Int) : Fragment() {
             expensesViewModel.deleteExpense(expenseId)
             Toast.makeText(requireContext(), "Expense deleted", Toast.LENGTH_SHORT).show()
 
-            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
+            when (source) {
+                "SpendingOverview" -> (requireActivity() as MainActivity)
+                    .replaceFragment(SpendingOverviewFragment(), addToBackStack = false)
+                "AddExpense" -> (requireActivity() as MainActivity)
+                    .replaceFragment(WalletsFragment(), addToBackStack = false)
+            }
         }
     }
 
@@ -49,7 +54,12 @@ class ExpenseDetailsFragment(private val expenseId: Int) : Fragment() {
         binding.topAppBar.setNavigationOnClickListener {
             Log.d(TAG, "Back arrow pressed")
 
-            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
+            when (source) {
+                "SpendingOverview" -> (requireActivity() as MainActivity)
+                    .replaceFragment(SpendingOverviewFragment(), addToBackStack = false)
+                "AddExpense" -> (requireActivity() as MainActivity)
+                    .replaceFragment(WalletsFragment(), addToBackStack = false)
+            }
         }
     }
 
