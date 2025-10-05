@@ -9,6 +9,8 @@
         <item name="android:textColorSecondary">@color/text_secondary_light</item>
 
         <item name="android:calendarTextColor">@color/text_primary_dark</item>
+
+        <item name="android:colorError">@color/expense_light</item>
     </style>
 
     <style name="Theme.MineYourMoney" parent="Base.Theme.MineYourMoney" />

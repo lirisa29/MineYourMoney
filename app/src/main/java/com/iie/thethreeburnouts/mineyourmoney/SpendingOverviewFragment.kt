@@ -57,7 +57,7 @@ class SpendingOverviewFragment : Fragment(){
         }
 
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
         }
 
         binding.btnSelectRange.setOnClickListener {

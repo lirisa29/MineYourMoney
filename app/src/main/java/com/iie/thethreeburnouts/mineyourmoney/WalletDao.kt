@@ -21,6 +21,15 @@ interface WalletDao { //(Google Developers Training team, 2024)
     @Query("SELECT EXISTS(SELECT 1 FROM wallets WHERE userId = :userId AND LOWER(name) = LOWER(:name))") //(Google Developers Training team, 2024)
     suspend fun walletExists(userId: Int, name: String): Boolean //(Google Developers Training team, 2024)
 
+    @Query("UPDATE wallets SET balance = balance - :amount WHERE id = :walletId")
+    suspend fun subtractFromWallet(walletId: Int, amount: Double)
+
+    @Query("SELECT balance FROM wallets WHERE id = :walletId LIMIT 1")
+    suspend fun getWalletBalance(walletId: Int): Double
+
+    @Query("UPDATE wallets SET balance = balance + :amount WHERE id = :walletId")
+    suspend fun addToWallet(walletId: Int, amount: Double)
+
     @Query("DELETE FROM wallets WHERE userId = :userId") //(Google Developers Training team, 2024)
     suspend fun clearAll(userId: Int) //(Google Developers Training team, 2024)
 }

@@ -48,50 +48,17 @@ class WalletsFragment : Fragment() {
 
         // Navigate to spending overview screen
         binding.btnSpendingOverview.setOnClickListener {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right
-                )
-                .add(android.R.id.content, SpendingOverviewFragment())
-                .addToBackStack(null)
-                .commit()
+            (requireActivity() as MainActivity).replaceFragment(SpendingOverviewFragment(), addToBackStack = false)
         }
 
         // Navigate to add expense screen
         binding.fabAddExpense.setOnClickListener {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right
-                )
-                .add(android.R.id.content, AddExpenseFragment())
-                .addToBackStack(null)
-                .commit()
+            (requireActivity() as MainActivity).replaceFragment(AddExpenseFragment(), addToBackStack = false)
         }
 
         // Navigate to create wallet screen
         binding.btnCreateWallet.setOnClickListener {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_right
-                )
-                .add(android.R.id.content, CreateWalletFragment())
-                .addToBackStack(null)
-                .commit()
+            (requireActivity() as MainActivity).replaceFragment(CreateWalletFragment(), addToBackStack = false)
         }
 
         // Show sort options

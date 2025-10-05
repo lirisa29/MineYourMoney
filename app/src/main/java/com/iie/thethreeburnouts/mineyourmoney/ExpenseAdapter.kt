@@ -39,7 +39,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
             binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
             binding.tvWalletName.text = wallet.name
             binding.tvTransactionDate.text = formattedDate
-            binding.tvTransactionAmount.text = "R${String.format("%,.2f", expense.amount)}"
+            binding.tvTransactionAmount.text = "-R${String.format("%,.2f", expense.amount)}"
         }
     }
 
