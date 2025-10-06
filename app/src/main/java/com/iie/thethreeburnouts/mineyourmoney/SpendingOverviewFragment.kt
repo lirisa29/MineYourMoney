@@ -130,6 +130,8 @@ class SpendingOverviewFragment : Fragment(){
                     expenseAdapter.updateList(expenses)
                     val total = expenses.sumOf { it.expense.amount }
                     binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
+
+                    updatePieChart(expenses)
                 }
             }
         }
