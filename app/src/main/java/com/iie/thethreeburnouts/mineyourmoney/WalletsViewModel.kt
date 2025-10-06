@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) {
+class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
     private val walletDao = AppDatabase.getInstance(application).walletDao()
 
     private val _currentSort = MutableLiveData<SortType>(SortType.DEFAULT)
@@ -36,10 +36,13 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
     }
 
     fun addWallet(wallet: Wallet) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
             walletDao.addWallet(wallet.copy(userId = userId))
         }
     }
 
     fun getCurrentSort(): SortType = _currentSort.value ?: SortType.DEFAULT
 }
+//REFERENCE LIST:
+/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

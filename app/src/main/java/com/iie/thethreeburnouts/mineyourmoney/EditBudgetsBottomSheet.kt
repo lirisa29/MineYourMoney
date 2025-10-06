@@ -37,7 +37,7 @@ class EditBudgetsBottomSheet(
 
         // Set initial formatted text
         val formattedStart = "R" + String.format("%,.2f", currentLimit)
-        binding.etBudgetAmount.setText(formattedStart)
+        binding.etBudgetAmount.setText(formattedStart) //(GeeksforGeeks, 2025)
         current = formattedStart
 
         // Format text as currency while typing
@@ -46,19 +46,19 @@ class EditBudgetsBottomSheet(
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                val newText = s.toString()
-                if (newText != current) {
+                val newText = s.toString() //(GeeksforGeeks, 2025)
+                if (newText != current) { //(GeeksforGeeks, 2025)
                     binding.etBudgetAmount.removeTextChangedListener(this)
 
                     // Remove everything except digits
-                    val cleanString = newText.replace("[R,.\\s]".toRegex(), "")
+                    val cleanString = newText.replace("[R,.\\s]".toRegex(), "") //(GeeksforGeeks, 2025)
                     val parsed = cleanString.toDoubleOrNull() ?: 0.0
 
                     // Format as currency (R#,###.##)
                     val formatted = "R" + String.format("%,.2f", parsed / 100)
 
                     current = formatted
-                    binding.etBudgetAmount.setText(formatted)
+                    binding.etBudgetAmount.setText(formatted) //(GeeksforGeeks, 2025)
                     binding.etBudgetAmount.setSelection(formatted.length)
 
                     binding.etBudgetAmount.addTextChangedListener(this)
@@ -79,7 +79,7 @@ class EditBudgetsBottomSheet(
     }
 
     private fun saveAndDismiss() {
-        val text = binding.etBudgetAmount.text.toString().replace("[R,\\s]".toRegex(), "")
+        val text = binding.etBudgetAmount.text.toString().replace("[R,\\s]".toRegex(), "") //(GeeksforGeeks, 2025)
         val newLimit = text.toDoubleOrNull() ?: currentLimit
         onLimitChanged(newLimit)
         dismiss()
@@ -114,3 +114,6 @@ class EditBudgetsBottomSheet(
         _binding = null
     }
 }
+//REFERENCE LIST:
+/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */

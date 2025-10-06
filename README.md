@@ -25,6 +25,7 @@ OPSC7311 POE
 
 ### Budget and Goals  
 - Users can set a monthly spending goal to track and control their total expenditure.
+- Users divide the monthly limit into wallets to give every cent a purpose.
 
 ### Data Visualization  
 - The total expenditure for each wallet is displayed using a pie chart.  
@@ -34,10 +35,11 @@ OPSC7311 POE
 
 ### Data Persistence  
 - The app uses RoomDB for local data storage and management.  
-- The database contains three main tables:  
+- The database contains four main tables:  
   - **User Table** – stores login credentials and user information.  
   - **Wallet Table** – stores details of all wallets created by the user.  
-  - **Expense Table** – stores details of all expenses linked to the respective wallets and user accounts.  
+  - **Expense Table** – stores details of all expenses linked to the respective wallets and user accounts.
+  - **Budgets Table** - stores details of the monthly budget limit set by the user.  
 - Data is relationally linked and filtered by the logged-in user to maintain data separation and privacy.
 
 ---

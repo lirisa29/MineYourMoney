@@ -40,8 +40,8 @@ class AddExpenseFragment : Fragment() {
     private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
     private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
-    private val expensesViewModel: ExpensesViewModel by activityViewModels {
-        ExpensesViewModelFactory(
+    private val expensesViewModel: ExpensesViewModel by activityViewModels { //(Google Developers Training team, 2025)
+        ExpensesViewModelFactory( //(Google Developers Training team, 2025)
             requireActivity().application,
             (requireActivity() as MainActivityProvider).getCurrentUserId()
         )
@@ -59,7 +59,7 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.etExpenseAmount.setText("R0.00")
+        binding.etExpenseAmount.setText("R0.00") //(GeeksforGeeks, 2025)
         binding.etExpenseAmount.setSelection(binding.etExpenseAmount.text!!.length)
 
         var current = "R0,00"
@@ -75,7 +75,7 @@ class AddExpenseFragment : Fragment() {
                     selectedWallet = wallet
                     selectedWalletId = wallet.id
                     binding.tvSelectedWallet.apply {
-                        text = wallet.name
+                        text = wallet.name //(GeeksforGeeks, 2025)
                         visibility = View.VISIBLE
                     }
                     binding.imgWalletIcon.setImageResource(wallet.iconResId)
@@ -93,10 +93,10 @@ class AddExpenseFragment : Fragment() {
                 onRecurrenceSelected = { recurrence ->
                     selectedRecurrence = recurrence
                     binding.tvSelectedRecurrence.apply {
-                        text = recurrence
+                        text = recurrence //(GeeksforGeeks, 2025)
                         visibility = View.VISIBLE
                     }
-                    binding.tvSelectRecurrence.error = null
+                    binding.tvSelectRecurrence.error = null //(GeeksforGeeks, 2025)
                 }).show(childFragmentManager, "RecurrenceSelector")
 
         }
@@ -107,15 +107,15 @@ class AddExpenseFragment : Fragment() {
         }
 
         // Camera photo upload
-        binding.btnUploadPhoto.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED
+        binding.btnUploadPhoto.setOnClickListener { //(Dentistkiller, 2025)
+            if (ContextCompat.checkSelfPermission( //(Dentistkiller, 2025)
+                    requireContext(), //(Dentistkiller, 2025)
+                    Manifest.permission.CAMERA //(Dentistkiller, 2025)
+                ) == PackageManager.PERMISSION_GRANTED //(Dentistkiller, 2025)
             ) {
-                openCamera()
-            } else {
-                requestCameraPermission()
+                openCamera() //(Dentistkiller, 2025)
+            } else { //(Dentistkiller, 2025)
+                requestCameraPermission() //(Dentistkiller, 2025)
             }
         }
 
@@ -126,8 +126,8 @@ class AddExpenseFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.isNullOrBlank()) {
-                    binding.etExpenseAmount.error = null
-                    binding.expenseAmountLayout.isErrorEnabled = false
+                    binding.etExpenseAmount.error = null //(GeeksforGeeks, 2025)
+                    binding.expenseAmountLayout.isErrorEnabled = false //(GeeksforGeeks, 2025)
                 }
             }
 
@@ -141,7 +141,7 @@ class AddExpenseFragment : Fragment() {
                     val formatted = "R${String.format("%,.2f", parsed / 100)}"
 
                     current = formatted
-                    binding.etExpenseAmount.setText(formatted)
+                    binding.etExpenseAmount.setText(formatted) //(GeeksforGeeks, 2025)
                     binding.etExpenseAmount.setSelection(formatted.length)
 
                     binding.etExpenseAmount.addTextChangedListener(this)
@@ -151,25 +151,25 @@ class AddExpenseFragment : Fragment() {
 
         // Confirm button
         binding.btnConfirm.setOnClickListener {
-            val amount = binding.etExpenseAmount.text.toString()
-            val note = binding.etInputNote.text.toString()
+            val amount = binding.etExpenseAmount.text.toString() //(GeeksforGeeks, 2025)
+            val note = binding.etInputNote.text.toString() //(GeeksforGeeks, 2025)
             val cleanedBalance = amount.replace("[^\\d.]".toRegex(), "")
             val balance = cleanedBalance.toDouble()
 
             if (balance <= 0.0) {
-                binding.expenseAmountLayout.error = "Please enter an amount"
+                binding.expenseAmountLayout.error = "Please enter an amount" //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
             if (selectedWallet == null) {
-                binding.tvWallet.error = "Please select a wallet"
+                binding.tvWallet.error = "Please select a wallet" //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
             if (selectedDate == null) {
-                binding.tvSelectDate.error = "Please select a date"
+                binding.tvSelectDate.error = "Please select a date" //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
             if (selectedRecurrence == null) {
-                binding.tvSelectRecurrence.error = "Please select recurrence"
+                binding.tvSelectRecurrence.error = "Please select recurrence" //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
 
@@ -183,7 +183,7 @@ class AddExpenseFragment : Fragment() {
                 userId = 0// store path as String
             )
 
-            expensesViewModel.addExpense(expense) { success, newId ->
+            expensesViewModel.addExpense(expense) { success, newId -> //(Google Developers Training team, 2025)
                 if (success) {
                     Toast.makeText(
                         requireContext(),
@@ -228,7 +228,7 @@ class AddExpenseFragment : Fragment() {
         DatePickerBottomSheet(initialDate = selectedDatePicker) { year, month, day ->
             selectedDatePicker.set(year, month, day)
             binding.tvSelectedDate.apply {
-                text = "$day/${month + 1}/$year"
+                text = "$day/${month + 1}/$year" //(GeeksforGeeks, 2025)
                 visibility = View.VISIBLE
             }
             selectedDate = selectedDatePicker
@@ -337,3 +337,13 @@ class AddExpenseFragment : Fragment() {
         _binding = null
     }
 }
+//REFERENCE LIST
+/* Geeks for Geeks, 2025). Working With the EditText in Android [Online].
+Available at: https://www.geeksforgeeks.org/android/working-with-the-edittext-in-android/  [Accessed 5 October 2025). */
+/* Geeks for Geeks, 2025). Implement Form Validation (Error to EditText) in Android [Online].
+Available at: https://www.geeksforgeeks.org/android/implement-form-validation-error-to-edittext-in-android/ [Accessed 5 October 2025). */
+/* //(Dentistkiller, 2025). Prog7313. [Online]. Available at: https://github.com/iie-PROG7313/Prog7313 [Accessed 6 October 2025).
+/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */
+/*(Google Developers Training team, 2025). Create ViewModels with dependencies [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories [Accessed 6 October 2025). */

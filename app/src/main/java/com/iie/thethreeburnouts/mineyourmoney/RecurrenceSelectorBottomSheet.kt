@@ -15,9 +15,8 @@ import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetRecurrenceS
 class RecurrenceSelectorBottomSheet (
     private val onRecurrenceSelected: (String) -> Unit,
     private val currentRecurrence: String? = null
-) : BottomSheetDialogFragment() {
-
-    private var _binding: BottomSheetRecurrenceSelectorBinding? = null
+) : BottomSheetDialogFragment() { //(GeeksforGeeks, 2025)
+    private var _binding: BottomSheetRecurrenceSelectorBinding? = null //(GeeksforGeeks, 2025)
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,7 +24,7 @@ class RecurrenceSelectorBottomSheet (
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BottomSheetRecurrenceSelectorBinding.inflate(inflater, container, false)
+        _binding = BottomSheetRecurrenceSelectorBinding.inflate(inflater, container, false) //(GeeksforGeeks, 2025)
 
         when (currentRecurrence) {
             "Never" -> binding.btnRecurrenceNever.isChecked = true
@@ -65,12 +64,12 @@ class RecurrenceSelectorBottomSheet (
         val dialog = super.onCreateDialog(savedInstanceState)
 
         dialog.setOnShowListener {
-            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) //(GeeksforGeeks, 2025)
             val typedValue = TypedValue()
             val theme = requireContext().theme
             val resolved = theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE // fallback
-            bottomSheet?.setBackgroundColor(backgroundColor)
+            bottomSheet?.setBackgroundColor(backgroundColor) //(GeeksforGeeks, 2025)
             dialog.window?.navigationBarColor = backgroundColor
         }
 
@@ -85,3 +84,6 @@ class RecurrenceSelectorBottomSheet (
         _binding = null
     }
 }
+//REFERENCE LIST:
+/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */

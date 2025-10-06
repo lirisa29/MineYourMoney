@@ -19,9 +19,9 @@ import com.iie.thethreeburnouts.mineyourmoney.databinding.BottomSheetIconSelecto
 
 class IconSelectorBottomSheet(
     private val onIconSelected: (iconResId: Int, color: Int) -> Unit
-) : BottomSheetDialogFragment() {
+) : BottomSheetDialogFragment() {//(Geeks for Geeks, 2025)
 
-    private var _binding: BottomSheetIconSelectorBinding? = null
+    private var _binding: BottomSheetIconSelectorBinding? = null//(Geeks for Geeks, 2025)
     private val binding get() = _binding!!
     // Store references to created buttons so we can update tint later
     private val iconButtons = mutableListOf<ImageButton>()
@@ -33,7 +33,7 @@ class IconSelectorBottomSheet(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = BottomSheetIconSelectorBinding.inflate(inflater, container, false)
+        _binding = BottomSheetIconSelectorBinding.inflate(inflater, container, false) //(Geeks for Geeks, 2025)
         return binding.root
     }
 
@@ -110,17 +110,17 @@ class IconSelectorBottomSheet(
         val dialog = super.onCreateDialog(savedInstanceState)
 
         dialog.setOnShowListener {
-            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) //(Geeks for Geeks, 2025)
             val typedValue = TypedValue()
             val theme = requireContext().theme
             val resolved = theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE // fallback
-            bottomSheet?.setBackgroundColor(backgroundColor)
+            bottomSheet?.setBackgroundColor(backgroundColor) //(Geeks for Geeks, 2025)
             dialog.window?.navigationBarColor = backgroundColor
 
             // Allow scrollable BottomSheet
-            val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheet!!)
-            behavior.peekHeight = com.google.android.material.bottomsheet.BottomSheetBehavior.PEEK_HEIGHT_AUTO
+            val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheet!!) //(Geeks for Geeks, 2025)
+            behavior.peekHeight = com.google.android.material.bottomsheet.BottomSheetBehavior.PEEK_HEIGHT_AUTO //(Geeks for Geeks, 2025)
             behavior.isFitToContents = true
         }
 
@@ -135,3 +135,6 @@ class IconSelectorBottomSheet(
         _binding = null
     }
 }
+//REFERENCE LIST:
+/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */

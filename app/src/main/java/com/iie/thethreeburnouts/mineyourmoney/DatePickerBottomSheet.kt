@@ -18,7 +18,7 @@ class DatePickerBottomSheet(
     private val onDateSelected: (year: Int, month: Int, day: Int) -> Unit
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: BottomSheetDatePickerBinding? = null
+    private var _binding: BottomSheetDatePickerBinding? = null //(GeeksforGeeks, 2025)
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,7 +27,7 @@ class DatePickerBottomSheet(
         savedInstanceState: Bundle?
     ): View {
         Log.d("DatePickerBottomSheet", "onCreateView called")
-        _binding = BottomSheetDatePickerBinding.inflate(inflater, container, false)
+        _binding = BottomSheetDatePickerBinding.inflate(inflater, container, false) //(GeeksforGeeks, 2025)
 
         Log.d("DatePickerBottomSheet","Initializing DatePicker")
 
@@ -62,12 +62,12 @@ class DatePickerBottomSheet(
         dialog.setOnShowListener {
             Log.d("DatePickerBottomSheet", "Dialog shown")
             val bottomSheet =
-                (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+                (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) //(GeeksforGeeks, 2025)
             val typedValue = TypedValue()
             val theme = requireContext().theme
             val resolved = theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE
-            bottomSheet?.setBackgroundColor(backgroundColor)
+            bottomSheet?.setBackgroundColor(backgroundColor) //(GeeksforGeeks, 2025)
             dialog.window?.navigationBarColor = backgroundColor
         }
 
@@ -83,3 +83,6 @@ class DatePickerBottomSheet(
         _binding = null
     }
 }
+//REFERENCE LIST:
+/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */
