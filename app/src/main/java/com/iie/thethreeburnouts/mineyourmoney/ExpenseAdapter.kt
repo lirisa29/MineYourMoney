@@ -15,7 +15,7 @@ import kotlin.math.exp
 
 class ExpenseAdapter (private var expenses: List<TransactionItem>,
                       private val onExpenseClick: (Int) -> Unit):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() { //(Google Developers Training team, 2024)
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -29,7 +29,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
         }
     }
 
-    class ExpenseViewHolder(private val binding: ItemExpenseBinding, private val onExpenseClick: (Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+    class ExpenseViewHolder(private val binding: ItemExpenseBinding, private val onExpenseClick: (Int) -> Unit) : RecyclerView.ViewHolder(binding.root) { //(Google Developers Training team, 2024)
         fun bind(expenseWithWallet: ExpenseWithWallet) {
             val expense = expenseWithWallet.expense
             val wallet = expenseWithWallet.wallet
@@ -54,7 +54,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder { //(Google Developers Training team, 2024)
         // Inflate the view using View Binding
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -69,7 +69,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { //(Google Developers Training team, 2024)
         when (holder) {
             is HeaderViewHolder -> holder.bind(expenses[position] as TransactionItem.Header)
             is ExpenseViewHolder -> holder.bind((expenses[position] as TransactionItem.Expense).expense)
@@ -77,7 +77,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
     }
 
     // ViewHolders
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { //(Google Developers Training team, 2024)
         fun bind(header: TransactionItem.Header) {
             itemView.findViewById<TextView>(R.id.tvMonthHeader).text = header.monthYear
         }
@@ -102,3 +102,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
         Log.d("ExpenseAdapater", "Adapter notified of data change")
     }
 }
+
+//REFERENCE LIST
+/* Google Developers Training team, 2024). Create dynamic lists with recyclerView. [Online].
+Available at: https://developer.android.com/develop/ui/views/layout/recyclerview [Accessed 3 October 2025). */

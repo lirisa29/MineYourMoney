@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ItemWalletBinding
 
 class WalletAdapter(private var wallets: List<Wallet>) :
-    RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
+    RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() { //(Google Developers Training team, 2024)
 
-    inner class WalletViewHolder(private val binding: ItemWalletBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class WalletViewHolder(private val binding: ItemWalletBinding) : RecyclerView.ViewHolder(binding.root) { //(Google Developers Training team, 2024)
         fun bind(wallet: Wallet) {
             binding.imgWalletIcon.setImageResource(wallet.iconResId)
             binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
@@ -37,4 +37,7 @@ class WalletAdapter(private var wallets: List<Wallet>) :
         notifyDataSetChanged()
     }
 }
+//REFERENCE LIST
+/* Google Developers Training team, 2024). Create dynamic lists with recyclerView. [Online].
+Available at: https://developer.android.com/develop/ui/views/layout/recyclerview [Accessed 3 October 2025). */
 

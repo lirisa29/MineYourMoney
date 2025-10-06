@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class BudgetViewModel(application: Application, private val userId: Int) :
-    AndroidViewModel(application) {
+class BudgetViewModel(application: Application, private val userId: Int) : //(Google Developers Training team, 2025)
+    AndroidViewModel(application) { //(Google Developers Training team, 2025)
 
     private val dao = AppDatabase.getInstance(application).budgetDao()
     private val repository = BudgetRepository(dao)
@@ -16,7 +16,7 @@ class BudgetViewModel(application: Application, private val userId: Int) :
     val budget: LiveData<Budget?> = repository.getBudgetLive(userId)
 
     fun loadOrInitBudget() {
-        viewModelScope.launch {
+        viewModelScope.launch { //(Google Developers Training team, 2025)
             val existing = repository.getBudget(userId)
             val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
             if (existing == null) {
@@ -29,7 +29,7 @@ class BudgetViewModel(application: Application, private val userId: Int) :
     }
 
     fun updateMonthlyLimit(newLimit: Double) {
-        viewModelScope.launch {
+        viewModelScope.launch { //(Google Developers Training team, 2025)
             val current = repository.getBudget(userId)
             val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
 
@@ -61,14 +61,17 @@ class BudgetViewModel(application: Application, private val userId: Int) :
     }
 
     fun addSpending(amount: Double) {
-        viewModelScope.launch {
+        viewModelScope.launch { //(Google Developers Training team, 2025)
             repository.addSpending(userId, amount)
         }
     }
 
     fun refundSpending(amount: Double) {
-        viewModelScope.launch {
+        viewModelScope.launch { //(Google Developers Training team, 2025)
             repository.refundSpending(userId, amount)
         }
     }
 }
+//REFERENCE LIST:
+/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

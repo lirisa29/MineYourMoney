@@ -24,8 +24,8 @@ class SpendingOverviewFragment : Fragment(){
     private var _binding: FragmentSpendingOverviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var expenseAdapter: ExpenseAdapter
-    private val expensesViewModel: ExpensesViewModel by activityViewModels(){
-        ExpensesViewModelFactory(requireActivity().application,
+    private val expensesViewModel: ExpensesViewModel by activityViewModels(){ //(Google Developers Training team, 2025)
+        ExpensesViewModelFactory(requireActivity().application, //(Google Developers Training team, 2025)
             (requireActivity() as MainActivityProvider).getCurrentUserId())
     }
     // Store the last selected range
@@ -55,7 +55,7 @@ class SpendingOverviewFragment : Fragment(){
             )
         }
 
-        setupPieChart()
+        setupPieChart() //(danielgindi,2025)
 
         binding.transactionRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -66,14 +66,14 @@ class SpendingOverviewFragment : Fragment(){
         }
 
         // Observe expense list from ViewModel
-        expensesViewModel.expense.observe(viewLifecycleOwner) { expenses ->
+        expensesViewModel.expense.observe(viewLifecycleOwner) { expenses -> //(Google Developers Training team, 2025)
             expenseAdapter.updateList(expenses)
 
             val total = expenses.sumOf { it.expense.amount }
             Log.i("SpendingOverviewFragment", "Updated total spending")
             binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
 
-            updatePieChart(expenses)
+            updatePieChart(expenses) //(danielgindi,2025)
         }
 
         binding.topAppBar.setNavigationOnClickListener {
@@ -84,7 +84,7 @@ class SpendingOverviewFragment : Fragment(){
         binding.btnSelectRange.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
 
-            val constraints = CalendarConstraints.Builder()
+            val constraints = CalendarConstraints.Builder() //(Google Developers Training team, 2025)
                 .setValidator(DateValidatorPointBackward.now())
                 .setEnd(today)
                 .build()
@@ -93,7 +93,7 @@ class SpendingOverviewFragment : Fragment(){
             val builder = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText("Select Date Range")
                 .setTheme(R.style.CustomDateRangePicker)
-                .setCalendarConstraints(constraints)
+                .setCalendarConstraints(constraints) //(Google Developers Training team, 2025)
 
             lastSelectedRange?.let { range ->
                 builder.setSelection(androidx.core.util.Pair(range.first, range.second))
@@ -112,13 +112,13 @@ class SpendingOverviewFragment : Fragment(){
 
                 binding.tvSelectedRange.text = picker.headerText
 
-                expensesViewModel.getExpensesInRange(startDate, endDate)
+                expensesViewModel.getExpensesInRange(startDate, endDate) //(Google Developers Training team, 2025)
                     .observe(viewLifecycleOwner) { filteredExpenses ->
                         expenseAdapter.updateList(filteredExpenses)
                         val total = filteredExpenses.sumOf { it.expense.amount }
                         binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
 
-                        updatePieChart(filteredExpenses)
+                        updatePieChart(filteredExpenses) //(danielgindi,2025)
                     }
             }
 
@@ -126,7 +126,7 @@ class SpendingOverviewFragment : Fragment(){
                 Log.i("SpendingOverviewFragment", "Date range reset")
                 binding.tvSelectedRange.text = ""
                 lastSelectedRange = null // clear saved selection if reset
-                expensesViewModel.expense.observe(viewLifecycleOwner) { expenses ->
+                expensesViewModel.expense.observe(viewLifecycleOwner) { expenses -> //(Google Developers Training team, 2025)
                     expenseAdapter.updateList(expenses)
                     val total = expenses.sumOf { it.expense.amount }
                     binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
@@ -142,7 +142,7 @@ class SpendingOverviewFragment : Fragment(){
 
     private fun setupPieChart() {
         Log.i("SpendingOverviewFragment", "Setting up PieChart")
-        binding.spendingPieChart.apply {
+        binding.spendingPieChart.apply { //(danielgindi,2025)
             description.isEnabled = false
             isRotationEnabled = true
             setUsePercentValues(false)
@@ -152,7 +152,7 @@ class SpendingOverviewFragment : Fragment(){
         }
 
         // Handle clicks on segments
-        binding.spendingPieChart.setOnChartValueSelectedListener(object :
+        binding.spendingPieChart.setOnChartValueSelectedListener(object : //(danielgindi,2025)
             com.github.mikephil.charting.listener.OnChartValueSelectedListener {
             override fun onValueSelected(e: com.github.mikephil.charting.data.Entry?, h: com.github.mikephil.charting.highlight.Highlight?) {
                 if (e is com.github.mikephil.charting.data.PieEntry) {
@@ -168,7 +168,7 @@ class SpendingOverviewFragment : Fragment(){
         })
     }
 
-    private fun updatePieChart(expenses: List<ExpenseWithWallet>) {
+    private fun updatePieChart(expenses: List<ExpenseWithWallet>) { //(danielgindi,2025)
         // Aggregate total per wallet
         val totalsPerWallet = expenses.groupBy { it.wallet.name }
             .mapValues { entry -> entry.value.sumOf { it.expense.amount } }
@@ -199,17 +199,25 @@ class SpendingOverviewFragment : Fragment(){
         val data = com.github.mikephil.charting.data.PieData(dataSet)
         data.setDrawValues(false)
 
-        binding.spendingPieChart.data = data
-        binding.spendingPieChart.invalidate()
+        binding.spendingPieChart.data = data //(danielgindi,2025)
+        binding.spendingPieChart.invalidate() //(danielgindi,2025)
         Log.i("SpendingOverviewFragment", "Pie chart updated successfully")
     }
 
     class WalletValueFormatter : com.github.mikephil.charting.formatter.ValueFormatter() {
         override fun getPieLabel(value: Float, pieEntry: com.github.mikephil.charting.data.PieEntry?): String {
             pieEntry ?: return ""
-            val walletName = pieEntry.label
+            val walletName = pieEntry.label //(danielgindi,2025)
             val amount = value
             return "$walletName: R${String.format("%,.2f", amount)}"
         }
     }
 }
+//REFERENCE LIST
+/*(Google Developers Training team, 2025). Date pickers. [Online].
+Available at: https://developer.android.com/develop/ui/compose/components/datepickers [Accessed 6 October 2025). */
+/*//(danielgindi,2025). MPAndroidChart. [Online]. Available at: https://github.com/PhilJay/MPAndroidChart [Accessed 6 October 2025). */
+/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */
+/*(Google Developers Training team, 2025). Create ViewModels with dependencies [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories [Accessed 6 October 2025). */
