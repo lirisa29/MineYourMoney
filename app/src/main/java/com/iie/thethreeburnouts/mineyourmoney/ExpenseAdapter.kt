@@ -1,6 +1,7 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,9 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
             val expense = expenseWithWallet.expense
             val wallet = expenseWithWallet.wallet
 
+            Log.d("ExpenseAdapter", "Binding expense: id=${expense.id}, amount=${expense.amount}, wallet=${wallet.name}")
+
+
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             val formattedDate = dateFormat.format(Date(expense.date))
 
@@ -44,6 +48,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
 
             // Handle item click
             binding.root.setOnClickListener {
+                Log.d("ExpenseAdapter", "Expense Clicked")
                 onExpenseClick(expense.id) // pass expense ID
             }
         }
@@ -94,5 +99,6 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
 
         expenses = groupedList
         notifyDataSetChanged()
+        Log.d("ExpenseAdapater", "Adapter notified of data change")
     }
 }

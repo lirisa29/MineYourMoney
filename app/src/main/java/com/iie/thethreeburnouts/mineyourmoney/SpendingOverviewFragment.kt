@@ -3,6 +3,7 @@ package com.iie.thethreeburnouts.mineyourmoney
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,15 +36,18 @@ class SpendingOverviewFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i("SpendingOverviewFragment", "onCreateView: Inflating SpendingOverviewFragment layout.")
         _binding = FragmentSpendingOverviewBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.i("SpendingOverviewFragment", "onViewCreated: Initializing UI Components")
         super.onViewCreated(view, savedInstanceState)
 
         // Setup RecyclerView
         expenseAdapter = ExpenseAdapter(emptyList()) { expenseId ->
+            Log.i("SpendingOverviewFragment", "Expense item clicked")
             // Open ExpenseDetailsFragment
             (requireActivity() as MainActivity).replaceFragment(
                 ExpenseDetailsFragment(expenseId, source = "SpendingOverview"),
@@ -66,12 +70,14 @@ class SpendingOverviewFragment : Fragment(){
             expenseAdapter.updateList(expenses)
 
             val total = expenses.sumOf { it.expense.amount }
+            Log.i("SpendingOverviewFragment", "Updated total spending")
             binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
 
             updatePieChart(expenses)
         }
 
         binding.topAppBar.setNavigationOnClickListener {
+            Log.i("SpendingOverviewFragment", "Navigation clicked")
             (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
         }
 
@@ -117,6 +123,7 @@ class SpendingOverviewFragment : Fragment(){
             }
 
             picker.addOnNegativeButtonClickListener {
+                Log.i("SpendingOverviewFragment", "Date range reset")
                 binding.tvSelectedRange.text = ""
                 lastSelectedRange = null // clear saved selection if reset
                 expensesViewModel.expense.observe(viewLifecycleOwner) { expenses ->
@@ -134,6 +141,7 @@ class SpendingOverviewFragment : Fragment(){
     }
 
     private fun setupPieChart() {
+        Log.i("SpendingOverviewFragment", "Setting up PieChart")
         binding.spendingPieChart.apply {
             description.isEnabled = false
             isRotationEnabled = true
@@ -154,7 +162,9 @@ class SpendingOverviewFragment : Fragment(){
                 }
             }
 
-            override fun onNothingSelected() {}
+            override fun onNothingSelected() {
+                Log.i("SpendingOverviewFragment", "No pie chart slice selected")
+            }
         })
     }
 
@@ -191,6 +201,7 @@ class SpendingOverviewFragment : Fragment(){
 
         binding.spendingPieChart.data = data
         binding.spendingPieChart.invalidate()
+        Log.i("SpendingOverviewFragment", "Pie chart updated successfully")
     }
 
     class WalletValueFormatter : com.github.mikephil.charting.formatter.ValueFormatter() {
