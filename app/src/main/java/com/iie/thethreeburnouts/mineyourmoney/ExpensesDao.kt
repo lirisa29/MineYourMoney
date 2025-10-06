@@ -44,6 +44,12 @@ interface ExpensesDao {  //(Google Developers Training team, 2025)
 
     @Query("SELECT * FROM expenses WHERE id = :expenseId LIMIT 1")
     suspend fun getExpenseByIdSync(expenseId: Int): Expense?
+
+    @Query("SELECT SUM(amount) FROM expenses WHERE walletId = :walletId")
+    suspend fun getTotalSpentInWallet(walletId: Int): Double?
+
+    @Query("DELETE FROM expenses WHERE walletId = :walletId")
+    suspend fun deleteExpensesByWallet(walletId: Int)
 }
 //Reference List:
 /* Google Developers Training team. 2025. Save data in a local database using Room. [Online].

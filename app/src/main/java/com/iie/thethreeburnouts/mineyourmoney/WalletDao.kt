@@ -2,6 +2,7 @@ package com.iie.thethreeburnouts.mineyourmoney
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -32,6 +33,9 @@ interface WalletDao { //(Google Developers Training team, 2025)
 
     @Query("DELETE FROM wallets WHERE userId = :userId") //(Google Developers Training team, 2025)
     suspend fun clearAll(userId: Int) //(Google Developers Training team, 2025)
+
+    @Delete
+    suspend fun deleteWallet(wallet: Wallet)
 }
 //Reference List:
 /* Google Developers Training team. 2025. Save data in a local database using Room. [Online].

@@ -21,6 +21,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
     private val binding get() = _binding!!
     private var selectedColor: Int? = null
     private var remainingBudget: Double = 0.0
+    private var walletToEdit: Wallet? = null
 
     private val walletsViewModel: WalletsViewModel by activityViewModels {
         // Pass the currentUserId from MainActivity to the ViewModelFactory
@@ -34,10 +35,16 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
         // Initialize the binding
         _binding = FragmentCreateWalletBinding.bind(view)
-        binding.etInitialBalance.setText("R0.00")
-        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length)
 
-        var current = "R0,00"
+        walletToEdit = arguments?.getParcelable("wallet_to_edit")
+
+        if (walletToEdit != null) {
+            setupEditMode(walletToEdit!!)
+        } else {
+            setupCreateMode()
+        }
+
+        setupListeners()
 
         lifecycleScope.launch {
             val userId = (requireActivity() as MainActivityProvider).getCurrentUserId()
@@ -46,10 +53,29 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                 .getRemainingBudget(userId)
             // Show remaining budget in TextView
             updateMoneyLeftText()}
+    }
+
+    private fun setupEditMode(wallet: Wallet) {
+        binding.topAppBar.title = "Edit Wallet"
+        binding.etWalletName.setText(wallet.name)
+        binding.etInitialBalance.setText("R${String.format("%,.2f", wallet.balance)}")
+        binding.btnSelectIcon.setImageResource(wallet.iconResId)
+        binding.btnSelectIcon.tag = wallet.iconResId
+        binding.btnSelectIcon.imageTintList = ColorStateList.valueOf(wallet.color)
+        selectedColor = wallet.color
+    }
+
+    private fun setupCreateMode() {
+        binding.topAppBar.title = "Create Wallet"
+        binding.etInitialBalance.setText("R0.00")
+        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length)
+    }
+
+    private fun setupListeners() {
+        var current = "R0,00"
 
         binding.topAppBar.setNavigationOnClickListener {
-            Log.e("CreateWalletFragment", "Navigation icon clicked")
-            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), false)
         }
 
         binding.btnSelectIcon.setOnClickListener {
@@ -114,84 +140,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             }
         })
 
-        binding.btnConfirm.setOnClickListener {
-            val name = binding.etWalletName.text.toString()
-            val balanceText = binding.etInitialBalance.text.toString()
-            val iconResId = binding.btnSelectIcon.tag as? Int ?
-            val colour = selectedColor ?: android.R.attr.textColorSecondary
-
-            Log.e("CreateWalletFragment", "Confirm button clicked")
-
-            // Clear previous errors
-            if (name.isBlank()) {
-                Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletNameLayout.error = "Please enter a wallet name." //(GeeksforGeeks, 2025)
-                return@setOnClickListener
-            }
-            // Validate wallet name format
-            val validNameRegex = "^[a-zA-Z ]{3,20}+$".toRegex() //(GeeksforGeeks, 2025)
-            if (!validNameRegex.matches(name)) {
-                Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletNameLayout.error = "Wallet name must be 3-20 characters and only contain letters." //(GeeksforGeeks, 2025)
-                return@setOnClickListener
-            }
-
-            // Check if balance is empty
-            if (balanceText.isBlank()) {
-                Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
-                return@setOnClickListener
-            }
-            // Check if an icon has been selected
-            if(iconResId == null){
-                Log.e("CreateWalletFragment", "Validation failed")
-                binding.tvSelectIcon.error = "Please select an icon." //(GeeksforGeeks, 2025)
-                return@setOnClickListener
-            } else {
-                binding.tvSelectIcon.error = null //(GeeksforGeeks, 2025)
-            }
-
-            // Clean the formatted currency string
-            val cleanedBalance = balanceText.replace("[^\\d.]".toRegex(), "") //(GeeksforGeeks, 2025)
-            val balance = cleanedBalance.toDouble()
-             Log.e("CreateWalletFragment", "Parsed the balance")
-
-            // Ensure balance is greater than zero
-            if (balance <= 0) {
-                Log.e("CreateWalletFragment", "Validation failed: balance <= 0")
-                binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
-                return@setOnClickListener
-            }
-
-            if (balance > remainingBudget) {
-                binding.walletBalanceLayout.error = //(GeeksforGeeks, 2025)
-                    "Initial balance cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
-                return@setOnClickListener
-            }
-
-            // Check for duplicate wallet names
-            lifecycleScope.launch {
-                Log.e("CreateWalletFragment", "Checking if wallet name exists in the database")
-                val exists = withContext(Dispatchers.IO) {
-                    AppDatabase.getInstance(requireContext()).walletDao().walletExists(
-                        (requireActivity() as MainActivityProvider).getCurrentUserId(), name
-                    )
-                }
-                Log.e("CreateWalletFragment", "Wallet name exists")
-
-                if (exists) {
-                    Log.e("CreateWalletFragment", "Validation failed: duplicate wallet name")
-                    binding.walletNameLayout.error = "A wallet with this name already exists."
-                    return@launch
-                }
-
-                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, color = colour, userId = 0)
-                Log.e("CreateWalletFragment", "Creating new wallet")
-                walletsViewModel.addWallet(newWallet)
-                Log.e("CreateWalletFragment", "Wallet added successfully!")
-                (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), addToBackStack = false)
-            }
-        }
         // clears focus when clicking outside EditTexts
         binding.createWalletRoot.setOnClickListener {
             binding.etWalletName.clearFocus()
@@ -209,7 +157,123 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             // clear keyboard focus
             false //Coding Meet, 2023)
         }
+
+        binding.btnConfirm.setOnClickListener {
+            handleConfirmClick()
+        }
     }
+
+    private fun handleConfirmClick() {
+        val name = binding.etWalletName.text.toString()
+        val balanceText = binding.etInitialBalance.text.toString()
+        val iconResId = binding.btnSelectIcon.tag as? Int
+        val color = selectedColor ?: android.R.attr.textColorSecondary
+
+        // Clear previous errors
+        if (name.isBlank()) {
+            Log.e("CreateWalletFragment", "Validation failed")
+            binding.walletNameLayout.error = "Please enter a wallet name." //(GeeksforGeeks, 2025)
+            return
+        }
+        // Validate wallet name format
+        val validNameRegex = "^[a-zA-Z ]{3,20}+$".toRegex() //(GeeksforGeeks, 2025)
+        if (!validNameRegex.matches(name)) {
+            Log.e("CreateWalletFragment", "Validation failed")
+            binding.walletNameLayout.error = "Wallet name must be 3-20 characters and only contain letters." //(GeeksforGeeks, 2025)
+            return
+        }
+
+        // Check if balance is empty
+        if (balanceText.isBlank()) {
+            Log.e("CreateWalletFragment", "Validation failed")
+            binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
+            return
+        }
+        // Check if an icon has been selected
+        if(iconResId == null){
+            Log.e("CreateWalletFragment", "Validation failed")
+            binding.tvSelectIcon.error = "Please select an icon." //(GeeksforGeeks, 2025)
+            return
+        } else {
+            binding.tvSelectIcon.error = null //(GeeksforGeeks, 2025)
+        }
+
+        // Clean the formatted currency string
+        val cleanedBalance = balanceText.replace("[^\\d.]".toRegex(), "") //(GeeksforGeeks, 2025)
+        val balance = cleanedBalance.toDouble()
+        Log.e("CreateWalletFragment", "Parsed the balance")
+
+        // Ensure balance is greater than zero
+        if (balance <= 0) {
+            Log.e("CreateWalletFragment", "Validation failed: balance <= 0")
+            binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
+            return
+        }
+
+        if (balance > remainingBudget) {
+            binding.walletBalanceLayout.error = //(GeeksforGeeks, 2025)
+                "Initial balance cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
+            return
+        }
+
+        // Check for duplicate wallet names
+        lifecycleScope.launch {
+            Log.e("CreateWalletFragment", "Checking if wallet name exists in the database")
+            val walletNameChanged = walletToEdit?.name != name
+            val userId = (requireActivity() as MainActivityProvider).getCurrentUserId()
+
+            if (walletNameChanged) {
+                val exists = withContext(Dispatchers.IO) {
+                    AppDatabase.getInstance(requireContext()).walletDao().walletExists(
+                        userId, name
+                    )
+                }
+
+                if (exists) {
+                    binding.walletNameLayout.error = "A wallet with this name already exists."
+                    return@launch
+                }
+            }
+
+        lifecycleScope.launch {
+            val userId = (requireActivity() as MainActivityProvider).getCurrentUserId()
+
+            if (walletToEdit != null) {
+                // EDIT MODE
+                val updatedWallet = walletToEdit!!.copy(
+                    name = name,
+                    balance = balance,
+                    iconResId = iconResId,
+                    color = color
+                )
+
+                withContext(Dispatchers.IO) {
+                    val db = AppDatabase.getInstance(requireContext())
+                    val walletDao = db.walletDao()
+                    val budgetDao = db.budgetDao()
+                    val expenseDao = db.expensesDao()
+
+                    val totalExpenses = expenseDao.getTotalSpentInWallet(walletToEdit!!.id) ?: 0.0
+                    val originalAllocation = walletToEdit!!.balance
+                    val difference = balance - originalAllocation
+
+                    if (difference > 0) {
+                        budgetDao.addSpending(userId, difference)
+                    }
+
+                    // Update wallet in DB
+                    walletDao.addWallet(updatedWallet)
+                }
+
+            } else {
+                // CREATE MODE
+                val newWallet = Wallet(name = name, balance = balance, iconResId = iconResId, color = color, userId = userId)
+                walletsViewModel.addWallet(newWallet)
+            }
+
+            (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), false)
+        }
+    }}
 
     // Helper function to update tvMoneyLeft dynamically
     private fun updateMoneyLeftText() {
