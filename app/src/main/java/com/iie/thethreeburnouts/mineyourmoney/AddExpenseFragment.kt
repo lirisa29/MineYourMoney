@@ -39,9 +39,9 @@ class AddExpenseFragment : Fragment() {
     private var selectedWalletId: Int? = null
     private var selectedDatePicker: Calendar = Calendar.getInstance()// stores last selected date
     private val picId = 123
-    private var currentPhotoPath: String? = null  // <-- store absolute path of captured image
-    private val expensesViewModel: ExpensesViewModel by activityViewModels { //(Google Developers Training team, 2025)
-        ExpensesViewModelFactory( //(Google Developers Training team, 2025)
+    private var currentPhotoPath: String? = null  // stores absolute path of captured image
+    private val expensesViewModel: ExpensesViewModel by activityViewModels { // (Google Developers Training team, 2025)
+        ExpensesViewModelFactory( // (Google Developers Training team, 2025)
             requireActivity().application,
             (requireActivity() as MainActivityProvider).getCurrentUserId()
         )
@@ -59,7 +59,7 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.etExpenseAmount.setText("R0.00") //(GeeksforGeeks, 2025)
+        binding.etExpenseAmount.setText("R0.00")
         binding.etExpenseAmount.setSelection(binding.etExpenseAmount.text!!.length)
 
         var current = "R0,00"
@@ -75,7 +75,7 @@ class AddExpenseFragment : Fragment() {
                     selectedWallet = wallet
                     selectedWalletId = wallet.id
                     binding.tvSelectedWallet.apply {
-                        text = wallet.name //(GeeksforGeeks, 2025)
+                        text = wallet.name
                         visibility = View.VISIBLE
                     }
                     binding.imgWalletIcon.setImageResource(wallet.iconResId)
@@ -93,10 +93,10 @@ class AddExpenseFragment : Fragment() {
                 onRecurrenceSelected = { recurrence ->
                     selectedRecurrence = recurrence
                     binding.tvSelectedRecurrence.apply {
-                        text = recurrence //(GeeksforGeeks, 2025)
+                        text = recurrence
                         visibility = View.VISIBLE
                     }
-                    binding.tvSelectRecurrence.error = null //(GeeksforGeeks, 2025)
+                    binding.tvSelectRecurrence.error = null
                 }).show(childFragmentManager, "RecurrenceSelector")
 
         }
@@ -107,33 +107,33 @@ class AddExpenseFragment : Fragment() {
         }
 
         // Camera photo upload
-        binding.btnUploadPhoto.setOnClickListener { //(Dentistkiller, 2025)
-            if (ContextCompat.checkSelfPermission( //(Dentistkiller, 2025)
-                    requireContext(), //(Dentistkiller, 2025)
-                    Manifest.permission.CAMERA //(Dentistkiller, 2025)
-                ) == PackageManager.PERMISSION_GRANTED //(Dentistkiller, 2025)
+        binding.btnUploadPhoto.setOnClickListener {
+            if (ContextCompat.checkSelfPermission( //(IIE-Vega, 2025)
+                    requireContext(), //(IIE-Vega, 2025)
+                    Manifest.permission.CAMERA //(IIE-Vega, 2025)
+                ) == PackageManager.PERMISSION_GRANTED //(IIE-Vega, 2025)
             ) {
-                openCamera() //(Dentistkiller, 2025)
-            } else { //(Dentistkiller, 2025)
-                requestCameraPermission() //(Dentistkiller, 2025)
+                openCamera()
+            } else {
+                requestCameraPermission()
             }
         }
 
         // Clear error when typing amount
-        binding.etExpenseAmount.addTextChangedListener(object : android.text.TextWatcher {
+        binding.etExpenseAmount.addTextChangedListener(object : android.text.TextWatcher { //(GeeksforGeeks, 2025)
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {} //(GeeksforGeeks, 2025)
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { //(GeeksforGeeks, 2025)
                 if (!s.isNullOrBlank()) {
                     binding.etExpenseAmount.error = null //(GeeksforGeeks, 2025)
                     binding.expenseAmountLayout.isErrorEnabled = false //(GeeksforGeeks, 2025)
                 }
             }
 
-            override fun afterTextChanged(s: android.text.Editable?) {
+            override fun afterTextChanged(s: android.text.Editable?) { //(GeeksforGeeks, 2025)
                 if (s.toString() != current) {
-                    binding.etExpenseAmount.removeTextChangedListener(this)
+                    binding.etExpenseAmount.removeTextChangedListener(this) //(GeeksforGeeks, 2025)
 
                     // Remove all non-digit characters
                     val cleanString = s.toString().replace("[R,.\\s]".toRegex(), "")
@@ -141,10 +141,10 @@ class AddExpenseFragment : Fragment() {
                     val formatted = "R${String.format("%,.2f", parsed / 100)}"
 
                     current = formatted
-                    binding.etExpenseAmount.setText(formatted) //(GeeksforGeeks, 2025)
+                    binding.etExpenseAmount.setText(formatted)
                     binding.etExpenseAmount.setSelection(formatted.length)
 
-                    binding.etExpenseAmount.addTextChangedListener(this)
+                    binding.etExpenseAmount.addTextChangedListener(this) //(GeeksforGeeks, 2025)
                 }
             }
         })
@@ -228,7 +228,7 @@ class AddExpenseFragment : Fragment() {
         DatePickerBottomSheet(initialDate = selectedDatePicker) { year, month, day ->
             selectedDatePicker.set(year, month, day)
             binding.tvSelectedDate.apply {
-                text = "$day/${month + 1}/$year" //(GeeksforGeeks, 2025)
+                text = "$day/${month + 1}/$year"
                 visibility = View.VISIBLE
             }
             selectedDate = selectedDatePicker
@@ -238,29 +238,29 @@ class AddExpenseFragment : Fragment() {
 
     // Camera helper functions
     private fun openCamera() {
-        val photoFile = createImageFile()
-        val photoURI: Uri = FileProvider.getUriForFile(
+        val photoFile = createImageFile() //(IIE-Vega, 2025)
+        val photoURI: Uri = FileProvider.getUriForFile(  //(IIE-Vega, 2025)
             requireContext(),
             "${requireContext().packageName}.provider",
             photoFile
         )
 
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { //(IIE-Vega, 2025)
             putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         }
-        startActivityForResult(cameraIntent, picId)
+        startActivityForResult(cameraIntent, picId) //(IIE-Vega, 2025)
     }
 
     private fun createImageFile(): File {
         val timeStamp: String =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) //(IIE-Vega, 2025)
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) //(IIE-Vega, 2025)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
             storageDir
         ).apply {
-            currentPhotoPath = absolutePath // save path for DB
+            currentPhotoPath = absolutePath // save path for DB //(IIE-Vega, 2025)
         }
     }
 
@@ -268,7 +268,7 @@ class AddExpenseFragment : Fragment() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.CAMERA),
-            picId
+            picId //(IIE-Vega, 2025)
         )
     }
 
@@ -277,7 +277,7 @@ class AddExpenseFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults) //(IIE-Vega, 2025)
         if (requestCode == picId && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             openCamera()
         }
@@ -285,9 +285,9 @@ class AddExpenseFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == picId && resultCode == Activity.RESULT_OK) {
+        if (requestCode == picId && resultCode == Activity.RESULT_OK) { //(IIE-Vega, 2025)
             // Mark that a photo exists
-            binding.btnUploadPhoto.setImageResource(R.drawable.ic_photo_attached)
+            binding.btnUploadPhoto.setImageResource(R.drawable.ic_photo_attached) //(IIE-Vega, 2025)
         }
     }
 
@@ -309,7 +309,7 @@ class AddExpenseFragment : Fragment() {
             }
         }
 
-        val data = workDataOf(
+        val data = workDataOf( //(App Dev Insights, 2024)
             "amount" to expense.amount,
             "note" to expense.note,
             "walletId" to expense.walletId,
@@ -317,13 +317,13 @@ class AddExpenseFragment : Fragment() {
             "userId" to expense.userId
         )
 
-        val workRequest = PeriodicWorkRequestBuilder<RecurringExpenseWorker>(
+        val workRequest = PeriodicWorkRequestBuilder<RecurringExpenseWorker>( //(App Dev Insights, 2024)
             interval, java.util.concurrent.TimeUnit.DAYS
         )
             .setInputData(data)
             .build()
 
-        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork( //(App Dev Insights, 2024)
             "recurring_expense_${expense.id}_${expense.recurrence}",
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
@@ -337,13 +337,15 @@ class AddExpenseFragment : Fragment() {
         _binding = null
     }
 }
-//REFERENCE LIST
-/* Geeks for Geeks, 2025). Working With the EditText in Android [Online].
+// Reference List:
+/* Geeks for Geeks. 2025. Working With the EditText in Android [Online].
 Available at: https://www.geeksforgeeks.org/android/working-with-the-edittext-in-android/  [Accessed 5 October 2025). */
-/* Geeks for Geeks, 2025). Implement Form Validation (Error to EditText) in Android [Online].
+/* Geeks for Geeks. 2025. Implement Form Validation (Error to EditText) in Android [Online].
 Available at: https://www.geeksforgeeks.org/android/implement-form-validation-error-to-edittext-in-android/ [Accessed 5 October 2025). */
-/* //(Dentistkiller, 2025). Prog7313. [Online]. Available at: https://github.com/iie-PROG7313/Prog7313 [Accessed 6 October 2025).
-/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+/* IIE-Vega. 2025. Prog7313. [Online]. Available at: https://github.com/iie-PROG7313/Prog7313 [Accessed 6 October 2025).
+/* Google Developers Training team. 2025. ViewModel overview. [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */
-/*(Google Developers Training team, 2025). Create ViewModels with dependencies [Online].
+/* Google Developers Training team. 2025. Create ViewModels with dependencies [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories [Accessed 6 October 2025). */
+/* App Dev Insights. 2024. Work Manager — Android. [Online].
+Available at: https://medium.com/@appdevinsights/work-manager-android-6ea8daad56ee [Accessed 6 October 2025). */

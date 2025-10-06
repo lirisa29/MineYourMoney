@@ -17,6 +17,6 @@ class BudgetViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class") //(Google Developers Training team, 2025)
     }
 }
-//REFERENCE LIST:
-/*(Google Developers Training team, 2025). Create ViewModels with dependencies [Online].
+//Reference List:
+/* Google Developers Training team. 2025. Create ViewModels with dependencies [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories [Accessed 6 October 2025). */

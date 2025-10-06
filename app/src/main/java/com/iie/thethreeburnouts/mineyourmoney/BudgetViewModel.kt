@@ -72,6 +72,6 @@ class BudgetViewModel(application: Application, private val userId: Int) : //(Go
         }
     }
 }
-//REFERENCE LIST:
-/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+//Reference List:
+/* Google Developers Training team. 2025. ViewModel overview. [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

@@ -59,7 +59,7 @@ class DatePickerBottomSheet(
         Log.d("DatePickerBottomSheet", "onCreateDialog called")
         val dialog = super.onCreateDialog(savedInstanceState)
 
-        dialog.setOnShowListener {
+        dialog.setOnShowListener { //(GeeksforGeeks, 2025)
             Log.d("DatePickerBottomSheet", "Dialog shown")
             val bottomSheet =
                 (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) //(GeeksforGeeks, 2025)
@@ -67,7 +67,7 @@ class DatePickerBottomSheet(
             val theme = requireContext().theme
             val resolved = theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE
-            bottomSheet?.setBackgroundColor(backgroundColor) //(GeeksforGeeks, 2025)
+            bottomSheet?.setBackgroundColor(backgroundColor)
             dialog.window?.navigationBarColor = backgroundColor
         }
 
@@ -83,6 +83,6 @@ class DatePickerBottomSheet(
         _binding = null
     }
 }
-//REFERENCE LIST:
-/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+//Reference List:
+/* Geeks for Geeks. 2025. Modal Bottom Sheet in Android with Examples. [Online].
 Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */

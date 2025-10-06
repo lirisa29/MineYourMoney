@@ -45,7 +45,7 @@ class RecurringExpenseWorker (
 
         Log.d(TAG, "Attempting to insert recurring expense: $expense")
 
-        val newExpenseId = expenseDao.checkIfSufficientFunds(expense, walletDao) //(App Dev Insights, 2024)
+        val newExpenseId = expenseDao.checkIfSufficientFunds(expense, walletDao)
 
         if (newExpenseId != -1L) {
             Log.d(TAG, "Recurring expense added successfully (ID: $newExpenseId) ✅")
@@ -56,6 +56,6 @@ class RecurringExpenseWorker (
         }
     }
 }
-//REFERENCE LIST:
-/* (App Dev Insights, 2024). Work Manager — Android. [Online].
+//Reference List:
+/* App Dev Insights. 2024. Work Manager — Android. [Online].
 Available at: https://medium.com/@appdevinsights/work-manager-android-6ea8daad56ee [Accessed 6 October 2025). */

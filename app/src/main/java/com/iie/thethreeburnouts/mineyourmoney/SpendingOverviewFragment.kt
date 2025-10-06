@@ -214,10 +214,10 @@ class SpendingOverviewFragment : Fragment(){
     }
 }
 //REFERENCE LIST
-/*(Google Developers Training team, 2025). Date pickers. [Online].
+/* Google Developers Training team. 2025. Date pickers. [Online].
 Available at: https://developer.android.com/develop/ui/compose/components/datepickers [Accessed 6 October 2025). */
-/*//(danielgindi,2025). MPAndroidChart. [Online]. Available at: https://github.com/PhilJay/MPAndroidChart [Accessed 6 October 2025). */
-/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+/* danielgindi. 2025. MPAndroidChart. [Online]. Available at: https://github.com/PhilJay/MPAndroidChart [Accessed 6 October 2025). */
+/* Google Developers Training team. 2025. ViewModel overview. [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */
-/*(Google Developers Training team, 2025). Create ViewModels with dependencies [Online].
+/* Google Developers Training team. 2025. Create ViewModels with dependencies [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories [Accessed 6 October 2025). */
