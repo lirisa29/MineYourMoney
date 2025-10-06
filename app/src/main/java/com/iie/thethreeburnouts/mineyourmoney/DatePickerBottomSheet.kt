@@ -39,6 +39,9 @@ class DatePickerBottomSheet(
             null // no listener needed here; selection handled onDismiss
         )
 
+        // Restrict max date to today
+        binding.datePicker.maxDate = Calendar.getInstance().timeInMillis
+
         return binding.root
     }
 
