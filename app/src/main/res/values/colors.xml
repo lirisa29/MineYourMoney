@@ -8,10 +8,12 @@
     <color name="foreground_light">#D1D5DB</color>
     <color name="text_primary_light">#111827</color>
     <color name="text_secondary_light">#4B5563</color>
+    <color name="expense_light">#B00020</color>
 
     <!-- Dark Mode -->
     <color name="background_dark">#0F172A</color>
     <color name="foreground_dark">#152C43</color>
     <color name="text_primary_dark">#F9FAFB</color>
     <color name="text_secondary_dark">#D1D5DB</color>
+    <color name="expense_dark">#FF4C4C</color>
 </resources>

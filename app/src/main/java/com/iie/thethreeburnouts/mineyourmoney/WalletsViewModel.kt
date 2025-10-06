@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) {
+class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
     private val walletDao = AppDatabase.getInstance(application).walletDao()
 
     private val _currentSort = MutableLiveData<SortType>(SortType.DEFAULT)
@@ -36,10 +36,47 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
     }
 
     fun addWallet(wallet: Wallet) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
+            val db = AppDatabase.getInstance(getApplication())
+            val walletDao = db.walletDao()
+            val budgetDao = db.budgetDao()
+
+            // Save wallet for this user
             walletDao.addWallet(wallet.copy(userId = userId))
+
+            // Subtract wallet's initial balance from user's budget totalSpent
+            if (wallet.balance > 0) {
+                budgetDao.addSpending(userId, wallet.balance)
+            }
         }
     }
 
     fun getCurrentSort(): SortType = _currentSort.value ?: SortType.DEFAULT
+
+    fun deleteWalletAndExpenses(wallet: Wallet) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val db = AppDatabase.getInstance(getApplication())
+            val walletDao = db.walletDao()
+            val expenseDao = db.expensesDao()
+            val budgetDao = db.budgetDao()
+
+            // Get total spent in this wallet
+            val totalExpenses = expenseDao.getTotalSpentInWallet(wallet.id) ?: 0.0
+
+            // Refund the wallet's balance + its total spent to the budget
+            val refundAmount = wallet.balance + totalExpenses
+            if (refundAmount > 0) {
+                budgetDao.refundSpending(userId, refundAmount)
+            }
+
+            // Delete all expenses associated with this wallet
+            expenseDao.deleteExpensesByWallet(wallet.id)
+
+            // Delete the wallet itself
+            walletDao.deleteWallet(wallet)
+        }
+    }
 }
+//Reference List:
+/* Google Developers Training team. 2025. ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

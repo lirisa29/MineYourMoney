@@ -55,138 +55,119 @@
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="16dp">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:spacing="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:spacing="16dp">
+        <!-- Total Spending Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="?attr/android:colorForeground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-            <!-- Total Spending Card -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="?attr/android:colorForeground"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_total_spending_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="@string/total_spending"
-                        android:textAppearance="@style/TextBody" />
-
-                    <TextView
-                        android:id="@+id/tv_total_spending_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:paddingTop="8dp"
-                        android:text=""
-                        android:textAppearance="@style/TextHeading" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Pie Chart Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="?attr/android:colorForeground"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_total_spending_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/total_spending"
+                    android:textAppearance="@style/TextBody" />
+
+                <TextView
+                    android:id="@+id/tv_total_spending_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:text=""
+                    android:textAppearance="@style/TextHeading" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Pie Chart Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="?attr/android:colorForeground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_total_per_wallet_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_marginTop="15dp"
+                    android:text="@string/total_spending_per_wallet"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextBody" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                <!-- Pie Chart View (MPAndroidChart) -->
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/spendingPieChart"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            android:id="@+id/tv_total_per_wallet_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="15dp"
-                            android:text="@string/total_spending_per_wallet"
-                            android:textAppearance="@style/TextBody" />
+        <!-- Transaction History Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="350dp"
+            android:layout_height="400dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="?attr/android:colorForeground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-                        <ImageButton
-                            android:id="@+id/btn_filter_wallet"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/filter_wallets"
-                            android:src="@drawable/ic_filter"
-                            app:tint="?attr/android:textColorSecondary" />
-                    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-                    <!-- Pie Chart View (MPAndroidChart) -->
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/spendingPieChart"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tv_transaction_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/transaction_history"
+                    android:textAppearance="@style/TextBody" />
 
-            <!-- Transaction History Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="350dp"
-                android:layout_height="400dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="?attr/android:colorForeground"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/transactionRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:id="@+id/tv_transaction_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/transaction_history"
-                        android:textAppearance="@style/TextBody" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/transactionRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:nestedScrollingEnabled="false" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

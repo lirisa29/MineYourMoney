@@ -122,7 +122,6 @@
                     android:id="@+id/et_initial_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/initial_balance_hint"
                     android:drawableStart="@drawable/ic_wallets"
                     android:drawableTint="?attr/android:textColorSecondary"
                     android:drawablePadding="8dp"

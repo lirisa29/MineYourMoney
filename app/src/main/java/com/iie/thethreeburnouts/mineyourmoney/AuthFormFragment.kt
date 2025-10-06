@@ -4,6 +4,7 @@ import User
 import UserDao
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,36 +87,43 @@ class AuthFormFragment : Fragment() {
         }
     }
 
-    private fun clearErrors() {
+    private fun clearErrors() { //Clears the errors
         binding.usernameInputLayout.error = null
         binding.passwordInputLayout.error = null
         binding.confirmPasswordInputLayout.error = null
+        Log.e("AuthFormFragment", "Errors Cleared")
     }
 
-    private fun validateInputs(username: String, password: String, confirmPassword: String): Boolean {
+    private fun validateInputs(
+        username: String,
+        password: String,
+        confirmPassword: String
+    ): Boolean {
         if (username.isEmpty()) {
-            binding.usernameInputLayout.error = "Enter username"
+            binding.usernameInputLayout.error = "Enter username" //(GeeksforGeeks, 2025)
             return false
         }
         if (password.isEmpty()) {
-            binding.passwordInputLayout.error = "Enter password"
+            binding.etInputPassword.error = "Enter password" //(GeeksforGeeks, 2025)
             return false
         }
         if (!isLogin) {
             if (!isValidUsername(username)) {
-                binding.usernameInputLayout.error = "Username must be 3-20 characters and only contain letters, digits, or _"
+                binding.usernameInputLayout.error =
+                    "Username must be 3-20 characters and only contain letters, digits, or _" //(GeeksforGeeks, 2025)
                 return false
             }
             if (!isValidPassword(password)) {
-                binding.passwordInputLayout.error = "Password must be at least 8 characters and include uppercase, lowercase, and a digit"
+                binding.etInputPassword.error =
+                    "Password must be at least 8 characters and include uppercase, lowercase, and a digit" //(GeeksforGeeks, 2025)
                 return false
             }
             if (confirmPassword.isEmpty()) {
-                binding.confirmPasswordInputLayout.error = "Confirm your password"
+                binding.etInputConfirmPassword.error = "Confirm your password" //(GeeksforGeeks, 2025)
                 return false
             }
             if (password != confirmPassword) {
-                binding.confirmPasswordInputLayout.error = "Passwords do not match"
+                binding.etInputConfirmPassword.error = "Passwords do not match" //(GeeksforGeeks, 2025)
                 return false
             }
         }
@@ -128,7 +136,8 @@ class AuthFormFragment : Fragment() {
         }
         if (existingUser != null) {
             withContext(Dispatchers.Main) {
-                binding.usernameInputLayout.error = "Username already exists"
+                binding.usernameInputLayout.error = "Username already exists" //(GeeksforGeeks, 2025)
+                Log.e("AuthFormFragment", "Username exists")
             }
             return
         }
@@ -154,6 +163,7 @@ class AuthFormFragment : Fragment() {
         if (user == null) {
             withContext(Dispatchers.Main) {
                 binding.usernameInputLayout.error = "User not found"
+                Log.e("AuthFormFragment", "User not found")
             }
             return
         }
@@ -161,7 +171,8 @@ class AuthFormFragment : Fragment() {
         val verified = verifyPassword(password, user.password)
         if (!verified) {
             withContext(Dispatchers.Main) {
-                binding.passwordInputLayout.error = "Incorrect password"
+                binding.etInputPassword.error = "Incorrect password"
+                Log.e("AuthFormFragment", "Password Incorrect")
             }
             return
         }
@@ -210,10 +221,12 @@ class AuthFormFragment : Fragment() {
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-        val view = requireActivity().currentFocus ?: View(requireContext())
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun hideKeyboard() { //(Coding Meet, 2023)
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager //Coding Meet, 2023)
+        val view = requireActivity().currentFocus ?: View(requireContext()) //(Coding Meet, 2023)
+        imm.hideSoftInputFromWindow(view.windowToken, 0) //(Coding Meet, 2023)
+        Log.e("AuthFormFragment", "Keyboard Hidden")
     }
 
     override fun onDestroyView() {
@@ -226,3 +239,9 @@ class AuthFormFragment : Fragment() {
         listener = null
     }
 }
+
+//Reference List:
+/* Coding Meet. 2023. How to Implement Hide Soft keyboard in Android Studio Kotlin. [video online].
+Available at: https://www.youtube.com/watch?v=_omdGBzLuWY  [Accessed 5 October 2025). */
+/* Geeks for Geeks. 2025. Implement Form Validation (Error to EditText) in Android [Online].
+Available at: https://www.geeksforgeeks.org/android/implement-form-validation-error-to-edittext-in-android/ [Accessed 5 October 2025) */

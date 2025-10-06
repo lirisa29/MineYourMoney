@@ -1,5 +1,7 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +13,9 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.exp
 
-class ExpenseAdapter (private var expenses: List<TransactionItem>):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExpenseAdapter (private var expenses: List<TransactionItem>,
+                      private val onExpenseClick: (Int) -> Unit):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() { //(Google Developers Training team, 2024)
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -26,22 +29,32 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
         }
     }
 
-    class ExpenseViewHolder(private val binding: ItemExpenseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ExpenseViewHolder(private val binding: ItemExpenseBinding, private val onExpenseClick: (Int) -> Unit) : RecyclerView.ViewHolder(binding.root) { //(Google Developers Training team, 2024)
         fun bind(expenseWithWallet: ExpenseWithWallet) {
             val expense = expenseWithWallet.expense
             val wallet = expenseWithWallet.wallet
+
+            Log.d("ExpenseAdapter", "Binding expense: id=${expense.id}, amount=${expense.amount}, wallet=${wallet.name}")
+
 
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             val formattedDate = dateFormat.format(Date(expense.date))
 
             binding.imgWalletIcon.setImageResource(wallet.iconResId)
+            binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
             binding.tvWalletName.text = wallet.name
             binding.tvTransactionDate.text = formattedDate
-            binding.tvTransactionAmount.text = "R${String.format("%,.2f", expense.amount)}"
+            binding.tvTransactionAmount.text = "-R${String.format("%,.2f", expense.amount)}"
+
+            // Handle item click
+            binding.root.setOnClickListener {
+                Log.d("ExpenseAdapter", "Expense Clicked")
+                onExpenseClick(expense.id) // pass expense ID
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder { //(Google Developers Training team, 2024)
         // Inflate the view using View Binding
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -51,12 +64,12 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
             }
             else -> {
                 val binding = ItemExpenseBinding.inflate(inflater, parent, false)
-                ExpenseViewHolder(binding)
+                ExpenseViewHolder(binding, onExpenseClick)
             }
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { //(Google Developers Training team, 2024)
         when (holder) {
             is HeaderViewHolder -> holder.bind(expenses[position] as TransactionItem.Header)
             is ExpenseViewHolder -> holder.bind((expenses[position] as TransactionItem.Expense).expense)
@@ -64,7 +77,7 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
     }
 
     // ViewHolders
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { //(Google Developers Training team, 2024)
         fun bind(header: TransactionItem.Header) {
             itemView.findViewById<TextView>(R.id.tvMonthHeader).text = header.monthYear
         }
@@ -86,5 +99,10 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>):
 
         expenses = groupedList
         notifyDataSetChanged()
+        Log.d("ExpenseAdapater", "Adapter notified of data change")
     }
 }
+
+//Reference List:
+/* Google Developers Training team. 2024. Create dynamic lists with recyclerView. [Online].
+Available at: https://developer.android.com/develop/ui/views/layout/recyclerview [Accessed 3 October 2025). */

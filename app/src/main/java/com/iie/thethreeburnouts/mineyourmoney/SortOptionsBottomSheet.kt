@@ -19,16 +19,16 @@ enum class SortType {
 
 class SortOptionsBottomSheet (private val onSortSelected: (SortType) -> Unit,
 private val currentSort: SortType
-) : BottomSheetDialogFragment() {
+) : BottomSheetDialogFragment() { //(Geeks for Geeks, 2025)
 
-    private var _binding: BottomSheetSortOptionsBinding? = null
+    private var _binding: BottomSheetSortOptionsBinding? = null //(Geeks for Geeks, 2025)
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BottomSheetSortOptionsBinding.inflate(inflater, container, false)
+        _binding = BottomSheetSortOptionsBinding.inflate(inflater, container, false) //(Geeks for Geeks, 2025)
         return binding.root
     }
 
@@ -63,12 +63,12 @@ private val currentSort: SortType
         val dialog = super.onCreateDialog(savedInstanceState)
 
         dialog.setOnShowListener {
-            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) //(Geeks for Geeks, 2025)
             val typedValue = TypedValue()
             val theme = requireContext().theme
             val resolved = theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
             val backgroundColor = if (resolved) typedValue.data else Color.WHITE // fallback
-            bottomSheet?.setBackgroundColor(backgroundColor)
+            bottomSheet?.setBackgroundColor(backgroundColor) //(Geeks for Geeks, 2025)
             dialog.window?.navigationBarColor = backgroundColor
         }
 
@@ -83,3 +83,6 @@ private val currentSort: SortType
         _binding = null
     }
 }
+//Reference List:
+/* Geeks for Geeks. 2025. Modal Bottom Sheet in Android with Examples. [Online].
+Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */
