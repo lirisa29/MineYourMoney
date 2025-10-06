@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class BudgetViewModel(application: Application, private val userId: Int) :
     AndroidViewModel(application) {
@@ -17,14 +18,12 @@ class BudgetViewModel(application: Application, private val userId: Int) :
     fun loadOrInitBudget() {
         viewModelScope.launch {
             val existing = repository.getBudget(userId)
+            val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
             if (existing == null) {
-                repository.saveBudget(
-                    Budget(
-                        userId = userId,
-                        monthlyLimit = 0.0,
-                        totalSpent = 0.0
-                    )
-                )
+                repository.saveBudget(Budget(userId = userId, monthlyLimit = 0.0, totalSpent = 0.0, lastUpdatedMonth = currentMonth))
+            } else if (existing.lastUpdatedMonth != currentMonth) {
+                // Reset for new month
+                repository.saveBudget(existing.copy(totalSpent = 0.0, monthlyLimit = 0.0, lastUpdatedMonth = currentMonth))
             }
         }
     }
@@ -32,10 +31,31 @@ class BudgetViewModel(application: Application, private val userId: Int) :
     fun updateMonthlyLimit(newLimit: Double) {
         viewModelScope.launch {
             val current = repository.getBudget(userId)
+            val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+
             if (current != null) {
-                repository.saveBudget(current.copy(monthlyLimit = newLimit))
+                val updatedBudget = if (current.lastUpdatedMonth != currentMonth) {
+                    // It's a new month, reset totalSpent and update month
+                    current.copy(
+                        monthlyLimit = 0.0,
+                        totalSpent = 0.0,
+                        lastUpdatedMonth = currentMonth
+                    )
+                } else {
+                    // Same month, just update limit
+                    current.copy(monthlyLimit = newLimit)
+                }
+                repository.saveBudget(updatedBudget)
             } else {
-                repository.saveBudget(Budget(userId = userId, monthlyLimit = newLimit, totalSpent = 0.0))
+                // No budget exists yet, create one with current month
+                repository.saveBudget(
+                    Budget(
+                        userId = userId,
+                        monthlyLimit = 0.0,
+                        totalSpent = 0.0,
+                        lastUpdatedMonth = currentMonth
+                    )
+                )
             }
         }
     }
