@@ -46,5 +46,5 @@ interface ExpensesDao {  //(Google Developers Training team, 2025)
     suspend fun getExpenseByIdSync(expenseId: Int): Expense?
 }
 //Reference List:
-/*(Google Developers Training team, 2025). Save data in a local database using Room. [Online].
+/* Google Developers Training team. 2025. Save data in a local database using Room. [Online].
 Available at: https://developer.android.com/training/data-storage/room [Accessed 3 October 2025). */

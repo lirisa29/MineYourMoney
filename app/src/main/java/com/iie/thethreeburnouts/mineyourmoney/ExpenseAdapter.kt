@@ -103,6 +103,6 @@ class ExpenseAdapter (private var expenses: List<TransactionItem>,
     }
 }
 
-//REFERENCE LIST
-/* Google Developers Training team, 2024). Create dynamic lists with recyclerView. [Online].
+//Reference List:
+/* Google Developers Training team. 2024. Create dynamic lists with recyclerView. [Online].
 Available at: https://developer.android.com/develop/ui/views/layout/recyclerview [Accessed 3 October 2025). */

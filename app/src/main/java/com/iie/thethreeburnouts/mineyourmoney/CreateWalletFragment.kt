@@ -34,8 +34,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
         // Initialize the binding
         _binding = FragmentCreateWalletBinding.bind(view)
-        binding.etInitialBalance.setText("R0.00") //(GeeksforGeeks, 2025)
-        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length) //(GeeksforGeeks, 2025)
+        binding.etInitialBalance.setText("R0.00")
+        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length)
 
         var current = "R0,00"
 
@@ -73,20 +73,20 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             }
         }
 
-        binding.etInitialBalance.addTextChangedListener(object : android.text.TextWatcher {
+        binding.etInitialBalance.addTextChangedListener(object : android.text.TextWatcher { //(GeeksforGeeks, 2025)
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {} //(GeeksforGeeks, 2025)
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { //(GeeksforGeeks, 2025)
                 if (!s.isNullOrBlank()) {
                     binding.etInitialBalance.error = null //(GeeksforGeeks, 2025)
                     binding.walletBalanceLayout.isErrorEnabled = false //(GeeksforGeeks, 2025)
                 }
             }
 
-            override fun afterTextChanged(s: android.text.Editable?) {
+            override fun afterTextChanged(s: android.text.Editable?) { //(GeeksforGeeks, 2025)
                 if (s.toString() != current) {
-                    binding.etInitialBalance.removeTextChangedListener(this)
+                    binding.etInitialBalance.removeTextChangedListener(this) //(GeeksforGeeks, 2025)
 
                     // Remove all non-digit characters
                     val cleanString = s.toString().replace("[R,.\\s]".toRegex(), "")
@@ -106,7 +106,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                             "Cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
                     }
 
-                    binding.etInitialBalance.addTextChangedListener(this)
+                    binding.etInitialBalance.addTextChangedListener(this) //(GeeksforGeeks, 2025)
                 }
 
                 // Update tvMoneyLeft dynamically
@@ -115,8 +115,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         })
 
         binding.btnConfirm.setOnClickListener {
-            val name = binding.etWalletName.text.toString() //(GeeksforGeeks, 2025)
-            val balanceText = binding.etInitialBalance.text.toString() //(GeeksforGeeks, 2025)
+            val name = binding.etWalletName.text.toString()
+            val balanceText = binding.etInitialBalance.text.toString()
             val iconResId = binding.btnSelectIcon.tag as? Int ?
             val colour = selectedColor ?: android.R.attr.textColorSecondary
 
@@ -225,10 +225,10 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
     }
 }
 
-//REFERENCE LIST:
-/*(Coding Meet, 2023). How to Implement Hide Soft keyboard in Android Studio Kotlin. [video online].
+//Reference List:
+/* Coding Meet. 2023. How to Implement Hide Soft keyboard in Android Studio Kotlin. [video online].
 Available at: https://www.youtube.com/watch?v=_omdGBzLuWY  [Accessed 5 October 2025). */
-/* Geeks for Geeks, 2025). Working With the EditText in Android [Online].
+/* Geeks for Geeks. 2025. Working With the EditText in Android [Online].
 Available at: https://www.geeksforgeeks.org/android/working-with-the-edittext-in-android/  [Accessed 5 October 2025). */
-/* Geeks for Geeks, 2025). Implement Form Validation (Error to EditText) in Android [Online].
+/* Geeks for Geeks. 2025. Implement Form Validation (Error to EditText) in Android [Online].
 Available at: https://www.geeksforgeeks.org/android/implement-form-validation-error-to-edittext-in-android/ [Accessed 5 October 2025). */
