@@ -1,5 +1,6 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.Callback.getDefaultUIUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentWalletsBinding
+import kotlin.math.min
 
 class WalletsFragment : Fragment() {
 
@@ -17,6 +22,9 @@ class WalletsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var walletAdapter: WalletAdapter
+
+    // Limit how far you can swipe (px)
+    private val swipeThreshold = 300f // adjust as needed
     private val walletsViewModel: WalletsViewModel by activityViewModels {
         // Pass the currentUserId from MainActivity to the ViewModelFactory
         WalletsViewModelFactory(requireActivity().application,
@@ -38,7 +46,20 @@ class WalletsFragment : Fragment() {
         Log.d("WalletsFragment", "onViewCreated called")
 
         // Setup RecyclerView
-        walletAdapter = WalletAdapter(emptyList())
+        walletAdapter = WalletAdapter(emptyList(),
+            onDeleteClicked = { wallet ->
+                walletsViewModel.deleteWalletAndExpenses(wallet)
+                Toast.makeText(requireContext(), "Wallet deleted and refunded.", Toast.LENGTH_SHORT).show()
+            },
+            onEditClicked = { wallet ->
+                val fragment = CreateWalletFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable("wallet_to_edit", wallet) // pass the wallet
+                    }
+                }
+                (requireActivity() as MainActivity).replaceFragment(fragment, addToBackStack = false)
+            })
+
         binding.walletsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = walletAdapter
@@ -109,6 +130,40 @@ class WalletsFragment : Fragment() {
             v.performClick()
             false
         }
+
+        // --- Swipe gesture for Edit/Delete buttons ---
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // Prevent automatic removal
+                walletAdapter.notifyItemChanged(viewHolder.adapterPosition)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val binding = (viewHolder as WalletAdapter.WalletViewHolder).binding
+                val foreground = binding.cardForeground
+
+                // Limit swipe distance
+                val limitedDx = min(dX, swipeThreshold)
+                getDefaultUIUtil().onDraw(c, recyclerView, foreground, limitedDx, dY, actionState, isCurrentlyActive)
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(binding.walletsRecyclerView)
     }
 
     private fun handleSearch(query: String) {

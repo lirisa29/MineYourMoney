@@ -84,6 +84,6 @@ class RecurrenceSelectorBottomSheet (
         _binding = null
     }
 }
-//REFERENCE LIST:
-/* (Geeks for Geeks, 2025). Modal Bottom Sheet in Android with Examples. [Online].
+//Reference List:
+/* Geeks for Geeks. 2025. Modal Bottom Sheet in Android with Examples. [Online].
 Available at: https://www.geeksforgeeks.org/android/modal-bottom-sheet-in-android-with-examples/  [Accessed 5 October 2025). */

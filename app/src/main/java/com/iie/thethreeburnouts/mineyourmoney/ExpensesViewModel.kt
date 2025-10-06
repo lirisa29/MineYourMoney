@@ -39,12 +39,6 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
             val walletDao = AppDatabase.getInstance(getApplication()).walletDao()
             val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId), walletDao)
 
-            if (newId != -1L) {
-                // Update user's budget totalSpent
-                val budgetDao = AppDatabase.getInstance(getApplication()).budgetDao()
-                budgetDao.addSpending(userId, expense.amount)
-            }
-
             withContext(Dispatchers.Main) {
                 onResult(newId != -1L, newId)
             }
@@ -72,8 +66,6 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
                 Log.i("ExpensesViewModel", "Expense found and refunding the wallet")
                 walletDao.addToWallet(expense.walletId, expense.amount)
 
-                budgetDao.refundSpending(userId, expense.amount)
-
                 // Delete expense
                 Log.i("ExpensesViewModel", "Deleting expense ID")
                 expensesDao.deleteExpense(expense)
@@ -86,6 +78,6 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
         }
     }
 }
-//REFERENCE LIST:
-/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+//Reference List:
+/* Google Developers Training team. 2025. ViewModel overview. [Online].
 Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

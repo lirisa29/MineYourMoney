@@ -9,7 +9,7 @@ import com.iie.thethreeburnouts.mineyourmoney.ExpensesDao
 import com.iie.thethreeburnouts.mineyourmoney.Wallet
 import com.iie.thethreeburnouts.mineyourmoney.WalletDao
 
-@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 6)
+@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun walletDao(): WalletDao

@@ -12,5 +12,5 @@ data class User( //(Google Developers Training team, 2024)
 ) : Parcelable
 
 //Reference List:
-/*(Google Developers Training team, 2024). Save data in a local database using Room. [Online].
+/* Google Developers Training team. 2024. Save data in a local database using Room. [Online].
 Available at: https://developer.android.com/training/data-storage/room [Accessed 3 October 2025). */
