@@ -57,14 +57,14 @@ The project was developed collaboratively using GitHub for version control. GitH
 ---
 
 ## Known Bugs and Limitations  
-- Wallets and expenses cannot currently be edited once created.  
+- Expenses cannot currently be edited once created.  
 - Users are required to log in each time they open the app, as no persistent login feature is implemented.  
 - There is no functionality to update account information such as username or password.  
 
 ---
 
 ## Future Improvements  
-- Implement functionality to edit existing wallets and expenses.  
+- Implement functionality to edit existing expenses.  
 - Add notifications for recurring expenses, such as alerts 24 hours before a scheduled transaction.  
 - Introduce a “Stay Logged In” feature for returning users.  
 - Add a settings section that allows users to:  
