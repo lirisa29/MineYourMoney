@@ -8,5 +8,6 @@ data class Budget (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val userId: Int,
     val monthlyLimit: Double,
-    val totalSpent: Double
+    val totalSpent: Double,
+    val lastUpdatedMonth: Int
 )
