@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/TopAppBarStyle"
+        app:title="">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="25dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="August Budget"
+                android:textAppearance="@style/TextHeading" />
+
+            <TextView
+                android:id="@+id/tv_toolbar_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="25dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="25 days left"
+                android:textAppearance="@style/TextBody" />
+        </LinearLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:spacing="16dp">
+
+    <!-- Card containing the progress ring -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        app:cardBackgroundColor="?attr/android:colorForeground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/tvMonthlyBudgetTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Monthly Budget"
+                android:textAppearance="@style/TextBody" />
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="24dp">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/budgetProgressRing"
+                    style="@style/Widget.Material3.CircularProgressIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:indicatorSize="200dp"
+                    app:trackThickness="16dp"
+                    app:indicatorInset="0dp"
+                    app:indicatorDirectionCircular="clockwise"
+                    app:trackColor="@color/material_dynamic_neutral80"
+                    app:indicatorColor="?attr/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/tvBudgetSpent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="R0.00"
+                        android:textAppearance="@style/TextBody"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvBudgetTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="R0.00"
+                        android:textAppearance="@style/TextBody" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvBudgetUsage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="You've used 0% of your budget"
+                android:textAppearance="@style/TextLabel"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEditBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Edit Monthly Limit"
+                style="@style/PrimaryButton" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

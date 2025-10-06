@@ -197,7 +197,7 @@ class SpendingOverviewFragment : Fragment(){
         dataSet.sliceSpace = 2f
 
         val data = com.github.mikephil.charting.data.PieData(dataSet)
-        data.setDrawValues(true)
+        data.setDrawValues(false)
 
         binding.spendingPieChart.data = data
         binding.spendingPieChart.invalidate()

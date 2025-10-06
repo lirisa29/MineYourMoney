@@ -16,6 +16,8 @@
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        style="@style/BottomAppBarStyle" />
+        style="@style/BottomAppBarStyle"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="?attr/android:textColorSecondary"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
