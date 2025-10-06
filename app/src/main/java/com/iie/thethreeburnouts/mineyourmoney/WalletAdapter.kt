@@ -3,6 +3,7 @@ package com.iie.thethreeburnouts.mineyourmoney
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ItemWalletBinding
@@ -23,15 +24,28 @@ class WalletAdapter(private var wallets: List<Wallet>,
             binding.tvWalletAmount.text = "R${String.format("%,.2f", wallet.balance)}"
 
             // Set translation based on swipe state
-            binding.cardForeground.translationX = if (swipedPosition == position) swipeThreshold else 0f
+            val isSwiped = swipedPosition == position
+            binding.cardForeground.translationX = if (isSwiped) swipeThreshold else 0f
+
+            // Only allow button clicks if swiped
+            binding.btnDeleteWallet.isEnabled = isSwiped
+            binding.btnEditWallet.isEnabled = isSwiped
+
+            binding.btnDeleteWallet.visibility = if (isSwiped) View.VISIBLE else View.INVISIBLE
+            binding.btnEditWallet.visibility = if (isSwiped) View.VISIBLE else View.INVISIBLE
 
             binding.btnDeleteWallet.setOnClickListener {
-                onDeleteClicked(wallet)
-                // reset swipe after deletion
-                swipedPosition = null
+                if (isSwiped) {
+                    onDeleteClicked(wallet)
+                    swipedPosition = null
+                }
             }
 
-            binding.btnEditWallet.setOnClickListener { onEditClicked(wallet) }
+            binding.btnEditWallet.setOnClickListener {
+                if (isSwiped) {
+                    onEditClicked(wallet)
+                }
+            }
         }
     }
 

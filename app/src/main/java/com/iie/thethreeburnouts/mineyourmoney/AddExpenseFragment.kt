@@ -265,10 +265,9 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
+        requestPermissions(
             arrayOf(Manifest.permission.CAMERA),
-            picId //(IIE-Vega, 2025)
+            picId
         )
     }
 
@@ -278,8 +277,12 @@ class AddExpenseFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults) //(IIE-Vega, 2025)
-        if (requestCode == picId && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == picId && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
             openCamera()
+        } else {
+            Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
