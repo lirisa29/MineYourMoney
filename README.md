@@ -25,6 +25,7 @@ OPSC7311 POE
 
 ### Budget and Goals  
 - Users can set a monthly spending goal to track and control their total expenditure.
+- Users divide the monthly limit into wallets to give every cent a purpose.
 
 ### Data Visualization  
 - The total expenditure for each wallet is displayed using a pie chart.  
