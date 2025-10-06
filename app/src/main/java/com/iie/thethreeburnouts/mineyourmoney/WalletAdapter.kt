@@ -12,40 +12,43 @@ class WalletAdapter(private var wallets: List<Wallet>,
                     private val onEditClicked: (Wallet) -> Unit):
     RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() { //(Google Developers Training team, 2024)
 
-    inner class WalletViewHolder(val binding: ItemWalletBinding) : RecyclerView.ViewHolder(binding.root) { //(Google Developers Training team, 2024)
-        fun bind(wallet: Wallet) {
+    var swipedPosition: Int? = null
+    var swipeThreshold: Float = 300f // pass from fragment if needed
+
+    inner class WalletViewHolder(val binding: ItemWalletBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(wallet: Wallet, position: Int) {
             binding.imgWalletIcon.setImageResource(wallet.iconResId)
             binding.imgWalletIcon.imageTintList = ColorStateList.valueOf(wallet.color)
             binding.tvWalletName.text = wallet.name
             binding.tvWalletAmount.text = "R${String.format("%,.2f", wallet.balance)}"
 
-            // Button click listeners
+            // Set translation based on swipe state
+            binding.cardForeground.translationX = if (swipedPosition == position) swipeThreshold else 0f
+
             binding.btnDeleteWallet.setOnClickListener {
                 onDeleteClicked(wallet)
+                // reset swipe after deletion
+                swipedPosition = null
             }
 
-            binding.btnEditWallet.setOnClickListener {
-                onEditClicked(wallet)
-            }
+            binding.btnEditWallet.setOnClickListener { onEditClicked(wallet) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
-        // Inflate the view using View Binding
         val binding = ItemWalletBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WalletViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
-        val wallet = wallets[position]
-        holder.bind(wallet)
+        holder.bind(wallets[position], position)
     }
 
     override fun getItemCount(): Int = wallets.size
 
-    // Updates the adapter list
     fun updateList(newWallets: List<Wallet>) {
         wallets = newWallets
+        swipedPosition = null // reset swipe whenever list changes
         notifyDataSetChanged()
     }
 }
