@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.savedstate.serialization.saved
+import com.google.android.material.navigation.NavigationBarView
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), MainActivityProvider {
@@ -32,9 +33,8 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
             ?: throw IllegalStateException("User must be passed to MainActivity")
 
         if (savedInstanceState == null){
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, WalletsFragment())
-                .commit()
+            replaceFragment(BudgetsFragment(), addToBackStack = false)
+            binding.bottomNavigationView.selectedItemId = R.id.nav_budgets
         }
 
         // Set status and nav bar colour using theme attribute
@@ -53,13 +53,35 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
         if (addToBackStack) transaction.addToBackStack(null)
         transaction.commit()
 
+        setupBottomNavigation()
+
         // Update nav bar visibility
         updateNavBarVisibility(fragment)
     }
 
+    private fun setupBottomNavigation() {
+        binding.bottomNavigationView.setOnItemSelectedListener(
+            NavigationBarView.OnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_budgets -> {
+                        replaceFragment(BudgetsFragment(), addToBackStack = false)
+                        true
+                    }
+
+                    R.id.nav_wallets -> {
+                        replaceFragment(WalletsFragment(), addToBackStack = false)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        )
+    }
+
     private fun updateNavBarVisibility(fragment: Fragment) {
         binding.bottomNavigationView.visibility =
-            if (fragment is WalletsFragment) View.VISIBLE else View.GONE
+            if (fragment is WalletsFragment || fragment is BudgetsFragment) View.VISIBLE else View.GONE
     }
 
     override fun getCurrentUserId(): Int = loggedInUser.id
