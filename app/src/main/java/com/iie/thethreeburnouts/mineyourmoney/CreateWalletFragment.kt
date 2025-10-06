@@ -259,6 +259,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
                     if (difference > 0) {
                         budgetDao.addSpending(userId, difference)
+                    } else if (difference < 0) {
+                        budgetDao.refundSpending(userId, -difference)
                     }
 
                     // Update wallet in DB
