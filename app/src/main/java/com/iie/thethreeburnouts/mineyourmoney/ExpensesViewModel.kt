@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.orEmpty
 
-class ExpensesViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) {
+class ExpensesViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
 
     private val expensesDao = AppDatabase.getInstance(application).expensesDao()
 
@@ -35,7 +35,7 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
 
     fun addExpense(expense: Expense, onResult: (Boolean, Long) -> Unit) {
         Log.i("ExpensesViewModel", "Request to add expense")
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
             val walletDao = AppDatabase.getInstance(getApplication()).walletDao()
             val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId), walletDao)
 
@@ -58,7 +58,7 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
     // Delete expense
     fun deleteExpense(expenseId: Int) {
         Log.w("ExpensesViewModel", "Attempting to delete expense ID")
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
             val db = AppDatabase.getInstance(getApplication())
             val expensesDao = db.expensesDao()
             val walletDao = db.walletDao()
@@ -86,3 +86,6 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
         }
     }
 }
+//REFERENCE LIST:
+/*(Google Developers Training team, 2025). ViewModel overview. [Online].
+Available at: https://developer.android.com/topic/libraries/architecture/viewmodel [Accessed 6 October 2025). */

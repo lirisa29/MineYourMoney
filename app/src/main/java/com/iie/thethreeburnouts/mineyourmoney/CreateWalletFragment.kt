@@ -34,8 +34,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
         // Initialize the binding
         _binding = FragmentCreateWalletBinding.bind(view)
-        binding.etInitialBalance.setText("R0.00")
-        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length)
+        binding.etInitialBalance.setText("R0.00") //(GeeksforGeeks, 2025)
+        binding.etInitialBalance.setSelection(binding.etInitialBalance.text!!.length) //(GeeksforGeeks, 2025)
 
         var current = "R0,00"
 
@@ -68,8 +68,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         binding.etWalletName.addTextChangedListener { editable ->
             if (!editable.isNullOrBlank()) {
                 Log.e("CreateWalletFragment", "Wallet name entered")
-                binding.etWalletName.error = null
-                binding.walletNameLayout.isErrorEnabled = false
+                binding.etWalletName.error = null //(GeeksforGeeks, 2025)
+                binding.walletNameLayout.isErrorEnabled = false //(GeeksforGeeks, 2025)
             }
         }
 
@@ -79,8 +79,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.isNullOrBlank()) {
-                    binding.etInitialBalance.error = null
-                    binding.walletBalanceLayout.isErrorEnabled = false
+                    binding.etInitialBalance.error = null //(GeeksforGeeks, 2025)
+                    binding.walletBalanceLayout.isErrorEnabled = false //(GeeksforGeeks, 2025)
                 }
             }
 
@@ -115,8 +115,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         })
 
         binding.btnConfirm.setOnClickListener {
-            val name = binding.etWalletName.text.toString()
-            val balanceText = binding.etInitialBalance.text.toString()
+            val name = binding.etWalletName.text.toString() //(GeeksforGeeks, 2025)
+            val balanceText = binding.etInitialBalance.text.toString() //(GeeksforGeeks, 2025)
             val iconResId = binding.btnSelectIcon.tag as? Int ?
             val colour = selectedColor ?: android.R.attr.textColorSecondary
 
@@ -125,46 +125,46 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             // Clear previous errors
             if (name.isBlank()) {
                 Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletNameLayout.error = "Please enter a wallet name."
+                binding.walletNameLayout.error = "Please enter a wallet name." //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
             // Validate wallet name format
-            val validNameRegex = "^[a-zA-Z ]{3,20}+$".toRegex()
+            val validNameRegex = "^[a-zA-Z ]{3,20}+$".toRegex() //(GeeksforGeeks, 2025)
             if (!validNameRegex.matches(name)) {
                 Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletNameLayout.error = "Wallet name must be 3-20 characters and only contain letters."
+                binding.walletNameLayout.error = "Wallet name must be 3-20 characters and only contain letters." //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
 
             // Check if balance is empty
             if (balanceText.isBlank()) {
                 Log.e("CreateWalletFragment", "Validation failed")
-                binding.walletBalanceLayout.error = "Please enter an initial balance."
+                binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
             // Check if an icon has been selected
             if(iconResId == null){
                 Log.e("CreateWalletFragment", "Validation failed")
-                binding.tvSelectIcon.error = "Please select an icon."
+                binding.tvSelectIcon.error = "Please select an icon." //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             } else {
-                binding.tvSelectIcon.error = null
+                binding.tvSelectIcon.error = null //(GeeksforGeeks, 2025)
             }
 
             // Clean the formatted currency string
-            val cleanedBalance = balanceText.replace("[^\\d.]".toRegex(), "")
+            val cleanedBalance = balanceText.replace("[^\\d.]".toRegex(), "") //(GeeksforGeeks, 2025)
             val balance = cleanedBalance.toDouble()
              Log.e("CreateWalletFragment", "Parsed the balance")
 
             // Ensure balance is greater than zero
             if (balance <= 0) {
                 Log.e("CreateWalletFragment", "Validation failed: balance <= 0")
-                binding.walletBalanceLayout.error = "Please enter an initial balance."
+                binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
                 return@setOnClickListener
             }
 
             if (balance > remainingBudget) {
-                binding.walletBalanceLayout.error =
+                binding.walletBalanceLayout.error = //(GeeksforGeeks, 2025)
                     "Initial balance cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
                 return@setOnClickListener
             }
@@ -214,7 +214,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
     // Helper function to update tvMoneyLeft dynamically
     private fun updateMoneyLeftText() {
         val balanceText = binding.etInitialBalance.text.toString().replace("[R,\\s]".toRegex(), "")
-        val balance = balanceText.toDoubleOrNull() ?: 0.0
+        val balance = balanceText.toDoubleOrNull() ?: 0.0 //(GeeksforGeeks, 2025)
         val remaining = remainingBudget - balance
         binding.tvMoneyLeft.text = "You have R${String.format("%,.2f", remaining)} remaining from your monthly limit"
     }
@@ -228,3 +228,7 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 //REFERENCE LIST:
 /*(Coding Meet, 2023). How to Implement Hide Soft keyboard in Android Studio Kotlin. [video online].
 Available at: https://www.youtube.com/watch?v=_omdGBzLuWY  [Accessed 5 October 2025). */
+/* Geeks for Geeks, 2025). Working With the EditText in Android [Online].
+Available at: https://www.geeksforgeeks.org/android/working-with-the-edittext-in-android/  [Accessed 5 October 2025). */
+/* Geeks for Geeks, 2025). Implement Form Validation (Error to EditText) in Android [Online].
+Available at: https://www.geeksforgeeks.org/android/implement-form-validation-error-to-edittext-in-android/ [Accessed 5 October 2025). */
