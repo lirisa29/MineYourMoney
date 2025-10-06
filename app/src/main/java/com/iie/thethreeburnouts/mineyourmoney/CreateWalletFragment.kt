@@ -169,6 +169,14 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         val iconResId = binding.btnSelectIcon.tag as? Int
         val color = selectedColor ?: android.R.attr.textColorSecondary
 
+        // Check if an icon has been selected
+        if(iconResId == null){
+            Log.e("CreateWalletFragment", "Validation failed")
+            binding.tvSelectIcon.error = "Please select an icon." //(GeeksforGeeks, 2025)
+            return
+        } else {
+            binding.tvSelectIcon.error = null //(GeeksforGeeks, 2025)
+        }
         // Clear previous errors
         if (name.isBlank()) {
             Log.e("CreateWalletFragment", "Validation failed")
@@ -188,14 +196,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             Log.e("CreateWalletFragment", "Validation failed")
             binding.walletBalanceLayout.error = "Please enter an initial balance." //(GeeksforGeeks, 2025)
             return
-        }
-        // Check if an icon has been selected
-        if(iconResId == null){
-            Log.e("CreateWalletFragment", "Validation failed")
-            binding.tvSelectIcon.error = "Please select an icon." //(GeeksforGeeks, 2025)
-            return
-        } else {
-            binding.tvSelectIcon.error = null //(GeeksforGeeks, 2025)
         }
 
         // Clean the formatted currency string
