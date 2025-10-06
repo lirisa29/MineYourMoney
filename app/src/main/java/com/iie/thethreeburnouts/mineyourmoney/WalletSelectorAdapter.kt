@@ -1,6 +1,7 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +24,14 @@ class WalletSelectorAdapter(
 
         init {
             radioButton.setOnClickListener {
+                Log.d("WalletSelectorAdapter", "RadioButton clicked")
                 selectWallet(adapterPosition)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
+        Log.d("WalletSelectorAdapter", "Creating ViewHolder for wallet list")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_select_wallet, parent, false)
         return WalletViewHolder(view)
@@ -47,6 +50,7 @@ class WalletSelectorAdapter(
     override fun getItemCount(): Int = wallets.size
 
     fun updateList(newWallets: List<Wallet>) {
+        Log.i("WalletSelectorAdapter", "Updating wallet list")
         wallets = newWallets
         notifyDataSetChanged()
     }

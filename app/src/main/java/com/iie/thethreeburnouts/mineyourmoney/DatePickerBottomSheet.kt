@@ -3,6 +3,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +26,10 @@ class DatePickerBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("DatePickerBottomSheet", "onCreateView called")
         _binding = BottomSheetDatePickerBinding.inflate(inflater, container, false)
+
+        Log.d("DatePickerBottomSheet","Initializing DatePicker")
 
         // Initialize the DatePicker with the initial/current date
         binding.datePicker.init(
@@ -44,13 +48,16 @@ class DatePickerBottomSheet(
         val year = binding.datePicker.year
         val month = binding.datePicker.month
         val day = binding.datePicker.dayOfMonth
+        Log.d("DatePickerBottomSheet", "Bottom sheet dismissed")
         onDateSelected(year, month, day)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        Log.d("DatePickerBottomSheet", "onCreateDialog called")
         val dialog = super.onCreateDialog(savedInstanceState)
 
         dialog.setOnShowListener {
+            Log.d("DatePickerBottomSheet", "Dialog shown")
             val bottomSheet =
                 (dialog as? BottomSheetDialog)?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             val typedValue = TypedValue()
@@ -69,6 +76,7 @@ class DatePickerBottomSheet(
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("DatePickerBottomSheet", "onDestroyView called")
         _binding = null
     }
 }

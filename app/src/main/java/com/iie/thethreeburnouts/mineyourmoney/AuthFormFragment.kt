@@ -215,10 +215,10 @@ class AuthFormFragment : Fragment() {
         }
     }
 
-    private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-        val view = requireActivity().currentFocus ?: View(requireContext())
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun hideKeyboard() { //Coding Meet, 2023)
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager //Coding Meet, 2023)
+        val view = requireActivity().currentFocus ?: View(requireContext()) //Coding Meet, 2023)
+        imm.hideSoftInputFromWindow(view.windowToken, 0) //Coding Meet, 2023)
         Log.e("AuthFormFragment","Keyboard Hidden")
     }
 
@@ -232,3 +232,8 @@ class AuthFormFragment : Fragment() {
         listener = null
     }
 }
+
+//REFERENCE LIST:
+/*(Coding Meet, 2023). How to Implement Hide Soft keyboard in Android Studio Kotlin. [video online].
+Available at: https://www.youtube.com/watch?v=_omdGBzLuWY  [Accessed 5 October 2025). */
+
