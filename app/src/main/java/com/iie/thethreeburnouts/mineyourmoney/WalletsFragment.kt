@@ -141,8 +141,9 @@ class WalletsFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // Prevent automatic removal
-                walletAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                val position = viewHolder.adapterPosition
+                walletAdapter.swipedPosition = if (walletAdapter.swipedPosition == position) null else position
+                walletAdapter.notifyDataSetChanged() // refresh all to update translations
             }
 
             override fun onChildDraw(
@@ -156,9 +157,7 @@ class WalletsFragment : Fragment() {
             ) {
                 val binding = (viewHolder as WalletAdapter.WalletViewHolder).binding
                 val foreground = binding.cardForeground
-
-                // Limit swipe distance
-                val limitedDx = min(dX, swipeThreshold)
+                val limitedDx = min(dX, walletAdapter.swipeThreshold)
                 getDefaultUIUtil().onDraw(c, recyclerView, foreground, limitedDx, dY, actionState, isCurrentlyActive)
             }
         })
