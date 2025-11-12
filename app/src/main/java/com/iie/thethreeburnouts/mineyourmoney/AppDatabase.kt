@@ -2,14 +2,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.iie.thethreeburnouts.mineyourmoney.Budget
-import com.iie.thethreeburnouts.mineyourmoney.BudgetDao
-import com.iie.thethreeburnouts.mineyourmoney.Expense
-import com.iie.thethreeburnouts.mineyourmoney.ExpensesDao
-import com.iie.thethreeburnouts.mineyourmoney.Wallet
-import com.iie.thethreeburnouts.mineyourmoney.WalletDao
+import com.iie.thethreeburnouts.mineyourmoney.budget.Budget
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetDao
+import com.iie.thethreeburnouts.mineyourmoney.expense.Expense
+import com.iie.thethreeburnouts.mineyourmoney.expense.ExpensesDao
+import com.iie.thethreeburnouts.mineyourmoney.login.User
+import com.iie.thethreeburnouts.mineyourmoney.login.UserDao
+import com.iie.thethreeburnouts.mineyourmoney.wallet.Wallet
+import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletDao
 
-@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 10)
+@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 11)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun walletDao(): WalletDao

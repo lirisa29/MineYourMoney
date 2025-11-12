@@ -53,7 +53,7 @@
     <!-- Card containing the progress ring -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_height="470dp"
         app:cardBackgroundColor="?attr/android:colorForeground"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
@@ -72,6 +72,22 @@
                 android:layout_marginTop="15dp"
                 android:text="Monthly Budget"
                 android:textAppearance="@style/TextBody" />
+
+            <TextView
+                android:id="@+id/tvMonthlyBudgetLimitMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Minimum Spending Limit:"
+                android:textAppearance="@style/TextLabel" />
+
+            <TextView
+                android:id="@+id/tvMonthlyBudgetLimitMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Maximum Spending Limit:"
+                android:textAppearance="@style/TextLabel" />
 
             <FrameLayout
                 android:layout_width="200dp"

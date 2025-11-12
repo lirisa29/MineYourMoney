@@ -1,17 +1,16 @@
 package com.iie.thethreeburnouts.mineyourmoney
 
-import User
+import com.iie.thethreeburnouts.mineyourmoney.login.User
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import androidx.savedstate.serialization.saved
 import com.google.android.material.navigation.NavigationBarView
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetsFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityMainBinding
+import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 
 class MainActivity : AppCompatActivity(), MainActivityProvider {
     // Initialise ViewBinding
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
         // Retrieve logged-in user from intent
         loggedInUser = intent.getParcelableExtra("USER")
-            ?: throw IllegalStateException("User must be passed to MainActivity")
+            ?: throw IllegalStateException("com.iie.thethreeburnouts.mineyourmoney.login.User must be passed to MainActivity")
 
         if (savedInstanceState == null){
             replaceFragment(BudgetsFragment(), addToBackStack = false)
