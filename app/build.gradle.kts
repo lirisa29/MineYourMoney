@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     id("kotlin-parcelize")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -65,6 +66,8 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.adapters)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
 
     // Unit test dependencies
     testImplementation(libs.junit) // Basic unit testing

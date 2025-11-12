@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "522614714617",
+    "project_id": "mineyourmoney",
+    "storage_bucket": "mineyourmoney.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522614714617:android:06f0482bff8984beb57228",
+        "android_client_info": {
+          "package_name": "com.iie.thethreeburnouts.mineyourmoney"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5FVb85tCBJqCHVIyBsF0k_TRiH0UwPU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
