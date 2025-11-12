@@ -66,6 +66,10 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
                 Log.i("ExpensesViewModel", "Expense found and refunding the wallet")
                 walletDao.addToWallet(expense.walletId, expense.amount)
 
+                // Refund spending in budget
+                Log.i("ExpensesViewModel", "Refunding spending in budget")
+                budgetDao.refundSpending(expense.userId, expense.amount)
+
                 // Delete expense
                 Log.i("ExpensesViewModel", "Deleting expense ID")
                 expensesDao.deleteExpense(expense)

@@ -30,15 +30,6 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <!-- Money Left Text -->
-            <TextView
-                android:id="@+id/tv_money_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/money_left"
-                android:textAppearance="@style/TextBody"
-                android:importantForAccessibility="yes" />
-
             <!-- Select Icon Section -->
             <LinearLayout
                 android:layout_width="wrap_content"

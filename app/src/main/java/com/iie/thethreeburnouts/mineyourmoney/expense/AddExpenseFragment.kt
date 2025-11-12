@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -28,9 +29,14 @@ import androidx.work.workDataOf
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.MainActivityProvider
 import com.iie.thethreeburnouts.mineyourmoney.R
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModel
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModelFactory
 import com.iie.thethreeburnouts.mineyourmoney.wallet.Wallet
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAddExpenseBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -194,6 +200,18 @@ class AddExpenseFragment : Fragment() {
 
             expensesViewModel.addExpense(expense) { success, newId -> //(Google Developers Training team, 2025)
                 if (success) {
+                    // Subtract expense from user's available budget (add to totalSpent)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val db = AppDatabase.getInstance(requireContext())
+                        val budgetDao = db.budgetDao()
+
+                        // Increase totalSpent by expense amount
+                        budgetDao.addSpending(
+                            (requireActivity() as MainActivityProvider).getCurrentUserId(),
+                            expense.amount
+                        )
+                    }
+
                     Toast.makeText(
                         requireContext(),
                         "Expense added successfully!",

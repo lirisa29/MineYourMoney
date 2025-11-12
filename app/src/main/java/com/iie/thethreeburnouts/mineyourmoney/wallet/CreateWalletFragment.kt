@@ -25,7 +25,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
     private var _binding: FragmentCreateWalletBinding? = null
     private val binding get() = _binding!!
     private var selectedColor: Int? = null
-    private var remainingBudget: Double = 0.0
     private var walletToEdit: Wallet? = null
 
     private val walletsViewModel: WalletsViewModel by activityViewModels {
@@ -52,14 +51,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         }
 
         setupListeners()
-
-        lifecycleScope.launch {
-            val userId = (requireActivity() as MainActivityProvider).getCurrentUserId()
-            remainingBudget = AppDatabase.getInstance(requireContext())
-                .budgetDao()
-                .getRemainingBudget(userId)
-            // Show remaining budget in TextView
-            updateMoneyLeftText()}
     }
 
     private fun setupEditMode(wallet: Wallet) {
@@ -132,18 +123,8 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                     binding.etInitialBalance.setText(formatted)
                     binding.etInitialBalance.setSelection(formatted.length)
 
-                    // **Validate against remaining budget**
-                    val amount = parsed / 100
-                    if (amount > remainingBudget) {
-                        binding.walletBalanceLayout.error =
-                            "Cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
-                    }
-
                     binding.etInitialBalance.addTextChangedListener(this) //(GeeksforGeeks, 2025)
                 }
-
-                // Update tvMoneyLeft dynamically
-                updateMoneyLeftText()
             }
         })
 
@@ -217,12 +198,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             return
         }
 
-        if (balance > remainingBudget) {
-            binding.walletBalanceLayout.error = //(GeeksforGeeks, 2025)
-                "Initial balance cannot exceed remaining budget of R${String.format("%,.2f", remainingBudget)}"
-            return
-        }
-
         // Check for duplicate wallet names
         lifecycleScope.launch {
             Log.e("CreateWalletFragment", "Checking if wallet name exists in the database")
@@ -257,18 +232,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                 withContext(Dispatchers.IO) {
                     val db = AppDatabase.getInstance(requireContext())
                     val walletDao = db.walletDao()
-                    val budgetDao = db.budgetDao()
-                    val expenseDao = db.expensesDao()
-
-                    val totalExpenses = expenseDao.getTotalSpentInWallet(walletToEdit!!.id) ?: 0.0
-                    val originalAllocation = walletToEdit!!.balance
-                    val difference = balance - originalAllocation
-
-                    if (difference > 0) {
-                        budgetDao.addSpending(userId, difference)
-                    } else if (difference < 0) {
-                        budgetDao.refundSpending(userId, -difference)
-                    }
 
                     // Update wallet in DB
                     walletDao.addWallet(updatedWallet)
@@ -289,14 +252,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
             (requireActivity() as MainActivity).replaceFragment(WalletsFragment(), false)
         }
     }}
-
-    // Helper function to update tvMoneyLeft dynamically
-    private fun updateMoneyLeftText() {
-        val balanceText = binding.etInitialBalance.text.toString().replace("[R,\\s]".toRegex(), "")
-        val balance = balanceText.toDoubleOrNull() ?: 0.0 //(GeeksforGeeks, 2025)
-        val remaining = remainingBudget - balance
-        binding.tvMoneyLeft.text = "You have R${String.format("%,.2f", remaining)} remaining from your monthly limit"
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

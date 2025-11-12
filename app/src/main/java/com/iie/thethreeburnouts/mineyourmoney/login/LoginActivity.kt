@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.FirebaseApp
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.R
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityLoginBinding
@@ -22,6 +23,8 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
         setContentView(binding.root)
 
         enableEdgeToEdge()
+
+        FirebaseApp.initializeApp(this)
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.loginRoot) { v, insets ->

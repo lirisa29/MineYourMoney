@@ -14,6 +14,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentAuthFormBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class AuthFormFragment : Fragment() {
@@ -136,50 +137,81 @@ class AuthFormFragment : Fragment() {
         }
         if (existingUser != null) {
             withContext(Dispatchers.Main) {
-                binding.usernameInputLayout.error =
-                    "Username already exists" //(GeeksforGeeks, 2025)
-                Log.e("AuthFormFragment", "Username exists")
+                binding.usernameInputLayout.error = "Username already exists"
             }
             return
         }
 
-        // Hash password before saving
         val hashedPassword = hashPassword(password)
 
-        val newUser = User(username = username, password = hashedPassword)
+        // Create Firebase Auth user (using email/password style)
+        val email = "$username@mineyourmoney.app"
 
-        val insertedId = withContext(Dispatchers.IO) { userDao.insertUser(newUser) }
+        val auth = com.google.firebase.auth.FirebaseAuth.getInstance()
+        try {
+            val result = auth.createUserWithEmailAndPassword(email, password).await()
+            val firebaseUser = result.user ?: return
 
-        val user = withContext(Dispatchers.IO) { userDao.findById(insertedId.toInt()) }
+            // Create Firestore user document
+            val userMap = mapOf(
+                "uid" to firebaseUser.uid,
+                "username" to username,
+                "hashedPassword" to hashedPassword,
+                "createdAt" to com.google.firebase.Timestamp.now()
+            )
 
-        withContext(Dispatchers.Main) {
-            user?.let { listener?.onAuthSuccess(it) }
+            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            db.collection("users").document(firebaseUser.uid).set(userMap).await()
+
+            // Save user locally (Room)
+            val newUser = User(username = username, password = hashedPassword)
+            val insertedId = withContext(Dispatchers.IO) { userDao.insertUser(newUser) }
+            val localUser = withContext(Dispatchers.IO) { userDao.findById(insertedId.toInt()) }
+
+            withContext(Dispatchers.Main) {
+                localUser?.let { listener?.onAuthSuccess(it) }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                binding.usernameInputLayout.error = "Signup failed: ${e.message}"
+            }
+            Log.e("AuthFormFragment", "Firebase signup failed", e)
         }
     }
 
     private suspend fun performLogin(username: String, password: String) {
-        val user = withContext(Dispatchers.IO) {
-            userDao.findByUsername(username)
-        }
-        if (user == null) {
-            withContext(Dispatchers.Main) {
-                binding.usernameInputLayout.error = "com.iie.thethreeburnouts.mineyourmoney.login.User not found"
-                Log.e("AuthFormFragment", "com.iie.thethreeburnouts.mineyourmoney.login.User not found")
-            }
-            return
-        }
+        val email = "$username@mineyourmoney.app"
+        val auth = com.google.firebase.auth.FirebaseAuth.getInstance()
+        try {
+            val result = auth.signInWithEmailAndPassword(email, password).await()
+            val firebaseUser = result.user ?: return
 
-        val verified = verifyPassword(password, user.password)
-        if (!verified) {
-            withContext(Dispatchers.Main) {
-                binding.etInputPassword.error = "Incorrect password"
-                Log.e("AuthFormFragment", "Password Incorrect")
-            }
-            return
-        }
+            // Fetch Firestore user
+            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            val doc = db.collection("users").document(firebaseUser.uid).get().await()
+            val userData = doc.data
 
-        withContext(Dispatchers.Main) {
-            listener?.onAuthSuccess(user)
+            val usernameFromDb = userData?.get("username") as? String ?: username
+            val hashedPassword = userData?.get("hashedPassword") as? String ?: hashPassword(password)
+
+            // Ensure user exists locally
+            var localUser = withContext(Dispatchers.IO) {
+                userDao.findByUsername(usernameFromDb)
+            }
+            if (localUser == null) {
+                val newUser = User(username = usernameFromDb, password = hashedPassword)
+                val id = withContext(Dispatchers.IO) { userDao.insertUser(newUser) }
+                localUser = withContext(Dispatchers.IO) { userDao.findById(id.toInt()) }
+            }
+
+            withContext(Dispatchers.Main) {
+                localUser?.let { listener?.onAuthSuccess(it) }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                binding.etInputPassword.error = "Login failed: ${e.message}"
+            }
+            Log.e("AuthFormFragment", "Firebase login failed", e)
         }
     }
 

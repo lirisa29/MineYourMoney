@@ -39,15 +39,9 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
         viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
             val db = AppDatabase.getInstance(getApplication())
             val walletDao = db.walletDao()
-            val budgetDao = db.budgetDao()
 
             // Save wallet for this user
             walletDao.addWallet(wallet.copy(userId = userId))
-
-            // Subtract wallet's initial balance from user's budget totalSpent
-            if (wallet.balance > 0) {
-                budgetDao.addSpending(userId, wallet.balance)
-            }
         }
     }
 
@@ -62,11 +56,8 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
 
             // Get total spent in this wallet
             val totalExpenses = expenseDao.getTotalSpentInWallet(wallet.id) ?: 0.0
-
-            // Refund the wallet's balance + its total spent to the budget
-            val refundAmount = wallet.balance + totalExpenses
-            if (refundAmount > 0) {
-                budgetDao.refundSpending(userId, refundAmount)
+            if (totalExpenses > 0) {
+                budgetDao.refundSpending(userId, totalExpenses)
             }
 
             // Delete all expenses associated with this wallet

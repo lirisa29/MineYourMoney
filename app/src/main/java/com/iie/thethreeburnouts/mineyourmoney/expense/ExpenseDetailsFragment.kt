@@ -9,10 +9,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
+import com.iie.thethreeburnouts.mineyourmoney.MainActivityProvider
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModel
 import com.iie.thethreeburnouts.mineyourmoney.spendingoverview.SpendingOverviewFragment
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentExpenseDetailsBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -43,7 +49,6 @@ class ExpenseDetailsFragment(private val expenseId: Int, private val source: Str
             hasBeenDeleted = true
             expensesViewModel.deleteExpense(expenseId)
             Toast.makeText(requireContext(), "Expense deleted", Toast.LENGTH_SHORT).show()
-
             when (source) {
                 "SpendingOverview" -> (requireActivity() as MainActivity)
                     .replaceFragment(SpendingOverviewFragment(), addToBackStack = false)
