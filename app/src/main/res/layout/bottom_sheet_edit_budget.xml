@@ -27,7 +27,29 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Enter Monthly Spending Limit"
+        android:text="Enter Minimum Monthly Spending Limit"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextBody"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="?attr/android:colorForeground"
+        android:layout_marginBottom="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBudgetAmount"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Enter Maximum Monthly Spending Limit"
         android:textAlignment="center"
         android:textAppearance="@style/TextBody"
         android:layout_marginBottom="8dp" />
@@ -39,7 +61,7 @@
         app:boxBackgroundColor="?attr/android:colorForeground">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etBudgetAmount"
+            android:id="@+id/etMaxBudgetAmount"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
