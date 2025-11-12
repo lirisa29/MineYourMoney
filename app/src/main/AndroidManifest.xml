@@ -19,7 +19,7 @@
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">

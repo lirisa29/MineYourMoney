@@ -36,7 +36,7 @@
     <style name="PrimaryButton" parent="TextPrimaryButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:background">@drawable/gradient_accent</item>
+        <item name="android:background">@drawable/bg_gradient_accent</item>
         <item name="android:backgroundTint">@null</item>
         <item name="android:padding">12dp</item>
     </style>

@@ -8,7 +8,7 @@
     <!-- Main Screen: Wallets -->
     <fragment
         android:id="@+id/walletsFragment"
-        android:name="com.iie.thethreeburnouts.mineyourmoney.WalletsFragment"
+        android:name="com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment"
         android:label="Wallets"
         tools:layout="@layout/fragment_wallets">
     </fragment>
