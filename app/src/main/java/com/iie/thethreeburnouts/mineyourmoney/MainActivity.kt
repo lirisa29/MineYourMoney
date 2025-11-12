@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetsFragment
+import com.iie.thethreeburnouts.mineyourmoney.crystals.CrystalsFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityMainBinding
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 
@@ -72,6 +73,11 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
                         true
                     }
 
+                    R.id.nav_crystals -> {
+                        replaceFragment(CrystalsFragment(), addToBackStack = false)
+                        true
+                    }
+
                     else -> false
                 }
             }
@@ -80,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
     private fun updateNavBarVisibility(fragment: Fragment) {
         binding.bottomNavigationView.visibility =
-            if (fragment is WalletsFragment || fragment is BudgetsFragment) View.VISIBLE else View.GONE
+            if (fragment is WalletsFragment || fragment is BudgetsFragment || fragment is CrystalsFragment) View.VISIBLE else View.GONE
     }
 
     override fun getCurrentUserId(): Int = loggedInUser.id
