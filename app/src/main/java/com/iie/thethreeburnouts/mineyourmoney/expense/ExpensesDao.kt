@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletDao
+import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletRepository
 
 @Dao //(Google Developers Training team, 2025)
 interface ExpensesDao {  //(Google Developers Training team, 2025)
@@ -27,7 +28,8 @@ interface ExpensesDao {  //(Google Developers Training team, 2025)
         val currentBalance = walletDao.getWalletBalance(expense.walletId)
         return if (currentBalance >= expense.amount) {
             val newId = addExpense(expense)
-            walletDao.subtractFromWallet(expense.walletId, expense.amount)
+            val repository = WalletRepository(walletDao)
+            repository.subtractFromWallet(expense.walletId, expense.amount)
             newId // return the inserted expense ID
         } else {
             -1L // signal insufficient funds
@@ -36,6 +38,9 @@ interface ExpensesDao {  //(Google Developers Training team, 2025)
 
     @Query("SELECT e.*, w.* FROM expenses e LEFT JOIN wallets w ON e.walletId = w.id WHERE e.id = :expenseId")
     fun getExpenseById(expenseId: Int): LiveData<ExpenseWithWallet>
+
+    @Query("UPDATE expenses SET deletedAt = :timestamp, updatedAt = :updatedAt WHERE id = :expenseId")
+    suspend fun markDeleted(expenseId: Int, timestamp: Long, updatedAt: Long)
 
     @Update
     suspend fun updateExpense(expense: Expense)
@@ -51,4 +56,16 @@ interface ExpensesDao {  //(Google Developers Training team, 2025)
 
     @Query("DELETE FROM expenses WHERE walletId = :walletId")
     suspend fun deleteExpensesByWallet(walletId: Int)
+
+    @Query("SELECT * FROM expenses WHERE userId = :userId AND deletedAt IS NULL ORDER BY date DESC")
+    suspend fun getAllExpensesSync(userId: Int): List<Expense>
+
+    @Query("SELECT * FROM expenses WHERE userId = :userId ORDER BY date DESC")
+    suspend fun getAllExpensesIncludingDeleted(userId: Int): List<Expense>
+
+    @Query("SELECT * FROM expenses WHERE userId = :userId AND deletedAt IS NOT NULL")
+    suspend fun getDeletedExpenses(userId: Int): List<Expense>
+
+    @Query("SELECT * FROM expenses WHERE walletId = :walletId AND deletedAt IS NULL")
+    suspend fun getAllExpensesSyncByWallet(walletId: Int): List<Expense>
 }

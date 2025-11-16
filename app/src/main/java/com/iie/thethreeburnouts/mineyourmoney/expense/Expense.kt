@@ -12,5 +12,7 @@ data class Expense( //(Google Developers Training team, 2024)
     val walletId: Int,
     val recurrence: String?,
     val date: Long,
-    val photoPath: String? = null
+    val photoPath: String? = null,
+    val updatedAt: Long = System.currentTimeMillis(),
+    val deletedAt: Long? = null
 )
