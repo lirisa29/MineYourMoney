@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/walletsFragmentRoot"
     android:layout_width="match_parent"
@@ -15,61 +16,61 @@
         app:title=""
         app:contentInsetStart="0dp">
 
-        <LinearLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between"
+            app:alignItems="center">
 
-            <!-- Title Text -->
             <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/wallets_title"
                 android:textAppearance="@style/TextHeading"
-                android:layout_marginEnd="16dp"
+                android:maxLines="1"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                app:layout_flexShrink="1"
+                app:layout_flexGrow="0" />
 
-            <!-- Search Input -->
             <SearchView
                 android:id="@+id/search_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxWidth="488dp"
+                app:layout_flexGrow="1"
+                app:layout_flexShrink="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search..."
-                android:layout_marginEnd="8dp"/>
+                android:queryHint="Search..." />
 
-            <!-- Sort Button -->
             <ImageButton
                 android:id="@+id/btn_sort"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_sort"
                 app:tint="?attr/android:textColorSecondary"
                 android:contentDescription="@string/sort_wallets" />
 
-        </LinearLayout>
+        </com.google.android.flexbox.FlexboxLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- Content Area -->
-    <LinearLayout
+    <!-- Content Area (FlexboxLayout instead of LinearLayout) -->
+    <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/walletsContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:flexDirection="column"
+        app:justifyContent="flex_start"
+        app:alignItems="center">
 
-        <!-- Spending Overview Button -->
         <Button
             android:id="@+id/btn_spending_overview"
             android:layout_width="wrap_content"
@@ -85,22 +86,21 @@
             app:iconGravity="textEnd"
             app:iconTint="?attr/android:textColorSecondary" />
 
-        <!-- Create New Wallet Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_create_wallet"
             style="@style/PrimaryButton"
             android:layout_marginTop="12dp"
             android:text="@string/create_new_wallet" />
 
-        <!-- Wallet List -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/walletsRecyclerView"
             android:layout_width="300dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
-            android:layout_weight="1"
+            app:layout_flexGrow="1"
             android:clipToPadding="false" />
-    </LinearLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
 
     <FrameLayout
         android:layout_width="90dp"
