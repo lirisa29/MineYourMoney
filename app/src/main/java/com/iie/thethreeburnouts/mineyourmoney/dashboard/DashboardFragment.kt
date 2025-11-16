@@ -77,7 +77,7 @@ class DashboardFragment : Fragment() {
         // Change ring colour based on spending
         val colourRes = when {
             total < min -> R.color.blue // below min
-            total in min..max -> R.color.purple // within range
+            //total in min..max -> R.color.purple // within range
             else -> R.color.red // over max
         }
         val color = requireContext().getColor(colourRes)
