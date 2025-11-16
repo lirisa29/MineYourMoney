@@ -25,65 +25,66 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:padding="16dp">
 
-        <LinearLayout
+        <!-- ❗ CHANGED: Main layout replaced with FlexboxLayout -->
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:paddingBottom="24dp"
+            app:flexDirection="column"
+            app:justifyContent="flex_start"
+            app:alignItems="center">
+            <!-- END FLEXBOX -->
 
             <!-- Amount Section -->
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                app:flexDirection="row"
+                app:flexWrap="nowrap"
+                app:alignItems="center"
+                app:justifyContent="flex_start">
 
                 <ImageView
                     android:id="@+id/img_wallet_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="25dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="16dp"
                     android:contentDescription="@string/wallet_icon"
-                    android:scaleType="centerInside"
-                    android:background="@drawable/bg_icon_button" />
+                    android:background="@drawable/bg_icon_button"
+                    android:scaleType="centerInside"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:layout_marginBottom="10dp">
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:id="@+id/tv_expense_amount_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/enter_amount"
                         style="@style/TextBody" />
 
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/expense_amount_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="130dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:boxBackgroundColor="?attr/android:colorForeground">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_expense_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
+                            android:inputType="numberDecimal"/>
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
-            </LinearLayout>
+
+            </com.google.android.flexbox.FlexboxLayout>
 
             <!-- Wallet Card -->
             <com.google.android.material.card.MaterialCardView
@@ -95,52 +96,53 @@
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="?attr/android:colorForeground">
 
-                <LinearLayout
+                <!-- ❗ CHANGED to FlexboxLayout -->
+                <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:alignItems="center"
+                    app:justifyContent="space_between">
+                    <!-- END FLEXBOX -->
 
                     <ImageView
                         android:id="@+id/img_wallet"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="20dp"
-                        android:contentDescription="@string/wallet_icon"
                         android:src="@drawable/ic_wallets"
+                        android:contentDescription="@string/wallet_icon"
                         app:tint="?attr/android:textColorSecondary"/>
 
                     <TextView
                         android:id="@+id/tv_wallet"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/select_wallet"
                         style="@style/TextBody" />
 
                     <TextView
                         android:id="@+id/tv_selected_wallet"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
-                        android:textAlignment="textEnd"
-                        android:layout_marginEnd="4dp"
                         android:visibility="gone"
+                        android:textAlignment="textEnd"
                         style="@style/TextLabel" />
 
                     <ImageButton
                         android:id="@+id/btn_wallet_dropdown"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginEnd="2dp"
-                        android:contentDescription="@string/select_wallet"
                         android:src="@drawable/ic_drop_down"
                         android:background="@drawable/bg_icon_button"
                         app:tint="?attr/android:textColorPrimary"/>
-                </LinearLayout>
+                </com.google.android.flexbox.FlexboxLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- REPEAT THE SAME FLEXBOX REPLACEMENT for Date Picker, Recurrence, Photo Card -->
 
             <!-- Date Picker Card -->
             <com.google.android.material.card.MaterialCardView
@@ -151,27 +153,30 @@
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="?attr/android:colorForeground">
 
-                <LinearLayout
+                <!-- CHANGED -->
+                <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:flexDirection="row"
+                    app:alignItems="center"
+                    app:flexWrap="wrap"
+                    app:justifyContent="space_between">
+                    <!-- END FLEXBOX -->
 
                     <ImageView
                         android:id="@+id/img_calendar"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="20dp"
-                        android:contentDescription="@string/calendar_icon"
                         android:src="@drawable/ic_calendar"
+                        android:contentDescription="@string/calendar_icon"
                         app:tint="?attr/android:textColorSecondary"/>
 
                     <TextView
                         android:id="@+id/tv_select_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/select_date"
                         style="@style/TextBody" />
 
@@ -179,23 +184,19 @@
                         android:id="@+id/tv_selected_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
-                        android:textAlignment="textEnd"
-                        android:layout_marginEnd="4dp"
                         android:visibility="gone"
+                        android:textAlignment="textEnd"
                         style="@style/TextLabel" />
 
                     <ImageButton
                         android:id="@+id/btn_date_dropdown"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginEnd="2dp"
-                        android:contentDescription="@string/select_date"
                         android:src="@drawable/ic_drop_down"
                         android:background="@drawable/bg_icon_button"
                         app:tint="?attr/android:textColorPrimary"/>
-                </LinearLayout>
+                </com.google.android.flexbox.FlexboxLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Recurrence Card -->
@@ -207,51 +208,50 @@
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="?attr/android:colorForeground">
 
-                <LinearLayout
+                <!-- CHANGED -->
+                <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:alignItems="center"
+                    app:justifyContent="space_between">
+                    <!-- END FLEXBOX -->
 
                     <ImageView
                         android:id="@+id/img_select_recurrence"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="20dp"
-                        android:contentDescription="@string/repeat_icon"
                         android:src="@drawable/ic_recurrence"
+                        android:contentDescription="@string/repeat_icon"
                         app:tint="?attr/android:textColorSecondary"/>
 
                     <TextView
                         android:id="@+id/tv_select_recurrence"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/select_recurrence"
                         style="@style/TextBody" />
 
                     <TextView
                         android:id="@+id/tv_selected_recurrence"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
-                        android:textAlignment="textEnd"
-                        android:layout_marginEnd="4dp"
                         android:visibility="gone"
+                        android:textAlignment="textEnd"
                         style="@style/TextLabel" />
 
                     <ImageButton
                         android:id="@+id/btn_recurrence_dropdown"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginEnd="2dp"
-                        android:contentDescription="@string/select_recurrence"
                         android:src="@drawable/ic_drop_down"
                         android:background="@drawable/bg_icon_button"
                         app:tint="?attr/android:textColorPrimary"/>
-                </LinearLayout>
+                </com.google.android.flexbox.FlexboxLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Photo Upload Card -->
@@ -263,27 +263,30 @@
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="?attr/android:colorForeground">
 
-                <LinearLayout
+                <!-- CHANGED -->
+                <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:alignItems="center"
+                    app:justifyContent="space_between">
+                    <!-- END FLEXBOX -->
 
                     <ImageView
                         android:id="@+id/img_upload_photo"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="20dp"
-                        android:contentDescription="@string/photo_icon"
                         android:src="@drawable/ic_add_photo"
+                        android:contentDescription="@string/photo_icon"
                         app:tint="?attr/android:textColorSecondary"/>
 
                     <TextView
                         android:id="@+id/tv_upload_photo"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/upload_photo"
                         style="@style/TextBody" />
 
@@ -292,16 +295,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:scaleType="centerInside"
                         android:padding="12dp"
                         android:src="@drawable/ic_add"
-                        app:tint="?attr/android:textColorPrimary"
-                        android:contentDescription="@string/upload_photo"/>
-
-                </LinearLayout>
+                        android:contentDescription="@string/upload_photo"
+                        app:tint="?attr/android:textColorPrimary"/>
+                </com.google.android.flexbox.FlexboxLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Note Input -->
+            <!-- Note Input (no need for flexbox here) -->
             <TextView
                 android:id="@+id/tv_add_note"
                 android:layout_width="wrap_content"
@@ -331,13 +332,12 @@
                     android:ellipsize="end"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Confirm Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_confirm"
                 style="@style/PrimaryButton"
                 android:layout_marginTop="8dp"
                 android:text="@string/confirm" />
-        </LinearLayout>
-    </ScrollView>
 
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
