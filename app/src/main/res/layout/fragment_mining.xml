@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mining_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".crystals.CrystalsFragment">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:title="Mining"
+        app:titleCentered="false"
+        app:layout_scrollFlags="scroll|enterAlways" />
+
+    <!-- WORKING Vault Button (below toolbar!) -->
+    <Button
+        android:id="@+id/button_crystal_vault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Crystal Vault"
+        android:layout_margin="12dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="56dp" />
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Horizontal progress with number box -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/progress_number"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/mining_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:progress="30"
+                    android:max="100" />
+
+            </LinearLayout>
+
+            <!-- Large crystal square -->
+            <ImageView
+                android:id="@+id/crystal_image"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_add_photo"
+                android:background="@drawable/ic_shopping"
+                android:scaleType="centerCrop" />
+
+            <!-- Small hint text -->
+            <TextView
+                android:id="@+id/log_expenses_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log expenses to earn swings!"
+                android:textSize="14sp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Use Swing button -->
+            <Button
+                android:id="@+id/button_use_swing"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Use Swing"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Available swings -->
+            <TextView
+                android:id="@+id/available_swings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 Available Swings"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/help_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="20dp"
+        app:srcCompat="@drawable/ic_pet" />
+
+    <!-- streak -->
+    <LinearLayout
+        android:id="@+id/streak_layout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/streak_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_cook" />
+
+        <TextView
+            android:id="@+id/streak_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingStart="6dp"/>
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
