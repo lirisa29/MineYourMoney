@@ -13,7 +13,6 @@ import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletDao
 
 @Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 14)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun userDao(): UserDao
     abstract fun walletDao(): WalletDao
     abstract fun expensesDao(): ExpensesDao
@@ -31,9 +30,8 @@ abstract class AppDatabase : RoomDatabase() {
                     "app_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
+                    .allowMainThreadQueries() // For testing only
                     .build()
-
                 INSTANCE = instance
                 instance
             }
