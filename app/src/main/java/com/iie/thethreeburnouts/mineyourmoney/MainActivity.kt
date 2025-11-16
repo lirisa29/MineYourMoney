@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetsFragment
+import com.iie.thethreeburnouts.mineyourmoney.dashboard.DashboardFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityMainBinding
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 
@@ -71,6 +72,11 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
                         replaceFragment(WalletsFragment(), addToBackStack = false)
                         true
                     }
+                    R.id.nav_dashboard -> {
+                        replaceFragment(DashboardFragment(), addToBackStack = false)
+                        true
+                    }
+                    // edited
 
                     else -> false
                 }
@@ -80,8 +86,8 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
     private fun updateNavBarVisibility(fragment: Fragment) {
         binding.bottomNavigationView.visibility =
-            if (fragment is WalletsFragment || fragment is BudgetsFragment) View.VISIBLE else View.GONE
+            if (fragment is WalletsFragment || fragment is BudgetsFragment || fragment is DashboardFragment) View.VISIBLE else View.GONE
     }
-
+         // edited
     override fun getCurrentUserId(): Int = loggedInUser.id
 }
