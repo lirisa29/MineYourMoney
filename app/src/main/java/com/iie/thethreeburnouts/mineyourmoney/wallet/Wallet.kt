@@ -13,5 +13,7 @@ data class Wallet( //(Google Developers Training team, 2024)
     val name: String, //(Google Developers Training team, 2024)
     val balance: Double, //(Google Developers Training team, 2024)
     val iconResId: Int, //(Google Developers Training team, 2024)
-    val color: Int //(Google Developers Training team, 2024)
+    val color: Int, //(Google Developers Training team, 2024)
+    val updatedAt: Long = System.currentTimeMillis(),
+    val deletedAt: Long? = null
 ) : Parcelable

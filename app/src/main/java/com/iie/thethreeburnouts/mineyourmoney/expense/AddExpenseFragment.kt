@@ -29,6 +29,7 @@ import androidx.work.workDataOf
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.MainActivityProvider
 import com.iie.thethreeburnouts.mineyourmoney.R
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModel
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModelFactory
 import com.iie.thethreeburnouts.mineyourmoney.wallet.Wallet
@@ -204,9 +205,10 @@ class AddExpenseFragment : Fragment() {
                     lifecycleScope.launch(Dispatchers.IO) {
                         val db = AppDatabase.getInstance(requireContext())
                         val budgetDao = db.budgetDao()
+                        val repository = BudgetRepository(budgetDao)
 
                         // Increase totalSpent by expense amount
-                        budgetDao.addSpending(
+                        repository.addSpending(
                             (requireActivity() as MainActivityProvider).getCurrentUserId(),
                             expense.amount
                         )

@@ -232,9 +232,10 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
                 withContext(Dispatchers.IO) {
                     val db = AppDatabase.getInstance(requireContext())
                     val walletDao = db.walletDao()
+                    val repository = WalletRepository(walletDao)
 
                     // Update wallet in DB
-                    walletDao.addWallet(updatedWallet)
+                    repository.addWallet(updatedWallet)
                 }
 
             } else {
