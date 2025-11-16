@@ -120,7 +120,6 @@ class CrystalsFragment : Fragment(R.layout.fragment_mining) {
 
     override fun onResume() {
         super.onResume()
-        (requireActivity() as MainActivity).updateNavBarVisibility(this)
         MiningManager.loadData(requireContext())
 
         view?.let {

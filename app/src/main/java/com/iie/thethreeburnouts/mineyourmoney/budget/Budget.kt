@@ -10,5 +10,6 @@ data class Budget (
     val minLimit: Double,
     val maxLimit: Double,
     val totalSpent: Double,
-    val lastUpdatedMonth: Int
+    val lastUpdatedMonth: Int,
+    val updatedAt: Long = System.currentTimeMillis()
 )

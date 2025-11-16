@@ -126,8 +126,8 @@
                     android:textAppearance="@style/TextBody" />
 
                 <!-- Pie Chart View (MPAndroidChart) -->
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/spendingPieChart"
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/spendingLineChart"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_marginTop="8dp"
