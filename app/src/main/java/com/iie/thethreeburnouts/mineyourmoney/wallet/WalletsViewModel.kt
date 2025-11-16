@@ -6,15 +6,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.time.Clock.System.now
 
 class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
     private val walletDao = AppDatabase.getInstance(application).walletDao()
-
+    private val walletRepository = WalletRepository(walletDao)
     private val _currentSort = MutableLiveData<SortType>(SortType.DEFAULT)
 
-    private val allWallets: LiveData<List<Wallet>> = walletDao.getAllWalletsLive(userId)
+    private val allWallets: LiveData<List<Wallet>> = walletRepository.getWalletsLive(userId)
 
     val wallets: LiveData<List<Wallet>> = MediatorLiveData<List<Wallet>>().apply {
         addSource(allWallets) { updateWallets(this) }
@@ -37,11 +39,7 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
 
     fun addWallet(wallet: Wallet) {
         viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
-            val db = AppDatabase.getInstance(getApplication())
-            val walletDao = db.walletDao()
-
-            // Save wallet for this user
-            walletDao.addWallet(wallet.copy(userId = userId))
+            walletRepository.addWallet(wallet.copy(userId = userId))
         }
     }
 
@@ -53,18 +51,23 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
             val walletDao = db.walletDao()
             val expenseDao = db.expensesDao()
             val budgetDao = db.budgetDao()
+            val repository = BudgetRepository(budgetDao)
 
             // Get total spent in this wallet
             val totalExpenses = expenseDao.getTotalSpentInWallet(wallet.id) ?: 0.0
             if (totalExpenses > 0) {
-                budgetDao.refundSpending(userId, totalExpenses)
+                repository.refundSpending(userId, totalExpenses)
             }
 
-            // Delete all expenses associated with this wallet
-            expenseDao.deleteExpensesByWallet(wallet.id)
+            // 2. Soft delete all expenses associated with this wallet
+            val expensesInWallet = expenseDao.getAllExpensesSyncByWallet(wallet.id)
+            for (expense in expensesInWallet) {
+                val now = System.currentTimeMillis()
+                expenseDao.markDeleted(expense.id, now, now)
+            }
 
             // Delete the wallet itself
-            walletDao.deleteWallet(wallet)
+            walletRepository.deleteWallet(wallet)
         }
     }
 }
