@@ -7,7 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
+import com.iie.thethreeburnouts.mineyourmoney.crystals.MiningManager
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
+import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,17 +33,30 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
 
     private fun updateExpenses(mediator: MediatorLiveData<List<ExpenseWithWallet>>) {
         Log.i("ExpensesViewModel", "Updating MediatorLiveData with latest expenses")
+        // Filter out deleted expenses
         mediator.value = allExpenses.value.orEmpty()
+            .filter { it.expense.deletedAt == null }
     }
 
     fun addExpense(expense: Expense, onResult: (Boolean, Long) -> Unit) {
         Log.i("ExpensesViewModel", "Request to add expense")
         viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
             val walletDao = AppDatabase.getInstance(getApplication()).walletDao()
-            val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId), walletDao)
+            val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId, updatedAt = System.currentTimeMillis()), walletDao)
+
+            // Upload to Firestore
+            if (newId != -1L) {
+                val repo = ExpenseRepository(expensesDao)
+                val savedExpense = expensesDao.getExpenseByIdSync(newId.toInt())
+                savedExpense?.let { repo.uploadExpense(it) }
+            }
 
             withContext(Dispatchers.Main) {
                 onResult(newId != -1L, newId)
+
+                if (newId != -1L) {
+                    MiningManager.addSwing(getApplication(),1)
+                }
             }
         }
     }
@@ -56,7 +72,9 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
             val db = AppDatabase.getInstance(getApplication())
             val expensesDao = db.expensesDao()
             val walletDao = db.walletDao()
+            val walletRepo = WalletRepository(walletDao)
             val budgetDao = db.budgetDao()
+            val budgetRepo = BudgetRepository(budgetDao)
 
             // Get the expense (synchronously)
             val expense = expensesDao.getExpenseByIdSync(expenseId)
@@ -64,15 +82,15 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
             if (expense != null) {
                 // Refund the wallet balance
                 Log.i("ExpensesViewModel", "Expense found and refunding the wallet")
-                walletDao.addToWallet(expense.walletId, expense.amount)
+                walletRepo.addToWallet(expense.walletId, expense.amount)
 
                 // Refund spending in budget
                 Log.i("ExpensesViewModel", "Refunding spending in budget")
-                budgetDao.refundSpending(expense.userId, expense.amount)
+                budgetRepo.refundSpending(expense.userId, expense.amount)
 
-                // Delete expense
-                Log.i("ExpensesViewModel", "Deleting expense ID")
-                expensesDao.deleteExpense(expense)
+                // Soft delete locally + remove from Firestore
+                val repo = ExpenseRepository(expensesDao)
+                repo.deleteExpense(expense)
 
                 // Cancel recurring work
                 Log.i("ExpensesViewModel", "Cancelling recurring work")

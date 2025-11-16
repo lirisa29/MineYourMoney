@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -32,7 +40,9 @@ import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpensesViewModel
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpensesViewModelFactory
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import java.util.TimeZone
 
 class SpendingOverviewFragment : Fragment(){
@@ -48,6 +58,12 @@ class SpendingOverviewFragment : Fragment(){
     }
     // Store the last selected range
     private var lastSelectedRange: Pair<Long, Long>? = null
+
+    // Replace with users limit from settings
+    private var maxLimit = 1000f
+    private var minLimit = 500f
+
+    private val sdf = SimpleDateFormat("dd/MM", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +89,8 @@ class SpendingOverviewFragment : Fragment(){
             )
         }
 
-        setupPieChart() //(danielgindi,2025)
+        setupLineChart() //(danielgindi,2025)
+        loadDefault30Days()
 
         binding.transactionRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -91,7 +108,20 @@ class SpendingOverviewFragment : Fragment(){
             Log.i("SpendingOverviewFragment", "Updated total spending")
             binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
 
-            updatePieChart(expenses) //(danielgindi,2025)
+            if (lastSelectedRange == null) {
+                // default range displayed by loadDefault30Days will observe data directly
+            } else {
+                // refresh chart for currently selected range
+                val (startUtc, endUtc) = lastSelectedRange!!
+                val startOfDay = startOfDay(startUtc)
+                val endOfDay = endOfDay(endUtc)
+                expensesViewModel.getExpensesInRange(startOfDay, endOfDay)
+                    .observe(viewLifecycleOwner) { filteredExpenses ->
+                        updateLineChart(filteredExpenses, startOfDay, endOfDay)
+                    }
+            }
+
+            //updatePieChart(expenses) //(danielgindi,2025)
         }
 
         binding.topAppBar.setNavigationOnClickListener {
@@ -153,7 +183,7 @@ class SpendingOverviewFragment : Fragment(){
                         expenseAdapter.updateList(filteredExpenses)
                         val total = filteredExpenses.sumOf { it.expense.amount }
                         binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
-                        updatePieChart(filteredExpenses)
+                        updateLineChart(filteredExpenses, startOfDay, endOfDay)
                     }
             }
 
@@ -166,7 +196,7 @@ class SpendingOverviewFragment : Fragment(){
                     val total = expenses.sumOf { it.expense.amount }
                     binding.tvTotalSpendingAmount.text = "R${String.format("%,.2f", total)}"
 
-                    updatePieChart(expenses)
+                    loadDefault30Days()
                 }
             }
         }
@@ -177,76 +207,223 @@ class SpendingOverviewFragment : Fragment(){
         _binding = null
     }
 
-    private fun setupPieChart() {
-        Log.i("SpendingOverviewFragment", "Setting up PieChart")
-        binding.spendingPieChart.apply { //(danielgindi,2025)
-            description.isEnabled = false
-            isRotationEnabled = true
-            setUsePercentValues(false)
-            setDrawEntryLabels(false)
-            legend.isEnabled = false
-            setDrawHoleEnabled(false)
+    private fun setupLineChart() {
+        val chart: LineChart = binding.spendingLineChart
+        chart.description.isEnabled = false
+        chart.setTouchEnabled(true)
+        chart.setPinchZoom(true)
+        chart.setDrawGridBackground(false)
+        chart.axisRight.isEnabled = false
+
+        chart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            granularity = 1f
+            setDrawGridLines(false)
+            labelRotationAngle = -30f
+        }
+        chart.axisLeft.apply {
+            setDrawGridLines(true)
+            axisMinimum = 0f
         }
 
-        // Handle clicks on segments
-        binding.spendingPieChart.setOnChartValueSelectedListener(object : //(danielgindi,2025)
-            OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                if (e is PieEntry) {
-                    val walletName = e.label
-                    val amount = e.value
-                    Toast.makeText(requireContext(), "$walletName: R${String.format("%,.2f", amount)}", Toast.LENGTH_SHORT).show()
-                }
+        // ✅ added: enable scaling and dragging
+        chart.isDragEnabled = true
+        chart.setScaleEnabled(true)
+        chart.setScaleXEnabled(true)
+        chart.setScaleYEnabled(true)
+
+        // ✅ added: allow fling scrolling (momentum scroll)
+        chart.isHighlightPerDragEnabled = true
+
+        // ✅ added: set visible X range to "zoom in" view
+        chart.setVisibleXRangeMaximum(7f) // shows around 7 days at a time, adjust if needed
+
+        // ✅ added: smooth fling deceleration
+        chart.setDragDecelerationFrictionCoef(0.9f)
+    }
+
+    private fun loadDefault30Days() {
+        val end = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val start = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply { add(Calendar.DAY_OF_YEAR, -30) }
+
+        val startMillis = start.timeInMillis
+        val endMillis = end.timeInMillis
+        lastSelectedRange = Pair(startMillis, endMillis)
+
+        expensesViewModel.getExpensesInRange(startMillis, endMillis)
+            .observe(viewLifecycleOwner) { expenses ->
+                expenseAdapter.updateList(expenses)
+                updateLineChart(expenses, startMillis, endMillis)
+            }
+    }
+
+    private fun startOfDay(time: Long): Long =
+        Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            timeInMillis = time
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+    private fun endOfDay(time: Long): Long =
+        Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            timeInMillis = time
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+            set(Calendar.MILLISECOND, 999)
+        }.timeInMillis
+
+    private fun updateLineChart(expenses: List<ExpenseWithWallet>, startMillis: Long, endMillis: Long) {
+        val chart: LineChart = binding.spendingLineChart
+        chart.clear()
+
+        // Build date labels for each day in the selected range (inclusive)
+        val labels = mutableListOf<String>()
+        val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply { timeInMillis = startMillis }
+        val endCal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply { timeInMillis = endMillis }
+        while (!cal.after(endCal)) {
+            labels.add(sdf.format(cal.time))
+            cal.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        if (labels.isEmpty()) {
+            chart.data = null
+            chart.invalidate()
+            return
+        }
+
+        // Group expenses by wallet name -> then by formatted day label -> sum amounts
+        // note: use the same sdf.format(...) for extracting day label from expense date
+        val byWalletThenDay: Map<String, Map<String, Double>> = expenses
+            .groupBy { it.wallet.name ?: "Unknown Wallet" }
+            .mapValues { (_, list) ->
+                list.groupBy { sdf.format(it.expense.date) } // previous code used this successfully
+                    .mapValues { dayEntry -> dayEntry.value.sumOf { it.expense.amount } }
             }
 
-            override fun onNothingSelected() {
-                Log.i("SpendingOverviewFragment", "No pie chart slice selected")
+        // Create a LineDataSet per wallet
+        val dataSets = mutableListOf<LineDataSet>()
+        var globalMax = 0f
+
+        // Ensure consistent order of wallets (e.g., alphabetic or by creation). We'll use the keys order.
+        val walletNames = byWalletThenDay.keys.toList()
+
+        walletNames.forEachIndexed { walletIndex, walletName ->
+            val dayMap = byWalletThenDay[walletName] ?: emptyMap()
+
+            // Build entries – one entry per label (day in range), missing days -> 0
+            val entries = labels.mapIndexed { dayIndex, label ->
+                val amount = (dayMap[label] ?: 0.0).toFloat()
+                if (amount > globalMax) globalMax = amount
+                Entry(dayIndex.toFloat(), amount)
             }
-        })
-    }
 
-    private fun updatePieChart(expenses: List<ExpenseWithWallet>) { //(danielgindi,2025)
-        // Aggregate total per wallet
-        val totalsPerWallet = expenses.groupBy { it.wallet.name }
-            .mapValues { entry -> entry.value.sumOf { it.expense.amount } }
+            // Create dataset and style it
+            val colorInt = expenses.find { it.wallet.name == walletName }?.wallet?.color
+                ?: 0xFF3F51B5.toInt() // fallback color
 
-        val entries = totalsPerWallet.map { (walletName, total) ->
-            // Store a reference to the color in PieEntry using 'data'
-            val walletColor = expenses.find { it.wallet.name == walletName }?.wallet?.color ?: Color.GRAY
-            PieEntry(total.toFloat(), walletName, walletColor)
+            val set = LineDataSet(entries, walletName).apply {
+                mode = LineDataSet.Mode.LINEAR
+                lineWidth = 2f
+                circleRadius = 3f
+                setCircleColor(colorInt)
+                color = colorInt
+                setDrawValues(false)
+                setDrawFilled(false)
+            }
+
+            dataSets.add(set)
         }
 
-        val dataSet = PieDataSet(entries, "")
-        // Assign colors based on the wallet color stored in PieEntry.data
-        val colors = entries.map { it.data as? Int ?: Color.GRAY }
-        dataSet.colors = colors
-
-        dataSet.valueFormatter = WalletValueFormatter() // <-- custom formatter
-
-        dataSet.valueTextSize = 14f
-        dataSet.valueTextColor = Color.WHITE
-        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
-        // **Center values inside the slice**
-        dataSet.setXValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE)
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE)
-
-        dataSet.colors = colors
-        dataSet.sliceSpace = 2f
-
-        val data = PieData(dataSet)
-        data.setDrawValues(false)
-
-        binding.spendingPieChart.data = data //(danielgindi,2025)
-        binding.spendingPieChart.invalidate() //(danielgindi,2025)
-        Log.i("SpendingOverviewFragment", "Pie chart updated successfully")
-    }
-
-    class WalletValueFormatter : ValueFormatter() {
-        override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-            pieEntry ?: return ""
-            val walletName = pieEntry.label //(danielgindi,2025)
-            val amount = value
-            return "$walletName: R${String.format("%,.2f", amount)}"
+        // If no wallets (no expenses) just clear
+        if (dataSets.isEmpty()) {
+            chart.data = null
+            chart.invalidate()
+            return
         }
+
+        chart.data = LineData(dataSets as List<ILineDataSet>)
+
+        // X-axis labels (use index formatter)
+        chart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        chart.xAxis.labelCount = labels.size.coerceAtMost(10) // reduce clutter; chart will show subset
+        chart.xAxis.granularity = 1f
+
+        // Add min/max limit lines and ensure axis maximum includes maxLimit
+        val leftAxis = chart.axisLeft
+        leftAxis.removeAllLimitLines()
+
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)
+        val color = typedValue.data // this is the actual color int
+
+
+        val maxLine = LimitLine(maxLimit, "Max Limit").apply {
+            lineWidth = 2f
+            lineColor = Color.RED
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+            textColor = color
+            textSize = 11f
+        }
+
+        val minLine = LimitLine(minLimit, "Min Limit").apply {
+            lineWidth = 2f
+            lineColor = Color.GREEN
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+            textColor = color
+            textSize = 11f
+        }
+
+        leftAxis.addLimitLine(maxLine)
+        leftAxis.addLimitLine(minLine)
+        leftAxis.axisMinimum = 0f
+
+        // Make axisMaximum either slightly above the highest daily value OR slightly above maxLimit (whichever is higher)
+        val highestValue = (globalMax.coerceAtLeast(maxLimit))
+        leftAxis.axisMaximum = (highestValue * 1.1f).coerceAtLeast(maxLimit * 1.05f)
+
+        chart.axisRight.isEnabled = false
+        chart.description.isEnabled = false
+        chart.legend.isWordWrapEnabled = true
+
+        // ✅ Enable full zoom and drag functionality
+        chart.isDragEnabled = true
+        chart.setScaleEnabled(true)
+        chart.setScaleXEnabled(true)
+        chart.setScaleYEnabled(true)
+        chart.setPinchZoom(true)
+        chart.setDragDecelerationFrictionCoef(0.9f)
+        chart.isHighlightPerDragEnabled = true
+
+        // ✅ Show 7 data points at a time on X-axis
+        chart.setVisibleXRangeMaximum(7f)
+
+        // ✅ Automatically zoom in both axes
+        val xZoom = (labels.size / 16f).coerceAtLeast(1f)
+        val yZoom = 1.5f // adjust this number to control vertical zoom intensity
+        chart.zoom(xZoom, yZoom, 0f, 0f)
+
+        // ✅ Optional: scroll to the end (latest data)
+        chart.moveViewToX((labels.size - 1).toFloat())
+
+        val xAxis = chart.xAxis
+
+        val leftAxis2 = chart.axisLeft
+
+        val legend = chart.legend
+
+        val description = chart.description
+
+        xAxis.textColor = color
+        leftAxis2.textColor = color
+        legend.textColor = color
+        description.textColor = color
+
+        chart.invalidate()
     }
+
 }

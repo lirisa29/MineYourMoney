@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <!-- Wallet Icon -->
+    <ImageView
+        android:id="@+id/img_wallet_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_icon_button"
+        android:backgroundTint="?attr/android:colorForeground"
+        android:elevation="6dp"
+        android:translationZ="2dp"
+        android:src="@drawable/ic_wallets"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/wallet_icon"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Wallet Info -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_wallet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food"
+            android:textAppearance="@style/TextBody" />
+
+        <TextView
+            android:id="@+id/tv_amount_spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R5000.00 Spent"
+            android:textAppearance="@style/TextLabel" />
+    </LinearLayout>
+
+    <!-- Progress bar -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressWallet"
+        android:layout_width="150dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:trackColor="@color/text_secondary_dark"
+        app:indicatorColor="?attr/colorPrimary"
+        app:trackThickness="18dp" />
+
+</LinearLayout>
