@@ -7,40 +7,45 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
+import AppDatabase
+import com.iie.thethreeburnouts.mineyourmoney.crystals.MiningManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ExpensesViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
+class ExpensesViewModel(application: Application, private val userId: Int)
+    : AndroidViewModel(application) {
 
     private val expensesDao = AppDatabase.getInstance(application).expensesDao()
+    private val allExpenses = expensesDao.getAllExpensesLive(userId)
 
-    private val allExpenses: LiveData<List<ExpenseWithWallet>> = expensesDao.getAllExpensesLive(userId)
+    val expense: LiveData<List<ExpenseWithWallet>> =
+        MediatorLiveData<List<ExpenseWithWallet>>().apply {
+            addSource(allExpenses) { value = it }
+        }
 
-    val expense: LiveData<List<ExpenseWithWallet>> = MediatorLiveData<List<ExpenseWithWallet>>().apply {
-        addSource(allExpenses) { updateExpenses(this) }
-    }
-
-    // Get expense by ID
+    // ⭐ RESTORED — this is required by ExpenseDetailsFragment
     fun getExpenseById(expenseId: Int): LiveData<ExpenseWithWallet> {
-        Log.i("ExpensesViewModel", "Fetching expense")
         return expensesDao.getExpenseById(expenseId)
     }
 
-    private fun updateExpenses(mediator: MediatorLiveData<List<ExpenseWithWallet>>) {
-        Log.i("ExpensesViewModel", "Updating MediatorLiveData with latest expenses")
-        mediator.value = allExpenses.value.orEmpty()
-    }
-
     fun addExpense(expense: Expense, onResult: (Boolean, Long) -> Unit) {
-        Log.i("ExpensesViewModel", "Request to add expense")
-        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
+        viewModelScope.launch(Dispatchers.IO) {
+
             val walletDao = AppDatabase.getInstance(getApplication()).walletDao()
-            val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId), walletDao)
+
+            val newId = expensesDao.checkIfSufficientFunds(
+                expense.copy(userId = userId),
+                walletDao
+            )
 
             withContext(Dispatchers.Main) {
                 onResult(newId != -1L, newId)
+
+                if (newId != -1L) {
+                    MiningManager.addSwing(getApplication(), 1)
+                    Log.i("ExpensesViewModel", "Awarded +1 swing for logging an expense")
+                }
             }
         }
     }
@@ -49,35 +54,23 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
         return expensesDao.getExpensesInRange(userId, startDate, endDate)
     }
 
-    // Delete expense
     fun deleteExpense(expenseId: Int) {
-        Log.w("ExpensesViewModel", "Attempting to delete expense ID")
-        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
+        viewModelScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(getApplication())
             val expensesDao = db.expensesDao()
             val walletDao = db.walletDao()
             val budgetDao = db.budgetDao()
 
-            // Get the expense (synchronously)
-            val expense = expensesDao.getExpenseByIdSync(expenseId)
+            val exp = expensesDao.getExpenseByIdSync(expenseId)
 
-            if (expense != null) {
-                // Refund the wallet balance
-                Log.i("ExpensesViewModel", "Expense found and refunding the wallet")
-                walletDao.addToWallet(expense.walletId, expense.amount)
+            if (exp != null) {
+                walletDao.addToWallet(exp.walletId, exp.amount)
+                budgetDao.refundSpending(exp.userId, exp.amount)
+                expensesDao.deleteExpense(exp)
 
-                // Refund spending in budget
-                Log.i("ExpensesViewModel", "Refunding spending in budget")
-                budgetDao.refundSpending(expense.userId, expense.amount)
-
-                // Delete expense
-                Log.i("ExpensesViewModel", "Deleting expense ID")
-                expensesDao.deleteExpense(expense)
-
-                // Cancel recurring work
-                Log.i("ExpensesViewModel", "Cancelling recurring work")
+                // Cancel automatic recurring deduction
                 WorkManager.getInstance(getApplication())
-                    .cancelUniqueWork("recurring_expense_${expense.id}_${expense.recurrence}")
+                    .cancelUniqueWork("recurring_expense_${exp.id}_${exp.recurrence}")
             }
         }
     }
