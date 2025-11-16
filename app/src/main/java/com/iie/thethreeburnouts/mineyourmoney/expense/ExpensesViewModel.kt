@@ -10,23 +10,25 @@ import androidx.work.WorkManager
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletRepository
+import AppDatabase
+import com.iie.thethreeburnouts.mineyourmoney.crystals.MiningManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ExpensesViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
+class ExpensesViewModel(application: Application, private val userId: Int)
+    : AndroidViewModel(application) {
 
     private val expensesDao = AppDatabase.getInstance(application).expensesDao()
+    private val allExpenses = expensesDao.getAllExpensesLive(userId)
 
-    private val allExpenses: LiveData<List<ExpenseWithWallet>> = expensesDao.getAllExpensesLive(userId)
+    val expense: LiveData<List<ExpenseWithWallet>> =
+        MediatorLiveData<List<ExpenseWithWallet>>().apply {
+            addSource(allExpenses) { value = it }
+        }
 
-    val expense: LiveData<List<ExpenseWithWallet>> = MediatorLiveData<List<ExpenseWithWallet>>().apply {
-        addSource(allExpenses) { updateExpenses(this) }
-    }
-
-    // Get expense by ID
+    // ⭐ RESTORED — this is required by ExpenseDetailsFragment
     fun getExpenseById(expenseId: Int): LiveData<ExpenseWithWallet> {
-        Log.i("ExpensesViewModel", "Fetching expense")
         return expensesDao.getExpenseById(expenseId)
     }
 
@@ -38,8 +40,8 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
     }
 
     fun addExpense(expense: Expense, onResult: (Boolean, Long) -> Unit) {
-        Log.i("ExpensesViewModel", "Request to add expense")
-        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
+        viewModelScope.launch(Dispatchers.IO) {
+
             val walletDao = AppDatabase.getInstance(getApplication()).walletDao()
             val newId = expensesDao.checkIfSufficientFunds(expense.copy(userId = userId, updatedAt = System.currentTimeMillis()), walletDao)
 
@@ -52,6 +54,11 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
 
             withContext(Dispatchers.Main) {
                 onResult(newId != -1L, newId)
+
+                if (newId != -1L) {
+                    MiningManager.addSwing(getApplication(), 1)
+                    Log.i("ExpensesViewModel", "Awarded +1 swing for logging an expense")
+                }
             }
         }
     }
@@ -60,10 +67,8 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
         return expensesDao.getExpensesInRange(userId, startDate, endDate)
     }
 
-    // Delete expense
     fun deleteExpense(expenseId: Int) {
-        Log.w("ExpensesViewModel", "Attempting to delete expense ID")
-        viewModelScope.launch(Dispatchers.IO) { //(Google Developers Training team, 2025)
+        viewModelScope.launch(Dispatchers.IO) {
             val db = AppDatabase.getInstance(getApplication())
             val expensesDao = db.expensesDao()
             val walletDao = db.walletDao()
@@ -87,10 +92,9 @@ class ExpensesViewModel (application: Application, private val userId: Int) : An
                 val repo = ExpenseRepository(expensesDao)
                 repo.deleteExpense(expense)
 
-                // Cancel recurring work
-                Log.i("ExpensesViewModel", "Cancelling recurring work")
+                // Cancel automatic recurring deduction
                 WorkManager.getInstance(getApplication())
-                    .cancelUniqueWork("recurring_expense_${expense.id}_${expense.recurrence}")
+                    .cancelUniqueWork("recurring_expense_${exp.id}_${exp.recurrence}")
             }
         }
     }
