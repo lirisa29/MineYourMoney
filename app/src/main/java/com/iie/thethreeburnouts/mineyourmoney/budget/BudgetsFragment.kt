@@ -92,13 +92,13 @@ class BudgetsFragment : Fragment(){
         binding.tvBudgetUsage.text = "You've used $percentUsed% of your budget"
 
         // The progress ring starts full and decreases with spending
-        binding.budgetProgressRing.progress = 100 - percentUsed
+        binding.budgetProgressRing.progress = percentUsed
 
         // Change ring colour based on spending
         val colourRes = when {
             total < min -> R.color.blue  // below min
-            total in min..max -> R.color.purple // within range
-            else -> R.color.red // over max
+            total in min..max -> R.color.green // within range
+            else -> R.color.red// over max
         }
 
         val color = requireContext().getColor(colourRes)
