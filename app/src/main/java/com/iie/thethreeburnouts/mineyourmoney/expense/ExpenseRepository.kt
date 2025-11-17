@@ -17,7 +17,10 @@ class ExpenseRepository(private val dao: ExpensesDao) {
         val expensesCol = firestore.collection("users")
             .document(user.uid)
             .collection("expenses")
-        expensesCol.document(expense.id.toString()).set(expense).await()
+
+        // Make sure the Expense has the local userId
+        val expenseToUpload = expense.copy(userId = user.uid.hashCode())
+        expensesCol.document(expense.id.toString()).set(expenseToUpload).await()
     }
 
     // Mark deleted locally and upload deletion to Firestore
@@ -36,41 +39,40 @@ class ExpenseRepository(private val dao: ExpensesDao) {
     // Download expenses for this user and apply conflict resolution
     suspend fun downloadExpenses(userId: Int) {
         val user = auth.currentUser ?: return
-
         val expensesCol = firestore.collection("users")
             .document(user.uid)
             .collection("expenses")
 
         val snapshot = expensesCol.get().await()
-        val remoteExpenses = snapshot.documents.mapNotNull { it.toObject(Expense::class.java) }
+        val remoteExpenses = snapshot.documents.mapNotNull { doc ->
+            doc.toObject(Expense::class.java)?.copy(userId = userId) // enforce correct userId
+        }
 
-        // 1. Upload local deleted expenses first
+        // Delete local expenses that were marked deleted
         val locallyDeleted = dao.getDeletedExpenses(userId)
         for (deleted in locallyDeleted) {
             expensesCol.document(deleted.id.toString()).delete().await()
-            dao.deleteExpense(deleted) // remove from Room after successful Firestore deletion
+            dao.deleteExpense(deleted)
         }
 
-        // 2. Handle additions and updates
+        // Sync additions and updates
         val localExpenses = dao.getAllExpensesIncludingDeleted(userId)
         val localMap = localExpenses.associateBy { it.id }
 
         for (remote in remoteExpenses) {
             val local = localMap[remote.id]
             when {
-                local == null -> dao.addExpense(remote) // New remote expense
-                remote.updatedAt > local.updatedAt -> dao.addExpense(remote) // Remote newer
-                local.updatedAt > remote.updatedAt -> uploadExpense(local) // Local newer
+                local == null -> dao.addExpense(remote) // new remote expense
+                remote.updatedAt > local.updatedAt -> dao.addExpense(remote) // remote newer
+                local.updatedAt > remote.updatedAt -> uploadExpense(local) // local newer
             }
         }
 
-        // 3. Remove local expenses that no longer exist remotely
+        // Remove local expenses that no longer exist remotely
         val remoteIds = remoteExpenses.map { it.id }.toSet()
         val localSyncedExpenses = dao.getAllExpensesSync(userId)
         for (local in localSyncedExpenses) {
-            if (local.id !in remoteIds) {
-                dao.deleteExpense(local)
-            }
+            if (local.id !in remoteIds) dao.deleteExpense(local)
         }
     }
 }
