@@ -30,7 +30,6 @@ class CrystalsFragment : Fragment(R.layout.fragment_mining) {
         val useSwingBtn = view.findViewById<Button>(R.id.button_use_swing)
         val vaultBtn = view.findViewById<Button>(R.id.button_crystal_vault)
 
-        streakIcon = view.findViewById(R.id.streak_icon)
         streakNumber = view.findViewById(R.id.streak_number)
 
         MiningManager.loadData(requireContext())
