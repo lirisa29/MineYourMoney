@@ -30,7 +30,6 @@ class CrystalsFragment : Fragment(R.layout.fragment_mining) {
         val useSwingBtn = view.findViewById<Button>(R.id.button_use_swing)
         val vaultBtn = view.findViewById<Button>(R.id.button_crystal_vault)
 
-        streakIcon = view.findViewById(R.id.streak_icon)
         streakNumber = view.findViewById(R.id.streak_number)
 
         MiningManager.loadData(requireContext())
@@ -100,14 +99,11 @@ class CrystalsFragment : Fragment(R.layout.fragment_mining) {
     private fun loadStreak() {
         val streak = StreakManager.getStreak(requireContext())
         if (streak <= 0) {
-            streakIcon.visibility = View.GONE
             streakNumber.visibility = View.GONE
             return
         }
 
-        streakIcon.visibility = View.VISIBLE
         streakNumber.visibility = View.VISIBLE
-        streakIcon.setImageResource(R.drawable.ic_cook)
         streakNumber.text = streak.toString()
     }
 
