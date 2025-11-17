@@ -149,11 +149,20 @@ class CrystalVaultFragment : Fragment() {
             rarityText.text = c.rarity
             dateText.text = dateFormat.format(Date(c.dateUnlocked))
 
-            icon.setImageResource(R.drawable.ic_add_photo) // replace later if needed
+            // ⭐ Assign correct crystal icon
+            val iconRes = when (c.rarity) {
+                "COMMON" -> R.drawable.crystal_common   // use your real drawables
+                "RARE" -> R.drawable.crystal_rare
+                "LEGENDARY" -> R.drawable.crystal_legendary
+                else -> R.drawable.crystal_common
+            }
+
+            icon.setImageResource(iconRes)
 
             container.addView(itemView)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
