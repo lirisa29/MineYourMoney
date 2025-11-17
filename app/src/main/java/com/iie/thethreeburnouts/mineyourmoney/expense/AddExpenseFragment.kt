@@ -19,6 +19,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -74,6 +76,19 @@ class AddExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootLayout) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+            // Apply padding to push toolbar below status bar
+            binding.topAppBar.setPadding(
+                binding.topAppBar.paddingLeft,
+                statusBar.top,
+                binding.topAppBar.paddingRight,
+                binding.topAppBar.paddingBottom
+            )
+            insets
+        }
 
         binding.etExpenseAmount.setText("R0.00")
         binding.etExpenseAmount.setSelection(binding.etExpenseAmount.text!!.length)

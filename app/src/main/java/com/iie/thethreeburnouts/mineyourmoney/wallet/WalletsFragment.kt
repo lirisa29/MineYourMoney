@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -50,6 +52,19 @@ class WalletsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("WalletsFragment", "onViewCreated called")
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.walletsFragmentRoot) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+            // Apply padding to push toolbar below status bar
+            binding.topAppBar.setPadding(
+                binding.topAppBar.paddingLeft,
+                statusBar.top,
+                binding.topAppBar.paddingRight,
+                binding.topAppBar.paddingBottom
+            )
+            insets
+        }
 
         // Setup RecyclerView
         walletAdapter = WalletAdapter(

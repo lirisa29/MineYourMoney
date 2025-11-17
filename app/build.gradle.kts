@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.mpandroidchart)
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
-
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
     // added for camera functionality
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)

@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
@@ -41,6 +43,19 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.dashboardFragment) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+            // Apply padding to push toolbar below status bar
+            binding.topAppBar.setPadding(
+                binding.topAppBar.paddingLeft,
+                statusBar.top,
+                binding.topAppBar.paddingRight,
+                binding.topAppBar.paddingBottom
+            )
+            insets
+        }
         viewModel.loadOrInitBudget()
         viewModel.budget.observe(viewLifecycleOwner) { budget ->
             budget?.let { updateUI(it) }
@@ -69,15 +84,16 @@ class DashboardFragment : Fragment() {
         val remaining = (max - total).coerceAtLeast(0.0)
         // Display spending / max
         binding.tvBudgetSpent.text = "R${String.format("%,.2f", remaining)} /"
+
         binding.tvBudgetTotal.text = "R${String.format("%,.2f", max)}"
         // Update percentage text
         binding.tvBudgetUsage.text = "You've used $percentUsed% of your budget"
         // The progress ring starts full and decreases with spending
-        binding.budgetProgressRing.progress = 100 - percentUsed
+        binding.budgetProgressRing.progress = percentUsed
         // Change ring colour based on spending
         val colourRes = when {
             total < min -> R.color.blue // below min
-            //total in min..max -> R.color.purple // within range
+            total in min..max -> R.color.green // within range
             else -> R.color.red // over max
         }
         val color = requireContext().getColor(colourRes)
