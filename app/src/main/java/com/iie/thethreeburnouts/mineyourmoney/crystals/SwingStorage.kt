@@ -20,11 +20,6 @@ object SwingStorage {
             .apply()
     }
 
-    fun getLastReset(context: Context): Long {
-        return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getLong(KEY_LAST_RESET, 0)
-    }
-
     fun setLastReset(context: Context, timestamp: Long) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit()
