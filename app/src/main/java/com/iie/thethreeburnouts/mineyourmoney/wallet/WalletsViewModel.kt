@@ -8,10 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseRepository
+import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.exp
-import kotlin.time.Clock.System.now
+
 
 class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
     private val walletDao = AppDatabase.getInstance(application).walletDao()
