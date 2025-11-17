@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dashboardFragment"
+    android:fitsSystemWindows="true"
     android:background="?attr/android:colorBackground">
 
     <!-- Top App Bar -->
