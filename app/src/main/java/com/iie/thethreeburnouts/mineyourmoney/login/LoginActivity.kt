@@ -29,9 +29,9 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
 
         FirebaseApp.initializeApp(this)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        /*CoroutineScope(Dispatchers.IO).launch {
             AppDatabase.getInstance(this@LoginActivity).clearAll()
-        }
+        }*/
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.loginRoot) { v, insets ->
