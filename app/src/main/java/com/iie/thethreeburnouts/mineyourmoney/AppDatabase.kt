@@ -11,7 +11,7 @@ import com.iie.thethreeburnouts.mineyourmoney.login.UserDao
 import com.iie.thethreeburnouts.mineyourmoney.wallet.Wallet
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletDao
 
-@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 15)
+@Database(entities = [User::class, Wallet::class, Expense::class, Budget::class], version = 18)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun walletDao(): WalletDao
@@ -36,5 +36,9 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
+    }
+
+    suspend fun clearAll(){
+        clearAllTables()
     }
 }
