@@ -8,24 +8,45 @@
     android:layout_height="match_parent"
     tools:context=".crystals.CrystalsFragment">
 
-    <!-- Top App Bar -->
+    <!-- AppBar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
+        style="@style/TopAppBarStyle"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorSurface"
-        app:title="Mining"
-        app:titleCentered="false" />
+        app:title=""
+        app:contentInsetStart="0dp">
 
-    <!-- Crystal Vault Button (now spaced correctly) -->
-    <Button
-        android:id="@+id/button_crystal_vault"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Crystal Vault"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="72dp"
-        android:layout_gravity="top|end" />
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="80dp"
+            android:paddingEnd="50dp"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between"
+            app:alignItems="center">
+
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mining"
+                android:textAppearance="@style/TextHeading"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_flexShrink="1"
+                app:layout_flexGrow="0" />
+
+            <!-- Crystal Vault Button (now spaced correctly) -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_crystal_vault"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="8dp"
+                android:text="Crystal Vault" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <!-- ⭐ STREAK COUNTER (positioned cleanly beside Vault Button) -->
     <LinearLayout
@@ -116,12 +137,11 @@
                 android:layout_marginBottom="24dp" />
 
             <!-- Use Swing -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_use_swing"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Use Swing"
-                android:layout_marginBottom="8dp" />
+                style="@style/PrimaryButton"
+                android:layout_marginTop="8dp"
+                android:text="Use Swing" />
 
             <!-- Available Swings -->
             <TextView
