@@ -4,7 +4,7 @@ OPSC7311 POE
 ---
 
 ## Link to Demo Video
-https://youtu.be/cPMT4JVpI0Q
+[https://youtu.be/cPMT4JVpI0Q](https://youtu.be/575x4MyEbgo)
 ---
 
 ## Features Implemented  
