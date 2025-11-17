@@ -50,15 +50,14 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
             // 1. Try to pull latest Firestore version
             repo.downloadFromFirestore(loggedInUser.id)
+            walletRepo.downloadFromFirestore(loggedInUser.id)
+            expensesRepo.downloadExpenses(loggedInUser.id)
 
             withContext(Dispatchers.Main) {
                 // Now safe to load UI
                 replaceFragment(BudgetsFragment(), addToBackStack = false)
                 binding.bottomNavigationView.selectedItemId = R.id.nav_budgets
             }
-
-            walletRepo.downloadFromFirestore(loggedInUser.id)
-            expensesRepo.downloadExpenses(loggedInUser.id)
         }
 
         // Set status and nav bar colour using theme attribute
