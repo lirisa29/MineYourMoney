@@ -44,19 +44,6 @@ class ExpenseDetailsFragment(private val expenseId: Int, private val source: Str
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.expenseDetailsCoordinatorLayout) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-            // Apply padding to push toolbar below status bar
-            binding.topAppBar.setPadding(
-                binding.topAppBar.paddingLeft,
-                statusBar.top,
-                binding.topAppBar.paddingRight,
-                binding.topAppBar.paddingBottom
-            )
-            insets
-        }
-
         setupTopAppBar()
         loadExpenseDetails(expenseId)
 
