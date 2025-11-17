@@ -16,31 +16,33 @@ https://youtu.be/cPMT4JVpI0Q
 ### Wallets (Categories)  
 - Users can create wallets that act as categories for managing expenses.  
 - Each wallet has a set balance, which decreases as expenses are added.  
-- Users are only allowed to add an expense if the wallet’s balance exceeds the expense amount. This system encourages users to be more aware of their spending habits.
 
 ### Expense Management  
 - Users can create expense entries by specifying a date, recurrance, and wallet (category).  
 - Users have the option to attach a photographor or add a note to each expense entry.  
-- All expense data is stored locally using RoomDB and linked to the specific user account.
-
+- All expense data is stored locally using RoomDB and online using Firebase for cross-device syncing.
+  
 ### Budget and Goals  
 - Users can set a monthly spending goal to track and control their total expenditure.
-- Users divide the monthly limit into wallets to give every cent a purpose.
+- The expenses users log gets deducted from their budget.
 
 ### Data Visualization  
-- The total expenditure for each wallet is displayed using a pie chart.  
-- The colour of each pie segment corresponds to the colour of the selected wallet icon.  
-- When a segment is clicked, a toast message appears showing the wallet name and the total amount spent.  
+- The total expenditure for each wallet is displayed using a line graph.  
+- The colour of each line corresponds to the colour of the respective wallet icon.   
 - This visualization method allows users to understand their spending distribution at a glance.
+- The user can also monitor how well they're staying within their budgeting range using the progress ring graph on the budgeting screen.
+- The ring turns blue when below min limit, green when in range and red when over max limit.
 
 ### Data Persistence  
-- The app uses RoomDB for local data storage and management.  
+- The app uses RoomDB for local data storage and firestore for online data storage.  
 - The database contains four main tables:  
   - **User Table** – stores login credentials and user information.  
   - **Wallet Table** – stores details of all wallets created by the user.  
   - **Expense Table** – stores details of all expenses linked to the respective wallets and user accounts.
   - **Budgets Table** - stores details of the monthly budget limit set by the user.  
 - Data is relationally linked and filtered by the logged-in user to maintain data separation and privacy.
+
+### Gamification 
 
 ---
 
