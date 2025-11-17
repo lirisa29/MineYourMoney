@@ -43,19 +43,6 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("CreateWalletFragment", "onViewCreated called")
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.createWalletRoot) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-            // Apply padding to push toolbar below status bar
-            binding.topAppBar.setPadding(
-                binding.topAppBar.paddingLeft,
-                statusBar.top,
-                binding.topAppBar.paddingRight,
-                binding.topAppBar.paddingBottom
-            )
-            insets
-        }
-
         // Initialize the binding
         _binding = FragmentCreateWalletBinding.bind(view)
 

@@ -40,18 +40,6 @@ class BudgetsFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.budgetsFragment) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-            // Apply padding to push toolbar below status bar
-            binding.topAppBar.setPadding(
-                binding.topAppBar.paddingLeft,
-                statusBar.top,
-                binding.topAppBar.paddingRight,
-                binding.topAppBar.paddingBottom
-            )
-            insets
-        }
         setupToolbar()
 
         viewModel.loadOrInitBudget()

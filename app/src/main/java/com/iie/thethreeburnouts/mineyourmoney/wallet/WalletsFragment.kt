@@ -53,19 +53,6 @@ class WalletsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("WalletsFragment", "onViewCreated called")
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.walletsFragmentRoot) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-            // Apply padding to push toolbar below status bar
-            binding.topAppBar.setPadding(
-                binding.topAppBar.paddingLeft,
-                statusBar.top,
-                binding.topAppBar.paddingRight,
-                binding.topAppBar.paddingBottom
-            )
-            insets
-        }
-
         // Setup RecyclerView
         walletAdapter = WalletAdapter(
             emptyList(),
