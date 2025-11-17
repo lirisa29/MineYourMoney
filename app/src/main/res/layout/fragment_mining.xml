@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mining_root"
@@ -11,27 +12,55 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorSurface"
         app:title="Mining"
-        app:titleCentered="false"
-        app:layout_scrollFlags="scroll|enterAlways" />
+        app:titleCentered="false" />
 
-    <!-- WORKING Vault Button (below toolbar!) -->
+    <!-- Crystal Vault Button (now spaced correctly) -->
     <Button
         android:id="@+id/button_crystal_vault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crystal Vault"
-        android:layout_margin="12dp"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="56dp" />
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="72dp"
+        android:layout_gravity="top|end" />
+
+    <!-- ⭐ STREAK COUNTER (positioned cleanly beside Vault Button) -->
+    <LinearLayout
+        android:id="@+id/streak_layout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="140dp"
+        android:layout_gravity="top|end">
+
+        <ImageView
+            android:id="@+id/streak_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_cook" />
+
+        <TextView
+            android:id="@+id/streak_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingStart="6dp"/>
+    </LinearLayout>
 
     <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="24dp"
+        android:layout_marginTop="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -46,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp">
 
                 <TextView
@@ -67,17 +97,16 @@
 
             </LinearLayout>
 
-            <!-- Large crystal square -->
+            <!-- Crystal Image -->
             <ImageView
                 android:id="@+id/crystal_image"
                 android:layout_width="220dp"
                 android:layout_height="220dp"
                 android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_add_photo"
-                android:background="@drawable/ic_shopping"
                 android:scaleType="centerCrop" />
 
-            <!-- Small hint text -->
+            <!-- Hint text -->
             <TextView
                 android:id="@+id/log_expenses_hint"
                 android:layout_width="wrap_content"
@@ -86,7 +115,7 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Use Swing button -->
+            <!-- Use Swing -->
             <Button
                 android:id="@+id/button_use_swing"
                 android:layout_width="200dp"
@@ -94,7 +123,7 @@
                 android:text="Use Swing"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Available swings -->
+            <!-- Available Swings -->
             <TextView
                 android:id="@+id/available_swings"
                 android:layout_width="wrap_content"
@@ -105,7 +134,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Floating Action Button -->
+    <!-- Floating Help Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/help_fab"
         android:layout_width="wrap_content"
@@ -113,31 +142,5 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="20dp"
         app:srcCompat="@drawable/ic_pet" />
-
-    <!-- streak -->
-    <LinearLayout
-        android:id="@+id/streak_layout"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/streak_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_cook" />
-
-        <TextView
-            android:id="@+id/streak_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingStart="6dp"/>
-    </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
