@@ -4,7 +4,7 @@ OPSC7311 POE
 ---
 
 ## Link to Demo Video
-https://youtu.be/cPMT4JVpI0Q
+[https://youtu.be/cPMT4JVpI0Q](https://youtu.be/575x4MyEbgo)
 ---
 
 ## Features Implemented  
@@ -43,13 +43,17 @@ https://youtu.be/cPMT4JVpI0Q
 - Data is relationally linked and filtered by the logged-in user to maintain data separation and privacy.
 
 ### Gamification 
-
+- Logging Expenses: User logs expenses for the day. Each time they do this, they get a "swing" at the crystal rock.
+- The rock cracks slightly with each action.
+- Breaking the Rock: After consistent logging, the rock eventually breaks open, revealing a crystal.
+- Reward Choices: The user is presented with 3 rewards that are buffs for future mining.
+- Unlocking New Crystals: With each budgeting goal reached, the user increases their chance of unlocking new, rarer crystals with better rewards, motivating them to keep mining and budgeting.
 ---
 
 ## Design Decisions  
 The project replaces the concept of traditional categories with wallets to give users a more practical and interactive budgeting experience. Each wallet operates like a financial account with a set balance, ensuring users are more conscious of their spending habits.  
 
-A pie chart was chosen for expenditure visualization because it provides a simple and effective overview of spending proportions, making it easy for users to interpret their financial habits quickly.
+A line chart was chosen for expenditure visualization because it provides a simple and effective overview of spending proportions, making it easy for users to interpret their financial habits quickly.
 
 ---
 
