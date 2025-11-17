@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_marginStart="12dp">
 
         <TextView
@@ -23,15 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="RARITY"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textAppearance="@style/TextBody"/>
 
         <TextView
             android:id="@+id/crystal_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Acquired on DATE"
-            android:textSize="14sp"/>
+            android:textAppearance="@style/TextLabel"/>
     </LinearLayout>
 
 </LinearLayout>

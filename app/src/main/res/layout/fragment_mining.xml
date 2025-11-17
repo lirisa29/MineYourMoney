@@ -80,7 +80,7 @@
                     android:layout_marginEnd="12dp"
                     android:gravity="center"
                     android:text="3"
-                    android:textSize="18sp" />
+                    android:textAppearance="@style/TextBody" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/mining_progress"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log expenses to earn swings!"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextLabel"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp" />
 
@@ -145,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3 Available Swings"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextBody" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
