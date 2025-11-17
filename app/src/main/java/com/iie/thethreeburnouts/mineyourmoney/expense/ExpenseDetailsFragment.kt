@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
@@ -41,6 +43,19 @@ class ExpenseDetailsFragment(private val expenseId: Int, private val source: Str
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.expenseDetailsCoordinatorLayout) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+            // Apply padding to push toolbar below status bar
+            binding.topAppBar.setPadding(
+                binding.topAppBar.paddingLeft,
+                statusBar.top,
+                binding.topAppBar.paddingRight,
+                binding.topAppBar.paddingBottom
+            )
+            insets
+        }
 
         setupTopAppBar()
         loadExpenseDetails(expenseId)

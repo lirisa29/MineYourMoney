@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -78,6 +80,19 @@ class SpendingOverviewFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.i("SpendingOverviewFragment", "onViewCreated: Initializing UI Components")
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.spendingOverviewLayout) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+            // Apply padding to push toolbar below status bar
+            binding.topAppBar.setPadding(
+                binding.topAppBar.paddingLeft,
+                statusBar.top,
+                binding.topAppBar.paddingRight,
+                binding.topAppBar.paddingBottom
+            )
+            insets
+        }
 
         // Setup RecyclerView
         expenseAdapter = ExpenseAdapter(emptyList()) { expenseId ->

@@ -13,6 +13,7 @@ import com.iie.thethreeburnouts.mineyourmoney.budget.Budget
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetsFragment
 import com.iie.thethreeburnouts.mineyourmoney.crystals.CrystalsFragment
+import com.iie.thethreeburnouts.mineyourmoney.dashboard.DashboardFragment
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityMainBinding
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseRepository
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletRepository
@@ -97,6 +98,10 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
                         replaceFragment(CrystalsFragment(), addToBackStack = false)
                         true
                     }
+                    R.id.nav_dashboard -> {
+                        replaceFragment(DashboardFragment(), addToBackStack = false)
+                        true
+                    }
 
                     else -> false
                 }
@@ -106,7 +111,7 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
     private fun updateNavBarVisibility(fragment: Fragment) {
         binding.bottomNavigationView.visibility =
-            if (fragment is WalletsFragment || fragment is BudgetsFragment || fragment is CrystalsFragment) View.VISIBLE else View.GONE
+            if (fragment is WalletsFragment || fragment is BudgetsFragment || fragment is CrystalsFragment || fragment is DashboardFragment) View.VISIBLE else View.GONE
     }
 
     override fun getCurrentUserId(): Int = loggedInUser.id
