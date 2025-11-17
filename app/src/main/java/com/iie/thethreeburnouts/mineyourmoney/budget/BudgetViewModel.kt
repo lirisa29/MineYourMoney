@@ -16,9 +16,11 @@ class BudgetViewModel(application: Application, private val userId: Int) : //(Go
     val budget: LiveData<Budget?> = repository.getBudgetLive(userId)
 
     fun loadOrInitBudget() {
-        viewModelScope.launch { //(Google Developers Training team, 2025)
+        viewModelScope.launch {
             val existing = repository.getBudget(userId)
             val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+
+            // If no local budget AND no remote budget → initialize only then
             if (existing == null) {
                 repository.saveBudget(
                     Budget(
@@ -29,9 +31,16 @@ class BudgetViewModel(application: Application, private val userId: Int) : //(Go
                         lastUpdatedMonth = currentMonth
                     )
                 )
-            } else if (existing.lastUpdatedMonth != currentMonth) {
-                // Reset for new month
-                repository.saveBudget(existing.copy(totalSpent = 0.0, minLimit = 0.0, maxLimit = 0.0, lastUpdatedMonth = currentMonth))
+                return@launch
+            }
+
+            // Monthly reset should NOT touch min/max (those are user settings!)
+            if (existing.lastUpdatedMonth != currentMonth) {
+                val updated = existing.copy(
+                    totalSpent = 0.0,
+                    lastUpdatedMonth = currentMonth
+                )
+                repository.saveBudget(updated)
             }
         }
     }
