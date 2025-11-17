@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mining_root"
+    android:fitsSystemWindows="true"
+    android:background="?attr/android:colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".crystals.CrystalsFragment">
@@ -48,34 +50,6 @@
         </com.google.android.flexbox.FlexboxLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- ⭐ STREAK COUNTER (positioned cleanly beside Vault Button) -->
-    <LinearLayout
-        android:id="@+id/streak_layout"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="140dp"
-        android:layout_gravity="top|end">
-
-        <ImageView
-            android:id="@+id/streak_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_cook" />
-
-        <TextView
-            android:id="@+id/streak_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingStart="6dp"/>
-    </LinearLayout>
-
     <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -92,7 +66,7 @@
 
             <!-- Horizontal progress with number box -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
@@ -100,7 +74,7 @@
                 android:layout_marginBottom="24dp">
 
                 <TextView
-                    android:id="@+id/progress_number"
+                    android:id="@+id/streak_number"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="12dp"
@@ -114,18 +88,39 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:progress="30"
-                    android:max="100" />
+                    android:max="100"
+                    app:trackColor="@color/text_secondary_dark"
+                    app:indicatorColor="?attr/colorPrimary"
+                    app:trackThickness="18dp"/>
 
             </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:padding="24dp"
+            app:cardBackgroundColor="?attr/android:colorForeground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <!-- Crystal Image -->
             <ImageView
                 android:id="@+id/crystal_image"
                 android:layout_width="220dp"
                 android:layout_height="220dp"
+                android:layout_marginTop="38dp"
                 android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_add_photo"
                 android:scaleType="centerCrop" />
+
+        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
             <!-- Hint text -->
             <TextView
@@ -134,14 +129,15 @@
                 android:layout_height="wrap_content"
                 android:text="Log expenses to earn swings!"
                 android:textSize="14sp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
 
             <!-- Use Swing -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_use_swing"
                 style="@style/PrimaryButton"
-                android:layout_marginTop="8dp"
-                android:text="Use Swing" />
+                android:text="Use Swing"
+                android:layout_marginBottom="8dp"/>
 
             <!-- Available Swings -->
             <TextView
@@ -159,8 +155,11 @@
         android:id="@+id/help_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/purple"
         android:layout_margin="20dp"
-        app:srcCompat="@drawable/ic_pet" />
+        app:srcCompat="@drawable/ic_help"
+        app:maxImageSize="50dp"
+        app:tint="@color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
