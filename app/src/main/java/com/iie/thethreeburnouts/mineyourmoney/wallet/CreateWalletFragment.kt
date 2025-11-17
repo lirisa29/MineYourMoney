@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -67,6 +69,16 @@ class CreateWalletFragment : Fragment(R.layout.fragment_create_wallet) {
 
         setupListeners()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentCreateWalletBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
 
     private fun setupEditMode(wallet: Wallet) {
         binding.topAppBar.title = "Edit Wallet"

@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.R
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentCrystalvaultBinding
 import kotlinx.coroutines.launch
@@ -48,7 +49,9 @@ class CrystalVaultFragment : Fragment() {
 
         // Back button
         binding.topAppBar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            (requireActivity() as MainActivity).replaceFragment(
+                CrystalsFragment(), addToBackStack = false
+            )
         }
 
         // Screenshot button
