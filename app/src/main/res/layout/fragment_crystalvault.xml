@@ -5,29 +5,24 @@
     android:id="@+id/crystal_vault_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground"
     android:fitsSystemWindows="true">
 
-    <!-- App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Crystal Vault"
-            app:navigationIcon="@drawable/ic_back"
-            app:titleCentered="true" />
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/TopAppBarStyle"
+        app:title="Crystal Vault"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationContentDescription="@string/back"
+        app:navigationIconTint="?attr/android:textColorSecondary"/>
 
     <!-- Scroll Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingStart="16dp"
@@ -42,6 +37,14 @@
             android:orientation="vertical">
 
             <!-- COMMON SECTION -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
             <LinearLayout
                 android:id="@+id/common_section"
                 android:orientation="vertical"
@@ -52,8 +55,7 @@
                 <TextView
                     android:id="@+id/title_common"
                     android:text="Common Crystals"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextBody"
                     android:padding="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -64,9 +66,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
 
             <!-- RARE SECTION -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="24dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
             <LinearLayout
                 android:id="@+id/rare_section"
                 android:orientation="vertical"
@@ -79,8 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rare Crystals"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextBody"
                     android:padding="4dp" />
 
 
@@ -90,8 +101,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- LEGENDARY SECTION -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="24dp"
+                app:cardBackgroundColor="?attr/android:colorForeground"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
             <LinearLayout
                 android:id="@+id/legendary_section"
                 android:orientation="vertical"
@@ -104,8 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Legendary Crystals"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextBody"
                     android:padding="4dp" />
 
                 <LinearLayout
@@ -114,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

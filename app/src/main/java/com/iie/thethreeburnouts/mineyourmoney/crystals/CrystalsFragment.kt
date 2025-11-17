@@ -99,14 +99,11 @@ class CrystalsFragment : Fragment(R.layout.fragment_mining) {
     private fun loadStreak() {
         val streak = StreakManager.getStreak(requireContext())
         if (streak <= 0) {
-            streakIcon.visibility = View.GONE
             streakNumber.visibility = View.GONE
             return
         }
 
-        streakIcon.visibility = View.VISIBLE
         streakNumber.visibility = View.VISIBLE
-        streakIcon.setImageResource(R.drawable.ic_cook)
         streakNumber.text = streak.toString()
     }
 
