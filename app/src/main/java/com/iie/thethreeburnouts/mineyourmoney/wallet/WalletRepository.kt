@@ -100,6 +100,8 @@ class WalletRepository(private val dao: WalletDao) {
             .document(wallet.id.toString())
             .delete()
             .await()
+
+        dao.deleteWallet(wallet)
     }
 
     suspend fun downloadFromFirestore(userId: Int) {

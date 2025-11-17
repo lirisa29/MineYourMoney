@@ -11,6 +11,9 @@ import com.google.firebase.FirebaseApp
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.R
 import com.iie.thethreeburnouts.mineyourmoney.databinding.ActivityLoginBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
 
@@ -25,6 +28,10 @@ class LoginActivity : AppCompatActivity(), AuthFormFragment.AuthListener {
         enableEdgeToEdge()
 
         FirebaseApp.initializeApp(this)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            AppDatabase.getInstance(this@LoginActivity).clearAll()
+        }
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.loginRoot) { v, insets ->

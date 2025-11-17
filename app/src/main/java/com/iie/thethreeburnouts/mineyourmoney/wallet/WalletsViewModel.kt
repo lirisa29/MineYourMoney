@@ -7,8 +7,10 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetRepository
+import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.exp
 import kotlin.time.Clock.System.now
 
 class WalletsViewModel (application: Application, private val userId: Int) : AndroidViewModel(application) { //(Google Developers Training team, 2025)
@@ -52,6 +54,7 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
             val expenseDao = db.expensesDao()
             val budgetDao = db.budgetDao()
             val repository = BudgetRepository(budgetDao)
+            val expensesRepo = ExpenseRepository(expenseDao)
 
             // Get total spent in this wallet
             val totalExpenses = expenseDao.getTotalSpentInWallet(wallet.id) ?: 0.0
@@ -59,12 +62,8 @@ class WalletsViewModel (application: Application, private val userId: Int) : And
                 repository.refundSpending(userId, totalExpenses)
             }
 
-            // 2. Soft delete all expenses associated with this wallet
-            val expensesInWallet = expenseDao.getAllExpensesSyncByWallet(wallet.id)
-            for (expense in expensesInWallet) {
-                val now = System.currentTimeMillis()
-                expenseDao.markDeleted(expense.id, now, now)
-            }
+            // Delete all expenses associated with this wallet
+            expenseDao.deleteExpensesByWallet(wallet.id)
 
             // Delete the wallet itself
             walletRepository.deleteWallet(wallet)
