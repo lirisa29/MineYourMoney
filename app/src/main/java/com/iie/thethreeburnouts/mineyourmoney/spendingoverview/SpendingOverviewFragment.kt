@@ -1,47 +1,42 @@
 package com.iie.thethreeburnouts.mineyourmoney.spendingoverview
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
+
 import com.iie.thethreeburnouts.mineyourmoney.MainActivity
 import com.iie.thethreeburnouts.mineyourmoney.MainActivityProvider
 import com.iie.thethreeburnouts.mineyourmoney.R
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModel
+import com.iie.thethreeburnouts.mineyourmoney.budget.BudgetViewModelFactory
 import com.iie.thethreeburnouts.mineyourmoney.databinding.FragmentSpendingOverviewBinding
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseDetailsFragment
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpenseWithWallet
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpensesViewModel
 import com.iie.thethreeburnouts.mineyourmoney.expense.ExpensesViewModelFactory
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
+
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -51,19 +46,36 @@ class SpendingOverviewFragment : Fragment(){
 
     private var _binding: FragmentSpendingOverviewBinding? = null
     private val binding get() = _binding!!
-    private lateinit var expenseAdapter: ExpenseAdapter
-    private val expensesViewModel: ExpensesViewModel by activityViewModels(){ //(Google Developers Training team, 2025)
-        ExpensesViewModelFactory(
-            requireActivity().application, //(Google Developers Training team, 2025)
-            (requireActivity() as MainActivityProvider).getCurrentUserId()
+
+    // trying to not hardcode
+    private val budgetViewModel: BudgetViewModel by lazy {
+        val activityProvider = requireActivity() as MainActivityProvider
+        val userId = activityProvider.getCurrentUserId()
+
+        val factory = BudgetViewModelFactory(
+            requireActivity().application,
+            userId
         )
+        ViewModelProvider(requireActivity(), factory)[BudgetViewModel::class.java]
     }
+    private val expensesViewModel: ExpensesViewModel by lazy {
+        val activityProvider = requireActivity() as MainActivityProvider
+        val userId = activityProvider.getCurrentUserId()
+
+        val factory = ExpensesViewModelFactory(
+            requireActivity().application,
+            userId
+        )
+        ViewModelProvider(requireActivity(), factory)[ExpensesViewModel::class.java]
+    }
+
+    private lateinit var expenseAdapter: ExpenseAdapter
     // Store the last selected range
     private var lastSelectedRange: Pair<Long, Long>? = null
 
     // Replace with users limit from settings
-    private var maxLimit = 1000f
-    private var minLimit = 500f
+    private var maxLimit = 0f
+    private var minLimit = 0f
 
     private val sdf = SimpleDateFormat("dd/MM", Locale.getDefault())
 
@@ -80,6 +92,24 @@ class SpendingOverviewFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.i("SpendingOverviewFragment", "onViewCreated: Initializing UI Components")
         super.onViewCreated(view, savedInstanceState)
+
+        budgetViewModel.budget.observe(viewLifecycleOwner) { budget ->
+            if (budget != null) {
+                minLimit = budget.minLimit.toFloat()
+                maxLimit = budget.maxLimit.toFloat()
+
+                // Refresh chart for current range
+                if (lastSelectedRange != null) {
+                    val (start, end) = lastSelectedRange!!
+                    expensesViewModel.getExpensesInRange(start, end)
+                        .observe(viewLifecycleOwner) { expenses ->
+                            updateLineChart(expenses, start, end)
+                        }
+                } else {
+                    loadDefault30Days()
+                }
+            }
+        }
 
         // Setup RecyclerView
         expenseAdapter = ExpenseAdapter(emptyList()) { expenseId ->
@@ -202,6 +232,7 @@ class SpendingOverviewFragment : Fragment(){
                 }
             }
         }
+
     }
 
     override fun onDestroyView() {
@@ -228,19 +259,19 @@ class SpendingOverviewFragment : Fragment(){
             axisMinimum = 0f
         }
 
-        // ✅ added: enable scaling and dragging
+        // Scaling Functionality
         chart.isDragEnabled = true
         chart.setScaleEnabled(true)
         chart.setScaleXEnabled(true)
         chart.setScaleYEnabled(true)
 
-        // ✅ added: allow fling scrolling (momentum scroll)
+        // Highlight per drag
         chart.isHighlightPerDragEnabled = true
 
-        // ✅ added: set visible X range to "zoom in" view
+        // Show 7 data points at a time on X-axis
         chart.setVisibleXRangeMaximum(7f) // shows around 7 days at a time, adjust if needed
 
-        // ✅ added: smooth fling deceleration
+        // Drag deceleration
         chart.setDragDecelerationFrictionCoef(0.9f)
     }
 
@@ -392,7 +423,7 @@ class SpendingOverviewFragment : Fragment(){
         chart.description.isEnabled = false
         chart.legend.isWordWrapEnabled = true
 
-        // ✅ Enable full zoom and drag functionality
+        // Scaling functionality
         chart.isDragEnabled = true
         chart.setScaleEnabled(true)
         chart.setScaleXEnabled(true)
@@ -401,15 +432,15 @@ class SpendingOverviewFragment : Fragment(){
         chart.setDragDecelerationFrictionCoef(0.9f)
         chart.isHighlightPerDragEnabled = true
 
-        // ✅ Show 7 data points at a time on X-axis
+        // Show 7 data points at a time on X-axis
         chart.setVisibleXRangeMaximum(7f)
 
-        // ✅ Automatically zoom in both axes
+        // Apply zoom to show more data points if needed
         val xZoom = (labels.size / 16f).coerceAtLeast(1f)
         val yZoom = 1.5f // adjust this number to control vertical zoom intensity
         chart.zoom(xZoom, yZoom, 0f, 0f)
 
-        // ✅ Optional: scroll to the end (latest data)
+        // Scroll to the end to show the latest data
         chart.moveViewToX((labels.size - 1).toFloat())
 
         val xAxis = chart.xAxis
@@ -427,5 +458,4 @@ class SpendingOverviewFragment : Fragment(){
 
         chart.invalidate()
     }
-
 }

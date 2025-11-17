@@ -106,7 +106,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Pie Chart Card -->
+            <!-- Line Chart Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
