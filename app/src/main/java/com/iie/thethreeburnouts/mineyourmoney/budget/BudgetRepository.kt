@@ -76,22 +76,33 @@ class BudgetRepository (private val dao: BudgetDao) {
 
         if (!snapshot.exists()) return
 
-        val remoteUpdatedAt = snapshot.getLong("updatedAt") ?: 0
-        val localBudget = dao.getBudget(userId)
-        val localUpdatedAt = localBudget?.updatedAt ?: 0
+        val remote = Budget(
+            userId = userId,
+            id = dao.getBudget(userId)?.id ?: 0, // preserve existing local id
+            minLimit = snapshot.getDouble("minLimit") ?: 0.0,
+            maxLimit = snapshot.getDouble("maxLimit") ?: 0.0,
+            totalSpent = snapshot.getDouble("totalSpent") ?: 0.0,
+            lastUpdatedMonth = (snapshot.getLong("lastUpdatedMonth") ?: 0L).toInt(),
+            updatedAt = snapshot.getLong("updatedAt") ?: 0L
+        )
 
-        // Only overwrite local if remote is newer
-        if (remoteUpdatedAt > localUpdatedAt) {
-            val budget = Budget(
-                id = localBudget?.id ?: 0,
-                userId = userId,
-                minLimit = snapshot.getDouble("minLimit") ?: 0.0,
-                maxLimit = snapshot.getDouble("maxLimit") ?: 0.0,
-                totalSpent = snapshot.getDouble("totalSpent") ?: 0.0,
-                lastUpdatedMonth = (snapshot.getLong("lastUpdatedMonth") ?: 0L).toInt(),
-                updatedAt = remoteUpdatedAt
-            )
-            dao.insertOrUpdateBudget(budget)
+        val local = dao.getBudget(userId)
+
+        when {
+            local == null -> {
+                // No local → save remote
+                dao.insertOrUpdateBudget(remote)
+            }
+
+            remote.updatedAt > local.updatedAt -> {
+                // Remote newer → overwrite local
+                dao.insertOrUpdateBudget(remote)
+            }
+
+            local.updatedAt > remote.updatedAt -> {
+                // Local newer → upload local
+                uploadToFirestore(local)
+            }
         }
     }
 }
