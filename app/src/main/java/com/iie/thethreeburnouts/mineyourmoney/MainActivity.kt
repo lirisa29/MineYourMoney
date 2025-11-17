@@ -20,6 +20,7 @@ import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletRepository
 import com.iie.thethreeburnouts.mineyourmoney.wallet.WalletsFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), MainActivityProvider {
     // Initialise ViewBinding
@@ -49,13 +50,15 @@ class MainActivity : AppCompatActivity(), MainActivityProvider {
 
             // 1. Try to pull latest Firestore version
             repo.downloadFromFirestore(loggedInUser.id)
+
+            withContext(Dispatchers.Main) {
+                // Now safe to load UI
+                replaceFragment(BudgetsFragment(), addToBackStack = false)
+                binding.bottomNavigationView.selectedItemId = R.id.nav_budgets
+            }
+
             walletRepo.downloadFromFirestore(loggedInUser.id)
             expensesRepo.downloadExpenses(loggedInUser.id)
-        }
-
-        if (savedInstanceState == null){
-            replaceFragment(BudgetsFragment(), addToBackStack = false)
-            binding.bottomNavigationView.selectedItemId = R.id.nav_budgets
         }
 
         // Set status and nav bar colour using theme attribute

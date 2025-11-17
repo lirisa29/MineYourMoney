@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:colorBackground"
+    android:fitsSystemWindows="true"
     android:clickable="true"
     android:focusableInTouchMode="true">
 
@@ -13,9 +15,12 @@
         android:id="@+id/topAppBar"
         style="@style/TopAppBarStyle"
         app:title="@string/add_expense"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         app:navigationIcon="@drawable/ic_back"
         app:navigationContentDescription="@string/back"
-        app:navigationIconTint="?attr/android:textColorSecondary"/>
+        app:navigationIconTint="?attr/android:textColorSecondary"
+        app:contentInsetStart="0dp"/>
 
     <!-- Content -->
     <ScrollView
