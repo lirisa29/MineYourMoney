@@ -72,12 +72,25 @@ class BudgetViewModel(application: Application, private val userId: Int) : //(Go
     fun addSpending(amount: Double) {
         viewModelScope.launch { //(Google Developers Training team, 2025)
             repository.addSpending(userId, amount)
+
+
+            BudgetStatusManager.updateBudgetFlags(
+                getApplication(),
+                dao,
+                userId
+            )
         }
     }
 
     fun refundSpending(amount: Double) {
         viewModelScope.launch { //(Google Developers Training team, 2025)
             repository.refundSpending(userId, amount)
+
+            BudgetStatusManager.updateBudgetFlags(
+                getApplication(),
+                dao,
+                userId
+            )
         }
     }
 }
