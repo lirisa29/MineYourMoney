@@ -29,7 +29,7 @@
                 android:layout_marginTop="12dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Good Morning, John"
+                android:text="Dashboard"
                 android:textAppearance="@style/TextHeading" />
 
         </LinearLayout>
@@ -150,38 +150,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Wallet List Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="16dp"
-                app:cardBackgroundColor="?attr/android:colorForeground"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:id="@+id/tvTopBudgetsTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Top Wallets"
-                        android:textAppearance="@style/TextBody"
-                        android:layout_marginTop="15dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvWalletList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -205,7 +173,7 @@
                         android:textAlignment="center"
                         android:textAppearance="@style/TextBody" />
 
-                    <!-- Pie Chart View (MPAndroidChart) -->
+                    <!-- Line Chart View (MPAndroidChart) -->
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/spendingLineChart"
                         android:layout_width="200dp"
